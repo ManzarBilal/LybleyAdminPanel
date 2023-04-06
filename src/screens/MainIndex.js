@@ -2,7 +2,7 @@ import React from 'react';
 import Dashboard from './Dashboard/Dashboard';
 import ProductGrid from './Products/ProductGrid';
 import ProductList from './Products/ProductList';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route,Redirect } from 'react-router-dom';
 import ProductEdit from './Products/ProductEdit';
 import ProductDetail from './Products/ProductDetail';
 import ProductAdd from './Products/ProductAdd';
@@ -69,7 +69,7 @@ function MainIndex (props) {
         {activekey === "/chat" ? "" : <Header />}
         <div className="body d-flex py-3 ">
           <Switch>
-            <Route exact path={process.env.PUBLIC_URL + "/"} render={() => { return <Dashboard /> }} />
+            {/* <Route exact path={process.env.PUBLIC_URL + "/ghj"} render={() => { return <Dashboard /> }} /> */}
             <Route exact path={process.env.PUBLIC_URL + "/dashboard"} render={() => { return <Dashboard /> }} />
             <Route exact path={process.env.PUBLIC_URL + '/product-grid'} render={() => { return <ProductGrid /> }} />
             <Route exact path={process.env.PUBLIC_URL + '/product-list'} render={() => { return <ProductList /> }} />
@@ -134,7 +134,7 @@ function MainIndex (props) {
             <Route exact path={process.env.PUBLIC_URL + '/changelog'} render={() => { return <Changelog /> }} />
 
             <Route exact path={process.env.PUBLIC_URL + '/help'} render={() => { return <Help /> }} />
-
+            <Redirect from='/' to={process.env.PUBLIC_URL + '/sign-in'}/>
           </Switch>
         </div>
       </div>

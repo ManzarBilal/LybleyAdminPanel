@@ -7,12 +7,12 @@ import MainIndex from './screens/MainIndex';
 
 function App(props) {
   const activekey = () => {
-    var res = window.location.pathname
-    var baseUrl = process.env.PUBLIC_URL
+    var res = window.location.pathname;
+    var baseUrl = process.env.PUBLIC_URL;
     baseUrl = baseUrl.split("/");
     res = res.split("/");
     res = res.length > 0 ? res[baseUrl.length] : "/";
-    res = res ? "/" + res : "/";;
+    res = res ? "/" + res : "/";
     const activeKey1 = res;
     return activeKey1
   }
