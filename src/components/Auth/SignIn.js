@@ -13,7 +13,7 @@ function SignIn() {
                         <span>Free access to our dashboard.</span>
                     </div>
                     <div className="col-12 text-center mb-4">
-                        <Link className="btn btn-lg btn-light btn-block" to="#!">
+                        <Link className="btn btn-lg btn-light btn-block" to={process.env.PUBLIC_URL + "/dashboard"}>
                             <span className="d-flex justify-content-center align-items-center">
                                 <img className="avatar xs me-2" src={ImageSrc} alt="img Description" />
                                 Sign in with Google
