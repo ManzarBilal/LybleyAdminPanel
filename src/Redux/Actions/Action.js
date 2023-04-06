@@ -14,7 +14,7 @@ export const OnchangeAddimage=(e)=>(dispatch)=>{
     }
 }
 
-export const Onchangeusername = (e) => (dispatch) => {
+export const Onchangeusername = (e) => (dispatch)=>{
     dispatch({
         type: 'USER_NAME',
         payload: e
