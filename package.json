@@ -9,6 +9,7 @@
     "@fullcalendar/daygrid": "^5.10.1",
     "@fullcalendar/interaction": "^5.10.1",
     "@fullcalendar/react": "^5.10.1",
+    "@hookform/resolvers": "^3.0.1",
     "@material-ui/core": "^4.12.3",
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@outofaxis/react-dropzone-uploader": "^3.1.2",
@@ -41,7 +42,8 @@
     "redux": "^4.1.2",
     "redux-thunk": "^2.4.1",
     "styled-components": "^5.3.3",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "yup": "^1.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
