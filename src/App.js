@@ -16,7 +16,7 @@ function App(props) {
     const activeKey1 = res;
     return activeKey1
   }
-  if (activekey() === '/sign-in' || activekey() === '/sign-up' || activekey() === '/reset-password' || activekey() === '/verification' || activekey() === '/page-404') {
+  if (activekey() === '/sign-in'  || activekey() ==='/new-password' || activekey() === '/sign-up' || activekey() === '/reset-password' || activekey() === '/verification' || activekey() === '/page-404') {
     return (
       <div id="ebazar-layout" className='theme-blue'>
         <Switch>

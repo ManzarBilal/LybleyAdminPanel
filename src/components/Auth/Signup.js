@@ -50,13 +50,13 @@ function Signup() {
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
             <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxWidth: '32rem' }}>
 
-                <form className="row g-1 p-3 p-md-4">
-                    <div className="col-12 text-center mb-5">
-                        <h1 className='pt-5'>Create your account</h1>
-                        <span>Free access to our dashboard.</span>
+                <form className="row g-1 p-3 p-md1-4">
+                    <div className="col-12 text-center mt-5 mb1-5">
+                        <h1 className='mt-5'>Create your account</h1>
+                        {/* <span>Free access to our dashboard.</span> */}
                     </div>
                     <div className="col-12">
-                        <div className="mb-2">
+                        <div className="mb-1">
                             <label className="form-label">Brand name</label>
                             <input type="email" className={(errors && errors.name) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="Brand name"
                                 {...register('name')}
@@ -69,7 +69,7 @@ function Signup() {
                     </div>
 
                     <div className="col-12">
-                        <div className="mb-2">
+                        <div className="mb-1">
                             <label className="form-label">Email address</label>
                             <input type="email" className={(errors && errors.email) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="name@example.com"
                                 {...register('email')}
@@ -81,7 +81,7 @@ function Signup() {
                         </div>
                     </div>
                     <div className="col-12">
-                        <div className="mb-2">
+                        <div className="mb-1">
                             <label className="form-label">Contact No.</label>
                             <input type="number" className={(errors && errors.contact) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="Contact No."
                                 {...register('contact')}
@@ -93,26 +93,22 @@ function Signup() {
                         </div>
 
                     </div>
+                     
                     <div className="col-12">
-                        <div className="">
-                            <label className="form-label">Upload Document</label>
-
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-2">
-
-                            <input type="file" id="myfile" name="myfile" 
+                        <div className="mb-1">
+                        <label className="form-label">Upload Document</label>
+                            <input type="file" id="myfile" className="form-control" name="myfile" 
                              {...register('auth')}
 
                              />
                              <div className='text-danger'>
                                  {errors.auth?.message}
                              </div>
+                             
                         </div>
                     </div>
                     <div className="col-12">
-                        <div className="mb-2">
+                        <div className="mb-1">
                             <label className="form-label">Password</label>
                             <input type="email" className={(errors && errors.password) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required" 
                              {...register('password')}
@@ -124,7 +120,7 @@ function Signup() {
                         </div>
                     </div>
                     <div className="col-12">
-                        <div className="mb-2">
+                        <div className="mb-1">
                             <label className="form-label">Confirm password</label>
                             <input type="email" className={(errors && errors.confirmPassword) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required" 
                              {...register('confirmPassword')}
@@ -147,15 +143,15 @@ function Signup() {
                             <label className="form-check-label" htmlFor="flexCheckDefault">
                                 I accept the <Link to="#!" title="Terms and Conditions" className="text-secondary">Terms and Conditions</Link>
                             </label>
-                            <div className='text-danger'>
+                            {/* <div className='text-danger'>
                                  {errors.chooseCb?.message}
-                             </div>
+                             </div> */}
                         </div>
                     </div>
-                    <div className="col-12 text-center mt-4">
+                    <div className="col-12 text-center mt-3">
                         <Link to={process.env.PUBLIC_URL + '/'} type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleSubmit(onRegister)} >SIGN UP</Link>
                     </div>
-                    <div className="col-12 text-center mt-4">
+                    <div className="col-12 text-center mt-3">
                         <span>Already have an account? <Link to={process.env.PUBLIC_URL + '/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>
                     </div>
                 </form>

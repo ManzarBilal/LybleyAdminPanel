@@ -6,6 +6,7 @@ import Signup from '../components/Auth/Signup';
 import Resetpassword from '../components/Auth/Resetpassword';
 import Verification from '../components/Auth/Verification';
 import Page404 from '../components/Auth/Page404';
+import Newpassword from '../components/Auth/NewPassword';
 
 function AuthIndex () {
   
@@ -18,6 +19,7 @@ function AuthIndex () {
               <Switch>
                 <Route exact path={process.env.PUBLIC_URL+"/sign-in"} render={() => { return <SignIn /> }} />
                 <Route exact path={process.env.PUBLIC_URL+"/sign-up"} render={() => { return <Signup /> }} />
+                <Route exact path={process.env.PUBLIC_URL+"/new-password"} render={() => { return <Newpassword /> }} />
                 <Route exact path={process.env.PUBLIC_URL+"/reset-password"} render={() => { return <Resetpassword /> }} />
                 <Route exact path={process.env.PUBLIC_URL+"/verification"} render={() => { return <Verification /> }} />
                 <Route exact path={process.env.PUBLIC_URL+"/page-404"} render={() => { return <Page404 /> }} />
