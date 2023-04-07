@@ -2,10 +2,21 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Images from '../../assets/images/verify.svg';
 import OtpInput from 'react-otp-input';
+import httpCommon from '../../http-common';
+
 
 function Verification() {
 
     const [otp, setOtp] = useState('');
+
+    const otpVerification = async(obj)=>{
+        try{
+            let response=await  httpCommon.patch("/brandOtpVerification",obj);
+            let {data}=response;
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     const handleChange = (newValue) => {
         setOtp(newValue)

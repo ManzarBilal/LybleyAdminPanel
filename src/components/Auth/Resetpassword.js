@@ -1,8 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Images from '../../assets/images/forgot-password.svg';
+import httpCommon from '../../http-common';
+
 
 function Resetpassword() {
+
+    const sendOTP = async(obj)=>{
+        try{
+            let response=await httpCommon.post("/brandResendOtp",obj);
+            let {data}=response;
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     return (
         <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxWidth: '32rem' }}>
             <form className="row g-1 p-3 p-md-4">

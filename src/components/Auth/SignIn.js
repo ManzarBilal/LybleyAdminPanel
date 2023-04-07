@@ -1,9 +1,18 @@
 import React from 'react';
 import ImageSrc from "../../assets/images/google.svg";
 import { Link } from 'react-router-dom';
+import httpCommon from '../../http-common';
 
 
 function SignIn() {
+    const login = async(obj)=>{
+        try{
+            let response=await httpCommon.post("/brandLogin",obj);
+            let {data}=response;
+        }catch(err){
+            console.log(err);
+        }
+    }
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100 " >
             <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxwidth: "32rem" }}>
