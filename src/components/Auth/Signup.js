@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import httpCommon from '../../http-common';
+
 
 function Signup() {
 
@@ -41,9 +43,18 @@ function Signup() {
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
-
+    const signUp = async(obj)=>{
+        try{
+            let body={brandName:obj.name,email:obj.email,contact: +obj.contact,password:obj.password};
+            let response=await httpCommon.post("/brand/brandRegistration",body);
+            let {data}=response;
+            console.log(data);
+        }catch(err){
+            console.log(err);
+        }
+    }
     const onRegister = data => {
-        console.log("data", data)
+        signUp(data);
     }
 
     return (
