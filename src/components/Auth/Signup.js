@@ -43,22 +43,18 @@ function Signup() {
         resolver: yupResolver(validationSchema)
     });
     const signUp = async(obj)=>{
-        console.log("obj",obj);
         try{
             let body={brandName:obj.name,email:obj.email,contact: +obj.contact,password:obj.password};
             console.log("body",body);
             let response=await httpCommon.post("/brandRegistration",body);
             let {data}=response;
             ToastMessage(data)
-            console.log(response,"respa");
         }catch(err){
             console.log(err);
         }
     }
     const onRegister = data => {
-        signUp(data);
-        console.log("data", data)
-       
+        signUp(data);    
     }
 
     return (
