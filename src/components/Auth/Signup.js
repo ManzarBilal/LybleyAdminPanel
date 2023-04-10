@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -7,8 +7,11 @@ import httpCommon from '../../http-common';
 import { ToastMessage } from '../common/ToastMessage';
 import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
+ 
 function Signup() {
 
+
+    const [gstDocument,setGstDocument]=useState("")
     const history = useHistory()
 
     const dispatch=useDispatch()
@@ -20,10 +23,13 @@ function Signup() {
             .required('Contact No. is required')
             .min(10, 'Contact No. must be at least 10 characters')
             .max(10, 'Contact No. must not exceed 10 characters'),
+            gstNo: Yup.string()
+            .required('GST No. is required')
+            .min(5, 'GST No. must be at least 10 characters'),     
         email: Yup.string()
             .required('Email is required')
             .email('Email is invalid'),
-        auth: Yup.mixed().test("file", "You need to provide a file", (value) => {
+            gstDocument: Yup.mixed().test("file", "You need to provide a file", (value) => {
             if (value.length > 0) {
                 return true;
             }
@@ -47,10 +53,21 @@ function Signup() {
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
+    const handleFileChange = (e ) => {
+        if (e.target.files) {
+            console.log(e.target.files);
+          setGstDocument(e.target.files[0]);
+        }
+      };
+
     const signUp = async (obj) => {
         try {
-            let body = { brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password };
-            let response = await httpCommon.post("/brandRegistration", body);
+            let body = { brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password,gstNo:obj.gstNo };
+            const formData=new FormData()
+            formData.append("gstDocument",gstDocument);
+            const fullData={...body ,gstDocument:formData}
+            console.log(fullData,"fullData");
+            let response = await httpCommon.post("/brandRegistration", fullData);
             let { data } = response;
             ToastMessage(data)
             if (data.status === true) {
@@ -62,23 +79,24 @@ function Signup() {
         }
     }
     const onRegister = data => {
-        signUp(data);
-        dispatch(userEmail(data?.email))
+        console.log("data",gstDocument);
+        // signUp(data);
+        // dispatch(userEmail(data?.email))
     }
 
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
-            <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxWidth: '32rem' }}>
+            <div className="w-100 p-3 p-md-5 card border-0 shadow-sm mt-md-5" style={{ maxWidth: '32rem' }}>
 
                 <form className="row g-1 p-3 p-md1-4">
                     <div className="col-12 text-center mt-5 mb1-5">
-                        <h1 className='mt-5'>Create your account</h1>
+                        <h1 className='mt-md-5 pt-md-5'>Create your account</h1>
                         {/* <span>Free access to our dashboard.</span> */}
                     </div>
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Brand name</label>
-                            <input type="email" className={(errors && errors.name) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="Brand name"
+                            <input type="email" className={(errors && errors.name) ? "form-control   border-danger " : "form-control  "} placeholder="Brand name"
                                 {...register('name')}
 
                             />
@@ -91,7 +109,7 @@ function Signup() {
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Email address</label>
-                            <input type="email" className={(errors && errors.email) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="name@example.com"
+                            <input type="email" className={(errors && errors.email) ? "form-control  border-danger " : "form-control"} placeholder="name@example.com"
                                 {...register('email')}
 
                             />
@@ -103,7 +121,7 @@ function Signup() {
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Contact No.</label>
-                            <input type="number" className={(errors && errors.contact) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="Contact No."
+                            <input type="number" className={(errors && errors.contact) ? "form-control border-danger " : "form-control "} placeholder="Contact No."
                                 {...register('contact')}
 
                             />
@@ -113,16 +131,28 @@ function Signup() {
                         </div>
 
                     </div>
-
                     <div className="col-12">
                         <div className="mb-1">
-                            <label className="form-label">Upload Document</label>
-                            <input type="file" id="myfile" className="form-control" name="myfile"
-                                {...register('auth')}
+                            <label className="form-label">GST No.</label>
+                            <input type="text" className={(errors && errors.gstNo) ? "form-control   border-danger " : "form-control "} placeholder="GST No."
+                                {...register('gstNo')}
 
                             />
                             <div className='text-danger'>
-                                {errors.auth?.message}
+                                {errors.gstNo?.message}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Upload GST Document</label>
+                            <input type="file" onChange={(e)=>handleFileChange(e)} id="myfile" className="form-control" name="myfile"
+                                // {...register('gstDocument')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.gstDocument?.message}
                             </div>
 
                         </div>
@@ -130,7 +160,7 @@ function Signup() {
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Password</label>
-                            <input type="email" className={(errors && errors.password) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required"
+                            <input type="email" className={(errors && errors.password) ? "form-control  border-danger " : "form-control  "} placeholder="8+ characters required"
                                 {...register('password')}
 
                             />
@@ -142,7 +172,7 @@ function Signup() {
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Confirm password</label>
-                            <input type="email" className={(errors && errors.confirmPassword) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required"
+                            <input type="email" className={(errors && errors.confirmPassword) ? "form-control  border-danger " : "form-control "} placeholder="8+ characters required"
                                 {...register('confirmPassword')}
 
                             />
