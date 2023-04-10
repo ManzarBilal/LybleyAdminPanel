@@ -4,9 +4,9 @@ import toast, { Toaster } from 'react-hot-toast';
 
 
 export const ToastMessage = (props) => {
-console.log(props,"props")
+
     {
-        props?.staus === true ?
+        props?.status === true ?
             toast.success(`${props?.msg}`,
                 {
                     position: "top-center"

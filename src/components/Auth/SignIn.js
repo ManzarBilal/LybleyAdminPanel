@@ -1,17 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ImageSrc from "../../assets/images/google.svg";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import httpCommon from '../../http-common';
+import { ToastMessage } from '../common/ToastMessage';
+import { useDispatch } from 'react-redux';
+import { userEmail } from '../../Redux/Actions/userEmail';
 
 
 function SignIn() {
-    const login = async(obj)=>{
-        try{
-            let response=await httpCommon.post("/brandLogin",obj);
-            let {data}=response;
-        }catch(err){
+
+    const history = useHistory();
+
+    const dispatch =useDispatch()
+    const [brandData,setBrandData]=useState({
+        email:"",password:"",
+    })
+
+    const login = async (obj) => {
+        try {
+            let response = await httpCommon.post("/brandLogin", obj);
+            let { data } = response;
+            if (data?.user?.status === "ACTIVE") {
+                ToastMessage(data);
+                history.push(`${process.env.PUBLIC_URL + "/dashboard"}`)
+            }else if(data?.status===false){
+                ToastMessage(data);
+            }
+            else{
+                history.push(`${process.env.PUBLIC_URL+"/verification"}`)
+            }
+        } catch (err) {
             console.log(err);
         }
+    }
+
+    const handleLogin = () => {
+        login(brandData)
+            dispatch(userEmail(brandData?.email))
     }
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100 " >
@@ -33,7 +58,7 @@ function SignIn() {
                     <div className="col-12">
                         <div className="mb-2">
                             <label className="form-label">Email address</label>
-                            <input type="email" className="form-control form-control-lg lift" placeholder="name@example.com" />
+                            <input type="email" onChange={(e)=>setBrandData({...brandData,email:e.target.value})} className="form-control form-control-lg lift" placeholder="name@example.com" />
                         </div>
                     </div>
                     <div className="col-12">
@@ -44,7 +69,7 @@ function SignIn() {
                                     <Link className="text-secondary" to={process.env.PUBLIC_URL + "/reset-password"}>Forgot Password?</Link>
                                 </span>
                             </div>
-                            <input type="password" className="form-control form-control-lg lift" placeholder="***************" />
+                            <input type="password" onChange={(e)=>setBrandData({...brandData,password:e.target.value})} className="form-control form-control-lg lift" placeholder="***************" />
                         </div>
                     </div>
                     <div className="col-12">
@@ -56,7 +81,7 @@ function SignIn() {
                         </div>
                     </div>
                     <div className="col-12 text-center mt-4">
-                        <Link type='button' to={process.env.PUBLIC_URL + "/dashboard"} className="btn btn-lg btn-block btn-light lift text-uppercase" >SIGN IN</Link>
+                        <div type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleLogin}>SIGN IN</div>
                     </div>
                     <div className="col-12 text-center mt-4">
                         <span>Don't have an account yet? <Link to={process.env.PUBLIC_URL + "/sign-up"} className="text-secondary">Sign up here</Link></span>
