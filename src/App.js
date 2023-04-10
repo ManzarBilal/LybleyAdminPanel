@@ -5,8 +5,11 @@ import Sidebar from './components/common/Sidebar';
 import AuthIndex from "./screens/AuthIndex";
 import MainIndex from './screens/MainIndex';
 import { Toaster } from 'react-hot-toast';
+import BrandIndex from './screens/BrandIndex';
 
 function App(props) {
+  let user1=localStorage.getItem("user");
+  let user=JSON.parse(user1);
   const activekey = () => {
     var res = window.location.pathname;
     var baseUrl = process.env.PUBLIC_URL;
@@ -27,6 +30,18 @@ function App(props) {
       </div>
     );
   }
+ else if (user && user.role ==="BRAND" )
+ {
+   return (
+    <div id="ebazar-layout" className='theme-blue'>
+         <Toaster />
+      <Switch>
+        <BrandIndex />
+      </Switch>
+    </div>
+   )}
+   else
+   {
   return (
     <div id="ebazar-layout" className='theme-blue'>
          <Toaster />
@@ -36,6 +51,6 @@ function App(props) {
         <MainIndex activekey={activekey()} />
       </Switch>
     </div>
-  )
+  )}
 }
 export default withRouter(App);
