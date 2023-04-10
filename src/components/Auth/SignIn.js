@@ -19,7 +19,7 @@ function SignIn() {
                 <form className="row g-1 p-3 p-md-4 mt-5">
                     <div className="col-12 text-center mb-0">
                         <h1>Sign  in</h1>
-                        <span>Free access to our dashboard.</span>
+                        {/* <span>Free access to our dashboard.</span> */}
                     </div>
                     <div className="col-12 text-center mb-4">
                         <Link className="btn btn-lg btn-light btn-block" to={process.env.PUBLIC_URL + "/dashboard"}>
