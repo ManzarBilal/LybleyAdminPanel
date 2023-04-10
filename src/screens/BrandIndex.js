@@ -1,5 +1,5 @@
 import React from 'react'
-import { Switch, Route,Redirect } from 'react-router-dom';
+import { Switch,Redirect } from 'react-router-dom';
 import AuthLeft from '../components/Auth/AuthLeft';
 import Page404 from '../components/Auth/Page404';
 const BrandIndex = () => {

@@ -41,7 +41,7 @@ const history=useHistory()
     });
     const {
         register,
-        control,
+         
         handleSubmit,
         formState: { errors }
     } = useForm({

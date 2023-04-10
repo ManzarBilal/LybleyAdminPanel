@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import {  useHistory } from 'react-router-dom';
 import Images from '../../assets/images/verify.svg';
 import OtpInput from 'react-otp-input';
 import httpCommon from '../../http-common';

@@ -1,9 +1,8 @@
 
-import React from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 
-export const ToastMessage = (props) => {
+  export  const ToastMessage = (props) => {
 
     {
         props?.status === true ?
@@ -21,3 +20,4 @@ export const ToastMessage = (props) => {
     }
 
 }
+ 

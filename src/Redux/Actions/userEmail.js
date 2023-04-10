@@ -1,4 +1,4 @@
-import http from "../../http-common"
+ 
 
 export const userEmail = (regEmail) => {
     return (dispatch) => {

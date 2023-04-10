@@ -13,7 +13,7 @@ function Page404() {
                         <span className="">Sorry, the page you're looking for doesn;t exist. if you think something is brlken, report a problem.</span>
                     </div>
                     <div className="col-12 text-center">
-                        <Link to={process.env.PUBLIC_URL + "/"} title="" className="btn btn-lg btn-block btn-light lift text-uppercase">Back to Home</Link>
+                        <Link to={process.env.PUBLIC_URL + "/sign-in"} title="" className="btn btn-lg btn-block btn-light lift text-uppercase">Back to Home</Link>
                     </div>
                 </form>
             </div>
