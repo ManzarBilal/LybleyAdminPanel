@@ -3,9 +3,12 @@ import { Link } from 'react-router-dom';
 import { useForm  } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { ToastMessage } from '../common/ToastMessage';
+ 
 
 function Signup() {
-
+   
+    
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(' Brand Name is required')
             .min(4, "Brand Name must be at least 4 characters"),
@@ -44,12 +47,13 @@ function Signup() {
 
     const onRegister = data => {
         console.log("data", data)
+        ToastMessage("helllo")
     }
 
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
             <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxWidth: '32rem' }}>
-
+          
                 <form className="row g-1 p-3 p-md1-4">
                     <div className="col-12 text-center mt-5 mb1-5">
                         <h1 className='mt-5'>Create your account</h1>
@@ -149,7 +153,7 @@ function Signup() {
                         </div>
                     </div>
                     <div className="col-12 text-center mt-3">
-                        <Link to={process.env.PUBLIC_URL + '/'} type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleSubmit(onRegister)} >SIGN UP</Link>
+                        <div   type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={ onRegister} >SIGN UP</div>
                     </div>
                     <div className="col-12 text-center mt-3">
                         <span>Already have an account? <Link to={process.env.PUBLIC_URL + '/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>

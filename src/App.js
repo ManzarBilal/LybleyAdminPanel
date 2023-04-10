@@ -4,6 +4,7 @@ import AddModal from './components/common/AddModal';
 import Sidebar from './components/common/Sidebar';
 import AuthIndex from "./screens/AuthIndex";
 import MainIndex from './screens/MainIndex';
+import { Toaster } from 'react-hot-toast';
 
 function App(props) {
   const activekey = () => {
@@ -19,6 +20,7 @@ function App(props) {
   if (activekey() === '/sign-in'  || activekey() ==='/new-password' || activekey() === '/sign-up' || activekey() === '/reset-password' || activekey() === '/verification' || activekey() === '/page-404') {
     return (
       <div id="ebazar-layout" className='theme-blue'>
+         <Toaster />
         <Switch>
           <AuthIndex />
         </Switch>
@@ -27,6 +29,7 @@ function App(props) {
   }
   return (
     <div id="ebazar-layout" className='theme-blue'>
+         <Toaster />
       <Sidebar activekey={activekey()} history={props.history} />
       <AddModal />
       <Switch>
