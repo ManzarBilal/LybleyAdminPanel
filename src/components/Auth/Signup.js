@@ -36,19 +36,21 @@ function Signup() {
 
 
     const {
-        register,
-        
+        register, 
         handleSubmit,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
     const signUp = async(obj)=>{
+        console.log("obj",obj);
         try{
             let body={brandName:obj.name,email:obj.email,contact: +obj.contact,password:obj.password};
-            let response=await httpCommon.post("/brand/brandRegistration",body);
+            console.log("body",body);
+            let response=await httpCommon.post("/brandRegistration",body);
             let {data}=response;
-            console.log(data);
+            ToastMessage(data)
+            console.log(response,"respa");
         }catch(err){
             console.log(err);
         }
@@ -56,7 +58,7 @@ function Signup() {
     const onRegister = data => {
         signUp(data);
         console.log("data", data)
-        ToastMessage("helllo")
+       
     }
 
     return (
@@ -162,7 +164,7 @@ function Signup() {
                         </div>
                     </div>
                     <div className="col-12 text-center mt-3">
-                        <div   type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={ onRegister} >SIGN UP</div>
+                        <div   type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={ handleSubmit(onRegister)} >SIGN UP</div>
                     </div>
                     <div className="col-12 text-center mt-3">
                         <span>Already have an account? <Link to={process.env.PUBLIC_URL + '/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>
