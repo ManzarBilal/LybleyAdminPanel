@@ -1,13 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { useForm  } from 'react-hook-form';
+import { Link, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import httpCommon from '../../http-common';
 import { ToastMessage } from '../common/ToastMessage';
+import { useDispatch } from 'react-redux';
+import { userEmail } from '../../Redux/Actions/userEmail';
 function Signup() {
-   
-    
+
+    const history = useHistory()
+
+    const dispatch=useDispatch()
+
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(' Brand Name is required')
             .min(4, "Brand Name must be at least 4 characters"),
@@ -18,12 +23,12 @@ function Signup() {
         email: Yup.string()
             .required('Email is required')
             .email('Email is invalid'),
-        auth:Yup.mixed().test("file", "You need to provide a file", (value) => {
-            if (value.length > 0) {  
-              return true;
+        auth: Yup.mixed().test("file", "You need to provide a file", (value) => {
+            if (value.length > 0) {
+                return true;
             }
             return false;
-            }),
+        }),
         password: Yup.string()
             .required('Password is required')
             .min(8, 'Password must be at least 8 characters')
@@ -31,36 +36,40 @@ function Signup() {
         confirmPassword: Yup.string()
             .required('Confirm Password is required')
             .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
-            chooseCb: Yup.bool().oneOf([true], 'Please fill the box')
+        chooseCb: Yup.bool().oneOf([true], 'Please fill the box')
     });
 
 
     const {
-        register, 
+        register,
         handleSubmit,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
-    const signUp = async(obj)=>{
-        try{
-            let body={brandName:obj.name,email:obj.email,contact: +obj.contact,password:obj.password};
-            console.log("body",body);
-            let response=await httpCommon.post("/brandRegistration",body);
-            let {data}=response;
+    const signUp = async (obj) => {
+        try {
+            let body = { brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password };
+            let response = await httpCommon.post("/brandRegistration", body);
+            let { data } = response;
             ToastMessage(data)
-        }catch(err){
+            if (data.status === true) {
+                history.push(`${process.env.PUBLIC_URL+"/verification"}`)
+            }
+            else return null;
+        } catch (err) {
             console.log(err);
         }
     }
     const onRegister = data => {
-        signUp(data);    
+        signUp(data);
+        dispatch(userEmail(data?.email))
     }
 
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
             <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxWidth: '32rem' }}>
-          
+
                 <form className="row g-1 p-3 p-md1-4">
                     <div className="col-12 text-center mt-5 mb1-5">
                         <h1 className='mt-5'>Create your account</h1>
@@ -104,53 +113,52 @@ function Signup() {
                         </div>
 
                     </div>
-                     
+
                     <div className="col-12">
                         <div className="mb-1">
-                        <label className="form-label">Upload Document</label>
-                            <input type="file" id="myfile" className="form-control" name="myfile" 
-                             {...register('auth')}
+                            <label className="form-label">Upload Document</label>
+                            <input type="file" id="myfile" className="form-control" name="myfile"
+                                {...register('auth')}
 
-                             />
-                             <div className='text-danger'>
-                                 {errors.auth?.message}
-                             </div>
-                             
+                            />
+                            <div className='text-danger'>
+                                {errors.auth?.message}
+                            </div>
+
                         </div>
                     </div>
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Password</label>
-                            <input type="email" className={(errors && errors.password) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required" 
-                             {...register('password')}
+                            <input type="email" className={(errors && errors.password) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required"
+                                {...register('password')}
 
-                             />
-                             <div className='text-danger'>
-                                 {errors.password?.message}
-                             </div>
+                            />
+                            <div className='text-danger'>
+                                {errors.password?.message}
+                            </div>
                         </div>
                     </div>
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Confirm password</label>
-                            <input type="email" className={(errors && errors.confirmPassword) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required" 
-                             {...register('confirmPassword')}
+                            <input type="email" className={(errors && errors.confirmPassword) ? "form-control form-control-lg border-danger " : "form-control form-control-lg"} placeholder="8+ characters required"
+                                {...register('confirmPassword')}
 
-                             />
-                             <div className='text-danger'>
-                                 {errors.confirmPassword?.message}
-                             </div>
+                            />
+                            <div className='text-danger'>
+                                {errors.confirmPassword?.message}
+                            </div>
                         </div>
                     </div>
                     <div className="col-12">
                         <div className="form-check">
-                            <input   type="checkbox" value="" id="flexCheckDefault" 
-                             {...register('chooseCb')}
-                             className={`form-check-input ${
-                               errors.chooseCb ? 'is-invalid' : ''
-                             }`}
+                            <input type="checkbox" value="" id="flexCheckDefault"
+                                {...register('chooseCb')}
+                                className={`form-check-input ${errors.chooseCb ? 'is-invalid' : ''
+                                    }`}
                             />
-                           
+
                             <label className="form-check-label" htmlFor="flexCheckDefault">
                                 I accept the <Link to="#!" title="Terms and Conditions" className="text-secondary">Terms and Conditions</Link>
                             </label>
@@ -160,7 +168,7 @@ function Signup() {
                         </div>
                     </div>
                     <div className="col-12 text-center mt-3">
-                        <div   type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={ handleSubmit(onRegister)} >SIGN UP</div>
+                        <div type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleSubmit(onRegister)} >SIGN UP</div>
                     </div>
                     <div className="col-12 text-center mt-3">
                         <span>Already have an account? <Link to={process.env.PUBLIC_URL + '/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>

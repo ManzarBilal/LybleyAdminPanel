@@ -1,18 +1,51 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import Images from '../../assets/images/forgot-password.svg';
 import httpCommon from '../../http-common';
+import { ToastMessage } from '../common/ToastMessage';
+import OTPInput from 'react-otp-input';
+import { useDispatch } from 'react-redux';
+import { userEmail } from '../../Redux/Actions/userEmail';
 
 
 function Resetpassword() {
 
-    const sendOTP = async(obj)=>{
-        try{
-            let response=await httpCommon.post("/brandResendOtp",obj);
-            let {data}=response;
-        }catch(err){
+    const history = useHistory()
+   const dispatch=useDispatch()
+
+    const [email, setEmail] = useState("")
+    const [otp, setOtp] = useState('');
+    const [viewOtp, setViewOtp] = useState(false)
+    const sendOTP = async () => {
+       dispatch(userEmail(email))
+        try {
+            let response = await httpCommon.post("/brandResendOtp", { email: email });
+            let { data } = response;
+            setViewOtp(data?.status);
+            ToastMessage(data);
+        } catch (err) {
             console.log(err);
         }
+    }
+    const otpVerification = async (obj) => {
+        let body = { email:email, otp: otp }
+        try {
+            let response = await httpCommon.patch("/brandOtpVerification", body);
+            let { data } = response;
+            ToastMessage(data)
+            if (data?.status === true) {
+                history.push(`${process.env.PUBLIC_URL + "/new-password"}`)
+            }
+            else {
+                return null;
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const handleSubmit=()=>{
+        viewOtp===false ? sendOTP() : otpVerification();
     }
 
     return (
@@ -23,18 +56,32 @@ function Resetpassword() {
                     <h1>Forgot password?</h1>
                     <span>Enter the email address you used when you joined and we'll send you instructions to reset your password.</span>
                 </div>
-                <div className="col-12">
+                {viewOtp === false ? <div className="col-12">
                     <div className="mb-2">
                         <label className="form-label">Email address</label>
-                        <input type="email" className="form-control form-control-lg" placeholder="name@example.com" />
+                        <input onChange={(e) => setEmail(e.target.value)} type="email" className="form-control form-control-lg" placeholder="name@example.com" />
                     </div>
                 </div>
+                    :
+                    <div className="col-12 d-flex justify-content-center">
+                        <OTPInput
+                            value={otp}
+                            onChange={setOtp}
+                            numInputs={6}
+                            inputStyle={{ width: "40px", height: "40px" }}
+                            renderSeparator={<span className='p-2' >-</span>}
+                            renderInput={(props) => <input {...props} />}
+                        />
+                    </div>
+                }
+
                 <div className="col-12 text-center mt-4">
-                    <Link to={process.env.PUBLIC_URL + '/verification'} title="" className="btn btn-lg btn-block btn-light lift text-uppercase">SUBMIT</Link>
+                    <div onClick={handleSubmit} className="btn btn-lg btn-block btn-light lift text-uppercase">SUBMIT</div>
                 </div>
                 <div className="col-12 text-center mt-4">
                     <span className="text-muted"><Link to={process.env.PUBLIC_URL + '/sign-in'} className="text-secondary">Back to Sign in</Link></span>
                 </div>
+
             </form>
         </div>
     )
