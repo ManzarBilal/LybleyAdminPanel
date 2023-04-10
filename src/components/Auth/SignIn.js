@@ -20,6 +20,7 @@ function SignIn() {
         try {
             let response = await httpCommon.post("/brandLogin", obj);
             let { data } = response;
+            localStorage.setItem("user",JSON.stringify(data?.user));
             if (data?.user?.status === "ACTIVE") {
                 ToastMessage(data);
                 history.push(`${process.env.PUBLIC_URL + "/dashboard"}`)
