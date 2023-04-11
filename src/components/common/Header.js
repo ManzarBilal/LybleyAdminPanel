@@ -16,6 +16,13 @@ import { Onopenmodalsetting } from '../../Redux/Actions/Action';
 import { Link } from 'react-router-dom';
 
 function Header (props) {
+    const data=localStorage.getItem("user");
+    const  headerData=JSON.parse(data)
+
+    const handleSignout=()=>{
+        localStorage.removeItem("user")
+    }
+    //  console.log("headerData",headerData);
         return (
             <div className="header">
                 <nav className="navbar py-4">
@@ -131,8 +138,8 @@ function Header (props) {
                             </Dropdown>
                             <Dropdown className="dropdown user-profilem ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
                                 <div className="u-info me-2">
-                                    <p className="mb-0 text-end line-height-sm "><span className="font-weight-bold">John Quinn</span></p>
-                                    <small>Admin Profile</small>
+                                    <p className="mb-0 text-end line-height-sm "><span className="font-weight-bold">{headerData?.brandName}</span></p>
+                                    { headerData && headerData?.role==="ADMIN" ? <small> Admin Profile </small>: <small> Brand Profile </small>}
                                 </div>
                                 <Dropdown.Toggle as='a' className="nav-link dropdown-toggle pulse p-0 mb-3" href="#!" role="button">
                                     <img className="avatar lg rounded-circle img-thumbnail" src={Profile} alt="profile" />
@@ -143,8 +150,8 @@ function Header (props) {
                                             <div className="d-flex py-1">
                                                 <img className="avatar rounded-circle" src={Profile} alt="" />
                                                 <div className="flex-fill ms-3">
-                                                    <p className="mb-0"><span className="font-weight-bold">John	Quinn</span></p>
-                                                    <small>Johnquinn@gmail.com</small>
+                                                    <p className="mb-0"><span className="font-weight-bold"> {headerData?.brandName}</span></p>
+                                                    <small> {headerData?.email}</small>
                                                 </div>
                                             </div>
                                             <div><hr className="dropdown-divider border-dark " /></div>
@@ -152,7 +159,7 @@ function Header (props) {
                                         <div className="list-group m-2 ">
                                             <Link to={process.env.PUBLIC_URL+"/profile-pages"} className="list-group-item list-group-item-action border-0 "><i className="icofont-ui-user fs-5 me-3"></i>Profile Page</Link>
                                             <Link to={process.env.PUBLIC_URL+"/order-invoice"} className="list-group-item list-group-item-action border-0 "><i className="icofont-file-text fs-5 me-3"></i>Order Invoices</Link>
-                                            <Link to={process.env.PUBLIC_URL+"/sign-in"} className="list-group-item list-group-item-action border-0 "><i className="icofont-logout fs-5 me-3"></i>Signout</Link>
+                                            <Link to={process.env.PUBLIC_URL+"/sign-in"} onClick={handleSignout} className="list-group-item list-group-item-action border-0 "><i className="icofont-logout fs-5 me-3"></i>Signout</Link>
                                         </div>
                                     </div>
                                 </Dropdown.Menu>
