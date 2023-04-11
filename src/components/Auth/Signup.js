@@ -29,12 +29,12 @@ function Signup() {
         email: Yup.string()
             .required('Email is required')
             .email('Email is invalid'),
-            gstDocument: Yup.mixed().test("file", "You need to provide a file", (value) => {
-            if (value.length > 0) {
-                return true;
-            }
-            return false;
-        }),
+        // gstDocument: Yup.mixed().test("file", "You need to provide a file", (value) => {
+        //     if (value.length > 0) {
+        //         return true;
+        //     }
+        //     return false;
+        // }),
         password: Yup.string()
             .required('Password is required')
             .min(8, 'Password must be at least 8 characters')
@@ -54,20 +54,34 @@ function Signup() {
         resolver: yupResolver(validationSchema)
     });
     const handleFileChange = (e ) => {
-        if (e.target.files) {
-            console.log(e.target.files);
+        const reader=new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0])
+            if (e.target.name==="gstDocument")
+            {
+            // console.log(e.target.files[0]);
           setGstDocument(e.target.files[0]);
+            }
         }
       };
 
     const signUp = async (obj) => {
         try {
-            let body = { brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password,gstNo:obj.gstNo };
+            let body = { brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password,
+                // gstNo:obj.gstNo 
+            };
             const formData=new FormData()
             formData.append("gstDocument",gstDocument);
-            const fullData={...body ,gstDocument:formData}
-            console.log(fullData,"fullData");
-            let response = await httpCommon.post("/brandRegistration", fullData);
+            formData.append("gstNo",obj.gstNo);
+            formData.append("brandName",obj.name,)
+            formData.append("email",obj.email,)
+            formData.append("contact",+obj.contact,)
+            formData.append("password",obj.password,)
+            console.log(gstDocument,"gstDocument");
+
+            // const fullData={...body ,gstDocument:gstDocument}
+            // console.log(fullData,"fullData");
+            let response = await httpCommon.post("/brandRegistration", formData);
             let { data } = response;
             ToastMessage(data)
             if (data.status === true) {
@@ -80,8 +94,8 @@ function Signup() {
     }
     const onRegister = data => {
         console.log("data",gstDocument);
-        // signUp(data);
-        // dispatch(userEmail(data?.email))
+        signUp(data);
+        dispatch(userEmail(data?.email))
     }
 
     return (
@@ -147,13 +161,13 @@ function Signup() {
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Upload GST Document</label>
-                            <input type="file" onChange={(e)=>handleFileChange(e)} id="myfile" className="form-control" name="myfile"
+                            <input type="file" name="gstDocument" onChange={(e)=>handleFileChange(e)} id="myfile" className="form-control"  
                                 // {...register('gstDocument')}
 
                             />
-                            <div className='text-danger'>
+                            {/* <div className='text-danger'>
                                 {errors.gstDocument?.message}
-                            </div>
+                            </div> */}
 
                         </div>
                     </div>

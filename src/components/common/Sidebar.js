@@ -1,12 +1,13 @@
 import React, {useState } from "react";
 import { Link } from "react-router-dom";
 import { menu } from '../Data/Menu/menu.json';
+import {brand} from '../Data/Menu/brand.json';
 import { menu2 } from '../Data/Menu/menu2.json';
 
 function Sidebar(props) {
     const [isSidebarMini, setIsSidebarMini] = useState(false);
-    const [menuData, setMenuData] = useState([...menu]);
-
+   // const [menuData, setMenuData] = useState([...menu]);
+    const menuData=props?.user && props?.user?.role==="ADMIN" ? [...menu] : [...brand];
     const openChildren = (id) => {
         var otherTabs = document.getElementsByClassName("has-children")
         if (otherTabs) {
@@ -49,15 +50,24 @@ function Sidebar(props) {
             }
         }
     }
-    const GotoChangeMenu = (val) => {
-        if (val === "UI Components") {
-            props.history.push("ui-alerts");
-            setMenuData([...menu2]);
-        } else {
-            props.history.push("dashboard");
-            setMenuData([...menu]);
-        }
-    }
+    // const GotoChangeMenu = (val) => {
+    //     if (val === "UI Components") {
+    //         props.history.push("ui-alerts");
+    //         setMenuData([...menu2]);
+    //     } else {
+    //         props.history.push("dashboard");
+    //         setMenuData([...menu]);
+    //     }
+    // }
+    // const GotoChangeMenu = (val) => {
+    //     if (val === "ADMIN") {
+    //         props.history.push("dashboard");
+    //         setMenuData([...menu]);
+    //     } else {
+    //         props.history.push("brand");
+    //         setMenuData([...brand]);
+    //     }
+    // }
     const { activekey } = props;
 
     return (<div id="mainsidemenu" className={`sidebar px-4 py-4 py-md-4 me-0 ${isSidebarMini ? "sidebar-mini" : ""}`} style={{ overflow: 'scroll' }}>
@@ -66,14 +76,16 @@ function Sidebar(props) {
                 <span className="logo-icon">
                     <i className="bi bi-bag-check-fill fs-4"></i>
                 </span>
-                <span className="logo-text"  >eBazar</span>
+                <span className="logo-text"  >LY3LEY</span>
             </a>
             <ul className="menu-list flex-grow-1 mt-3">
                 {
                     menuData.map((d, i) => {
                         if (d.isToggled) {
                             return <li key={"shsdg" + i}>
-                                <a className={`m-link `} href="#!" onClick={(e) => { e.preventDefault(); GotoChangeMenu(d.name); }}>
+                                <a className={`m-link `} href="#!" onClick={(e) => { e.preventDefault(); 
+                                    // GotoChangeMenu(d.name);
+                                     }}>
                                     <i className={d.iconClass}></i>
                                     <span>{d.name}</span>
                                 </a>

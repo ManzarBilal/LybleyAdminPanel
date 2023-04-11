@@ -1,0 +1,33 @@
+{"brand":[
+    {
+        "name": "Brand",
+        "routerLink": [""],
+        "identifier": "Brand",
+        "iconClass": "icofont-funky-man fs-5",
+        "breadcrumbMessage": "",
+        "isCategory": false,
+        "isApp": true,
+        "children": [
+            {
+                "name": "Customers List",
+                "routerLink": ["brand"],
+                "identifier": "Brand List",
+                "iconClass": "",
+                "breadcrumbMessage": "",
+                "isCategory": false,
+                "isApp": false,
+                "children": []
+            },
+            {
+                "name": "Customers Detail",
+                "routerLink": ["brand-Detail"],
+                "identifier": "Brand Detail",
+                "iconClass": "",
+                "breadcrumbMessage": "",
+                "isCategory": false,
+                "isApp": false,
+                "children": []
+            }   
+        ]
+    }
+]}

@@ -1,21 +1,19 @@
 import React from 'react'
-import { Switch,Redirect } from 'react-router-dom';
-import AuthLeft from '../components/Auth/AuthLeft';
-import Page404 from '../components/Auth/Page404';
-const BrandIndex = () => {
+import { Switch,Redirect, Route } from 'react-router-dom';
+import BrandList from './Brand/BrandList';
+import Header from '../components/common/Header';
+const BrandIndex = (props) => {
+  const { activekey } = props;
     return (
-        <div className='main p-2 py-3 p-xl-5 '>
-          <div className='body d-flex p-0 p-xl-5'>
-            <div className='container-xxl'>
-              <div className='row g-0'>
-                <AuthLeft />
+      <div className='main px-lg-4 px-md-4' >
+      {activekey === "/chat" ? "" : <Header />}
+      <div className="body d-flex py-3 ">
                 <Switch>
-                  <Redirect from="/" to={process.env.PUBLIC_URL+"/page-404"} render={() => { return <Page404 /> }} />
+                  <Route exact path={process.env.PUBLIC_URL+"/brand"} render={() => { return <BrandList /> }} />
+                  <Redirect from="/" to={process.env.PUBLIC_URL+"/brand"} render={() => { return <BrandList /> }} />
                 </Switch>
-              </div>
-            </div>
-          </div>
-        </div>
+                </div>
+      </div>
   )
 }
 
