@@ -13,11 +13,11 @@ function ProfilePage() {
             <div className='col-xl-4 col-lg-5 col-md-12'>
 
                 <Profile />
-                <PaymentsMethod />
+                {/* <PaymentsMethod /> */}
             </div>
             <div className='col-xl-8 col-lg-7 col-md-12'>
                 <ProfileSetting />
-                <AuthenticationDetail />
+                {/* <AuthenticationDetail /> */}
             </div>
 
         </div>
