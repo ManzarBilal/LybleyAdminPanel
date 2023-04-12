@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
 
 
-function SignIn() {
+function SignIn(props) {
 
     const history = useHistory();
 
@@ -23,7 +23,7 @@ function SignIn() {
               data && data.user && localStorage.setItem("user",JSON.stringify(data?.user));
             if (data?.user?.status === "ACTIVE") {
                 ToastMessage(data);
-                history.push(`${process.env.PUBLIC_URL + "/dashboard"}`)
+                history.push(`${props?.url + "/dashboard"}`)
             }else if(data?.status===false){
                 ToastMessage(data);
             }
@@ -37,7 +37,7 @@ function SignIn() {
 
     const handleLogin = () => {
         login(brandData)
-            dispatch(userEmail(brandData?.email))
+        dispatch(userEmail(brandData?.email))
     }
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100 " >

@@ -66,75 +66,75 @@ function MainIndex (props) {
     const { activekey } = props;
     return (
       <div className='main px-lg-4 px-md-4' >
-        {activekey === "/chat" ? "" : <Header />}
+        {activekey === "/chat" ? "" : <Header url={props?.url} />}
         <div className="body d-flex py-3 ">
           <Switch>
-            {/* <Route exact path={process.env.PUBLIC_URL + "/ghj"} render={() => { return <Dashboard /> }} /> */}
-            <Route exact path={process.env.PUBLIC_URL + "/dashboard"} render={() => { return <Dashboard /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/product-grid'} render={() => { return <ProductGrid /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/product-list'} render={() => { return <ProductList /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/product-edit'} render={() => { return <ProductEdit /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/product-detail'} render={() => { return <ProductDetail /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/product-Add'} render={() => { return <ProductAdd /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/shopping-cart'} render={() => { return <ShoppingCart /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/check-out'} render={() => { return <CheckOut /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/categories-list'} render={() => { return <CategoriesList /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/categories-edit'} render={() => { return <CategoriesEdit /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/categories-add'} render={() => { return <CategoriesAdd /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/order-list'} render={() => { return <OrderList /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/order-detail'} render={() => { return <OrderDetail /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/customer-list'} render={() => { return <CustomerList /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/customer-detail'} render={() => { return <CustomerDetail /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/coupons-list'} render={() => { return <CouponsList /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/coupons-add'} render={() => { return <CouponsAdd /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/coupons-edit'} render={() => { return <CouponsEdit /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/stock-list'} render={() => { return <StockList /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/purchase'} render={() => { return <Purchase /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/supplier'} render={() => { return <Supplier /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/return'} render={() => { return <Return /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/departments'} render={() => { return <Departments /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/invoices'} render={() => { return <Invoices /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/simple-invoice'} render={() => { return <SimpleInvoice /> }} />
+            {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
+            <Route exact path={props?.url + "/dashboard"} render={() => { return <Dashboard /> }} />
+            <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid /> }} />
+            <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList /> }} />
+            <Route exact path={props?.url + '/product-edit'} render={() => { return <ProductEdit /> }} />
+            <Route exact path={props?.url + '/product-detail'} render={() => { return <ProductDetail /> }} />
+            <Route exact path={props?.url + '/product-Add'} render={() => { return <ProductAdd /> }} />
+            <Route exact path={props?.url + '/shopping-cart'} render={() => { return <ShoppingCart /> }} />
+            <Route exact path={props?.url + '/check-out'} render={() => { return <CheckOut /> }} />
+            <Route exact path={props?.url + '/categories-list'} render={() => { return <CategoriesList /> }} />
+            <Route exact path={props?.url + '/categories-edit'} render={() => { return <CategoriesEdit /> }} />
+            <Route exact path={props?.url + '/categories-add'} render={() => { return <CategoriesAdd /> }} />
+            <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList /> }} />
+            <Route exact path={props?.url + '/order-detail'} render={() => { return <OrderDetail /> }} />
+            <Route exact path={props?.url + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
+            <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList /> }} />
+            <Route exact path={props?.url + '/customer-detail'} render={() => { return <CustomerDetail /> }} />
+            <Route exact path={props?.url + '/coupons-list'} render={() => { return <CouponsList /> }} />
+            <Route exact path={props?.url + '/coupons-add'} render={() => { return <CouponsAdd /> }} />
+            <Route exact path={props?.url + '/coupons-edit'} render={() => { return <CouponsEdit /> }} />
+            <Route exact path={props?.url + '/stock-list'} render={() => { return <StockList /> }} />
+            <Route exact path={props?.url + '/purchase'} render={() => { return <Purchase /> }} />
+            <Route exact path={props?.url + '/supplier'} render={() => { return <Supplier /> }} />
+            <Route exact path={props?.url + '/return'} render={() => { return <Return /> }} />
+            <Route exact path={props?.url + '/departments'} render={() => { return <Departments /> }} />
+            <Route exact path={props?.url + '/invoices'} render={() => { return <Invoices /> }} />
+            <Route exact path={props?.url + '/simple-invoice'} render={() => { return <SimpleInvoice /> }} />
 
-            <Route exact path={process.env.PUBLIC_URL + '/expense'} render={() => { return <Expense /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/salaryslip'} render={() => { return <Salaryslip /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/chat'} render={() => { return <Chat /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/calendar'} render={() => { return <Calendar /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/store-location'} render={() => { return <StoreLocation /> }} />
+            <Route exact path={props?.url + '/expense'} render={() => { return <Expense /> }} />
+            <Route exact path={props?.url + '/salaryslip'} render={() => { return <Salaryslip /> }} />
+            <Route exact path={props?.url + '/chat'} render={() => { return <Chat /> }} />
+            <Route exact path={props?.url + '/calendar'} render={() => { return <Calendar /> }} />
+            <Route exact path={props?.url + '/store-location'} render={() => { return <StoreLocation /> }} />
 
-            <Route exact path={process.env.PUBLIC_URL + '/profile-pages'} render={() => { return <ProfilePage /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/price-plan'} render={() => { return <PricePlanExample /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/contact-us'} render={() => { return <ContactUs /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/icons'} render={() => { return <Icons /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/form-example'} render={() => { return <FormsExample /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/table-example'} render={() => { return <TableExample /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/charts-example'} render={() => { return <ChartsExample /> }} />
+            <Route exact path={props?.url + '/profile-pages'} render={() => { return <ProfilePage /> }} />
+            <Route exact path={props?.url + '/price-plan'} render={() => { return <PricePlanExample /> }} />
+            <Route exact path={props?.url + '/contact-us'} render={() => { return <ContactUs /> }} />
+            <Route exact path={props?.url + '/icons'} render={() => { return <Icons /> }} />
+            <Route exact path={props?.url + '/form-example'} render={() => { return <FormsExample /> }} />
+            <Route exact path={props?.url + '/table-example'} render={() => { return <TableExample /> }} />
+            <Route exact path={props?.url + '/charts-example'} render={() => { return <ChartsExample /> }} />
 
-            <Route exact path={process.env.PUBLIC_URL + '/ui-alerts'} render={() => { return <Alerts /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-badge'} render={() => { return <Badges /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-breadcrumb'} render={() => { return <Breadcrumb /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-buttons'} render={() => { return <Buttons /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-card'} render={() => { return <Cards /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-carousel'} render={() => { return <Carousel /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-collapse'} render={() => { return <Collapse /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-dropdowns'} render={() => { return <Dropdowns /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-listgroup'} render={() => { return <ListGroup /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-modalui'} render={() => { return <ModalUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-navbarui'} render={() => { return <NavbarUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-navsui'} render={() => { return <NavsUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-paginationui'} render={() => { return <PaginationUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-popoversui'} render={() => { return <PopoversUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-progressui'} render={() => { return <ProgressUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-Scrollspyui'} render={() => { return <Scrollspy /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-spinnersui'} render={() => { return <SpinnersUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/ui-toastsui'} render={() => { return <ToastsUI /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/stater-page'} render={() => { return <StaterPage /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/documentation'} render={() => { return <Documentation /> }} />
-            <Route exact path={process.env.PUBLIC_URL + '/changelog'} render={() => { return <Changelog /> }} />
+            <Route exact path={props?.url + '/ui-alerts'} render={() => { return <Alerts /> }} />
+            <Route exact path={props?.url + '/ui-badge'} render={() => { return <Badges /> }} />
+            <Route exact path={props?.url + '/ui-breadcrumb'} render={() => { return <Breadcrumb /> }} />
+            <Route exact path={props?.url + '/ui-buttons'} render={() => { return <Buttons /> }} />
+            <Route exact path={props?.url + '/ui-card'} render={() => { return <Cards /> }} />
+            <Route exact path={props?.url + '/ui-carousel'} render={() => { return <Carousel /> }} />
+            <Route exact path={props?.url + '/ui-collapse'} render={() => { return <Collapse /> }} />
+            <Route exact path={props?.url + '/ui-dropdowns'} render={() => { return <Dropdowns /> }} />
+            <Route exact path={props?.url + '/ui-listgroup'} render={() => { return <ListGroup /> }} />
+            <Route exact path={props?.url + '/ui-modalui'} render={() => { return <ModalUI /> }} />
+            <Route exact path={props?.url + '/ui-navbarui'} render={() => { return <NavbarUI /> }} />
+            <Route exact path={props?.url + '/ui-navsui'} render={() => { return <NavsUI /> }} />
+            <Route exact path={props?.url + '/ui-paginationui'} render={() => { return <PaginationUI /> }} />
+            <Route exact path={props?.url + '/ui-popoversui'} render={() => { return <PopoversUI /> }} />
+            <Route exact path={props?.url + '/ui-progressui'} render={() => { return <ProgressUI /> }} />
+            <Route exact path={props?.url + '/ui-Scrollspyui'} render={() => { return <Scrollspy /> }} />
+            <Route exact path={props?.url + '/ui-spinnersui'} render={() => { return <SpinnersUI /> }} />
+            <Route exact path={props?.url + '/ui-toastsui'} render={() => { return <ToastsUI /> }} />
+            <Route exact path={props?.url + '/stater-page'} render={() => { return <StaterPage /> }} />
+            <Route exact path={props?.url + '/documentation'} render={() => { return <Documentation /> }} />
+            <Route exact path={props?.url + '/changelog'} render={() => { return <Changelog /> }} />
 
-            <Route exact path={process.env.PUBLIC_URL + '/help'} render={() => { return <Help /> }} />
-            <Redirect from='/' to={process.env.PUBLIC_URL + '/sign-in'}/>
+            <Route exact path={props?.url + '/help'} render={() => { return <Help /> }} />
+            <Redirect from='/' to={props?.url+'/sign-in'}/>
           </Switch>
         </div>
       </div>
