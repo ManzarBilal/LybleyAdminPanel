@@ -63,10 +63,12 @@ import Help from './Help/Help';
 import SimpleInvoice from '../components/Accounts/Invoice/SimpleInvoice';
 
 function MainIndex (props) {
+    console.log("props",props);
     const { activekey } = props;
+    console.log("activekey",activekey);
     return (
       <div className='main px-lg-4 px-md-4' >
-        {activekey === "/chat" ? "" : <Header url={props?.url} />}
+         <Header url={props?.url} />
         <div className="body d-flex py-3 ">
           <Switch>
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
@@ -134,7 +136,8 @@ function MainIndex (props) {
             <Route exact path={props?.url + '/changelog'} render={() => { return <Changelog /> }} />
 
             <Route exact path={props?.url + '/help'} render={() => { return <Help /> }} />
-            <Redirect from='/' to={props?.url+'/sign-in'}/>
+            {/* <Redirect from='/' to={props?.url+'/dashboard'}/> */}
+            <Redirect from='/' to={'/user/page-404'}/>
           </Switch>
         </div>
       </div>

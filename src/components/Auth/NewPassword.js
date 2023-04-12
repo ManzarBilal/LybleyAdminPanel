@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { ToastMessage } from '../common/ToastMessage';
  
 
-function Newpassword() {
+function Newpassword(props) {
 const history=useHistory()
  const userEmail=useSelector(state=>state?.userEmail)
 
@@ -19,7 +19,7 @@ const history=useHistory()
             let { data } = response;
             ToastMessage(data)
             if(data?.status===true){
-                history.push(`${process.env.PUBLIC_URL + "/sign-in"}`)
+                history.push(`${props?.url + "/sign-in"}`)
             }
             else{
                 return null;
@@ -87,7 +87,7 @@ const history=useHistory()
                     <div   onClick={handleSubmit(handlePassword)} className="btn btn-lg btn-block btn-light lift text-uppercase">SUBMIT</div>
                 </div>
                 <div className="col-12 text-center mt-4">
-                    <span className="text-muted"><Link to={process.env.PUBLIC_URL + '/sign-in'} className="text-secondary">Back to Sign in</Link></span>
+                    <span className="text-muted"><Link to={props?.url + '/sign-in'} className="text-secondary">Back to Sign in</Link></span>
                 </div>
             </form>
         </div>

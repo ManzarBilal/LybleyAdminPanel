@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { ToastMessage } from '../common/ToastMessage';
 
 
-function Verification() {
+function Verification(props) {
 
     const history = useHistory();
 
@@ -21,7 +21,7 @@ function Verification() {
             let { data } = response;
             ToastMessage(data)
             if (data?.status === true) {
-                history.push(`${process.env.PUBLIC_URL + "/sign-in"}`)
+                history.push(`${props?.url + "/sign-in"}`)
             }
             else {
                 return null;

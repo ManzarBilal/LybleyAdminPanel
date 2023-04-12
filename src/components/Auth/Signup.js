@@ -8,7 +8,7 @@ import { ToastMessage } from '../common/ToastMessage';
 import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
 
-function Signup() {
+function Signup(props) {
 
     const [gstView, setGstView] = useState(false)
     const [gstDocument, setGstDocument] = useState("")
@@ -88,7 +88,7 @@ function Signup() {
             let { data } = response;
             ToastMessage(data)
             if (data.status === true) {
-                history.push(`${process.env.PUBLIC_URL + "/verification"}`)
+                history.push(`${  "/user/verification"}`)
             }
             else return null;
         } catch (err) {
@@ -232,7 +232,7 @@ function Signup() {
                         <div type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleSubmit(onRegister)} >SIGN UP</div>
                     </div>
                     <div className="col-12 text-center mt-3">
-                        <span>Already have an account? <Link to={process.env.PUBLIC_URL + '/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>
+                        <span>Already have an account? <Link to={'/user/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>
                     </div>
                 </form>
             </div>
