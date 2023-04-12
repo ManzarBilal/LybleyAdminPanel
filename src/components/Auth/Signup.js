@@ -69,10 +69,6 @@ function Signup(props) {
 
     const signUp = async (obj) => {
         try {
-            let body = {
-                brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password,
-                // gstNo:obj.gstNo 
-            };
             const formData = new FormData()
             formData.append("gstDocument", gstDocument);
             formData.append("gstNo", obj.gstNo);

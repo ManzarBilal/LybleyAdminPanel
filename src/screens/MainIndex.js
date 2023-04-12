@@ -63,9 +63,9 @@ import Help from './Help/Help';
 import SimpleInvoice from '../components/Accounts/Invoice/SimpleInvoice';
 
 function MainIndex (props) {
-    console.log("props",props);
-    const { activekey } = props;
-    console.log("activekey",activekey);
+  
+  //  const { activekey } = props;
+  
     return (
       <div className='main px-lg-4 px-md-4' >
          <Header url={props?.url} />

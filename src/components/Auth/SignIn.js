@@ -9,7 +9,6 @@ import { userEmail } from '../../Redux/Actions/userEmail';
 
 function SignIn(props) {
 
-    console.log(props,"props");
     const history = useHistory();
 
     const dispatch =useDispatch()
