@@ -72,7 +72,7 @@ function MainIndex (props) {
         <div className="body d-flex py-3 ">
           <Switch>
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
-            <Route exact path={props?.url + "/dashboard"} render={() => { return <Dashboard /> }} />
+            <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
             <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid /> }} />
             <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList /> }} />
             <Route exact path={props?.url + '/product-edit'} render={() => { return <ProductEdit /> }} />
@@ -137,7 +137,7 @@ function MainIndex (props) {
 
             <Route exact path={props?.url + '/help'} render={() => { return <Help /> }} />
             {/* <Redirect from='/' to={props?.url+'/dashboard'}/> */}
-            <Redirect from='/' to={'/user/page-404'}/>
+           {props?.url==="/admin" ? <Redirect from='/' to={props?.url+'/dashboard'}/> : <Redirect from='/' to={'/user/page-404'}/>}
           </Switch>
         </div>
       </div>
