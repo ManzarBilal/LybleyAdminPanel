@@ -7,14 +7,14 @@ import httpCommon from '../../http-common';
 import { ToastMessage } from '../common/ToastMessage';
 import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
- 
+
 function Signup() {
 
-
-    const [gstDocument,setGstDocument]=useState("")
+    const [gstView, setGstView] = useState(false)
+    const [gstDocument, setGstDocument] = useState("")
     const history = useHistory()
 
-    const dispatch=useDispatch()
+    const dispatch = useDispatch()
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(' Brand Name is required')
@@ -23,9 +23,12 @@ function Signup() {
             .required('Contact No. is required')
             .min(10, 'Contact No. must be at least 10 characters')
             .max(10, 'Contact No. must not exceed 10 characters'),
-            gstNo: Yup.string()
+        gstNo: Yup.string()
             .required('GST No. is required')
-            .min(5, 'GST No. must be at least 10 characters'),     
+            .min(10, 'GST No. must be at least 10 characters'),
+        address: Yup.string()
+            .required('address is required')
+            .min(10, 'address must be at least 10 characters'),
         email: Yup.string()
             .required('Email is required')
             .email('Email is invalid'),
@@ -53,31 +56,31 @@ function Signup() {
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
-    const handleFileChange = (e ) => {
-        const reader=new FileReader();
+    const handleFileChange = (e) => {
+        const reader = new FileReader();
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0])
-            if (e.target.name==="gstDocument")
-            {
-            // console.log(e.target.files[0]);
-          setGstDocument(e.target.files[0]);
+            if (e.target.name === "gstDocument") {
+                // console.log(e.target.files[0]);
+                setGstDocument(e.target.files[0]);
             }
         }
-      };
+    };
 
     const signUp = async (obj) => {
         try {
-            let body = { brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password,
+            let body = {
+                brandName: obj.name, email: obj.email, contact: +obj.contact, password: obj.password,
                 // gstNo:obj.gstNo 
             };
-            const formData=new FormData()
-            formData.append("gstDocument",gstDocument);
-            formData.append("gstNo",obj.gstNo);
-            formData.append("brandName",obj.name,)
-            formData.append("email",obj.email,)
-            formData.append("contact",+obj.contact,)
-            formData.append("password",obj.password,)
-            console.log(gstDocument,"gstDocument");
+            const formData = new FormData()
+            formData.append("gstDocument", gstDocument);
+            formData.append("gstNo", obj.gstNo);
+            formData.append("brandName", obj.name,)
+            formData.append("email", obj.email,)
+            formData.append("contact", +obj.contact,)
+            formData.append("password", obj.password,)
+            console.log(gstDocument, "gstDocument");
 
             // const fullData={...body ,gstDocument:gstDocument}
             // console.log(fullData,"fullData");
@@ -85,7 +88,7 @@ function Signup() {
             let { data } = response;
             ToastMessage(data)
             if (data.status === true) {
-                history.push(`${process.env.PUBLIC_URL+"/verification"}`)
+                history.push(`${process.env.PUBLIC_URL + "/verification"}`)
             }
             else return null;
         } catch (err) {
@@ -93,7 +96,8 @@ function Signup() {
         }
     }
     const onRegister = data => {
-        console.log("data",gstDocument);
+        // console.log("data", gstDocument);
+        setGstView(true)
         signUp(data);
         dispatch(userEmail(data?.email))
     }
@@ -161,15 +165,28 @@ function Signup() {
                     <div className="col-12">
                         <div className="mb-1">
                             <label className="form-label">Upload GST Document</label>
-                            <input type="file" name="gstDocument" onChange={(e)=>handleFileChange(e)} id="myfile" className="form-control"  
-                                // {...register('gstDocument')}
+                            <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            // {...register('gstDocument')}
 
                             />
-                            {/* <div className='text-danger'>
-                                {errors.gstDocument?.message}
-                            </div> */}
+                           { gstView &&  gstDocument==="" ?  <div className='text-danger'>
+                                Gst Document is required.
+                            </div> :""}
 
                         </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Address</label>
+                            <input type="text" className={(errors && errors.address) ? "form-control   border-danger " : "form-control "} placeholder="address"
+                                {...register('address')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.address?.message}
+                            </div>
+                        </div>
+
                     </div>
                     <div className="col-12">
                         <div className="mb-1">
