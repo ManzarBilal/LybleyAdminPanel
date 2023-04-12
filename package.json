@@ -1,8 +1,8 @@
 {
-  "name": "Ebazar",
+  "name": "LY3LEY",
   "version": "1.0.0",
   "private": true,
-  "homepage": "/template/ebazar/react/",
+
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^32.0.0",
     "@ckeditor/ckeditor5-react": "^3.0.3",
