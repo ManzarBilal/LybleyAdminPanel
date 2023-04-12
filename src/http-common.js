@@ -20,6 +20,9 @@ const post=(url,obj)=>{
  const deleteData=(url)=>{
     return axios.delete(baseUrl+url)
 }
-export default {
+
+const func={
    get ,post,patch,put,deleteData,
 }
+
+export default func;

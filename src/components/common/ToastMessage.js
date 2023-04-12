@@ -3,8 +3,6 @@ import toast from 'react-hot-toast';
 
 
   export  const ToastMessage = (props) => {
-
-    {
         props?.status === true ?
             toast.success(`${props?.msg}`,
                 {
@@ -17,7 +15,6 @@ import toast from 'react-hot-toast';
 
                 })
 
-    }
 
 }
  

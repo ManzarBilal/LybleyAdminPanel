@@ -2,11 +2,9 @@ import React, {useState } from "react";
 import { Link } from "react-router-dom";
 import { menu } from '../Data/Menu/menu.json';
 import {brand} from '../Data/Menu/brand.json';
-import { menu2 } from '../Data/Menu/menu2.json';
 
 function Sidebar(props) {
 
-    console.log("props",props)
     const [isSidebarMini, setIsSidebarMini] = useState(false);
    // const [menuData, setMenuData] = useState([...menu]);
     const menuData=props?.user && props?.user?.role==="ADMIN" ? [...menu] : [...brand];
