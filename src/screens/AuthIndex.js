@@ -8,7 +8,7 @@ import Verification from '../components/Auth/Verification';
 import Page404 from '../components/Auth/Page404';
 import Newpassword from '../components/Auth/NewPassword';
 
-function AuthIndex () {
+function AuthIndex (props) {
   
     return (
       <div className='main p-2 py-3 p-xl-5 '>
@@ -17,12 +17,12 @@ function AuthIndex () {
             <div className='row g-0'>
               <AuthLeft />
               <Switch>
-                <Route exact path={process.env.PUBLIC_URL+"/sign-in"} render={() => { return <SignIn /> }} />
-                <Route exact path={process.env.PUBLIC_URL+"/sign-up"} render={() => { return <Signup /> }} />
-                <Route exact path={process.env.PUBLIC_URL+"/new-password"} render={() => { return <Newpassword /> }} />
-                <Route exact path={process.env.PUBLIC_URL+"/reset-password"} render={() => { return <Resetpassword /> }} />
-                <Route exact path={process.env.PUBLIC_URL+"/verification"} render={() => { return <Verification /> }} />
-                <Route exact path={process.env.PUBLIC_URL+"/page-404"} render={() => { return <Page404 /> }} />
+                <Route exact path={props?.url+"/sign-in"} render={() => { return <SignIn url={props?.url} /> }} />
+                <Route exact path={props?.url+"/sign-up"} render={() => { return <Signup /> }} />
+                <Route exact path={props?.url+"/new-password"} render={() => { return <Newpassword /> }} />
+                <Route exact path={props?.url+"/reset-password"} render={() => { return <Resetpassword /> }} />
+                <Route exact path={props?.url+"/verification"} render={() => { return <Verification /> }} />
+                <Route exact path={props?.url+"/page-404"} render={() => { return <Page404 /> }} />
               </Switch>
             </div>
           </div>

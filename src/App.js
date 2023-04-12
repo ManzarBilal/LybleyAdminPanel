@@ -10,9 +10,13 @@ import BrandIndex from './screens/BrandIndex';
 function App(props) {
   let user1 = localStorage.getItem("user");
   let user = JSON.parse(user1);
+ // let user = 
+  let url=user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "/user";
   const activekey = () => {
     var res = window.location.pathname;
-    var baseUrl = process.env.PUBLIC_URL;
+  //  var res = user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "xyz";
+    var baseUrl = user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "/user";
+   // var baseUrl = process.env.PUBLIC_URL;
     baseUrl = baseUrl.split("/");
     res = res.split("/");
     res = res.length > 0 ? res[baseUrl.length] : "/";
@@ -25,7 +29,7 @@ function App(props) {
       <div id="ebazar-layout" className='theme-blue'>
         <Toaster />
         <Switch>
-          <AuthIndex />
+          <AuthIndex url={url} />
         </Switch>
       </div>
     );
@@ -37,7 +41,7 @@ function App(props) {
         <Sidebar user={user} activekey={activekey()} history={props.history} />
         <AddModal />
         <Switch>
-          <BrandIndex activekey={activekey()} />
+          <BrandIndex url={url} activekey={activekey()} />
         </Switch>
       </div>
     )
@@ -49,7 +53,7 @@ function App(props) {
         <Sidebar user={user} activekey={activekey()} history={props.history} />
         <AddModal />
         <Switch>
-          <MainIndex activekey={activekey()} />
+          <MainIndex url={url} activekey={activekey()} />
         </Switch>
       </div>
     )

@@ -13,14 +13,15 @@ import Avatar7 from '../../assets/images/xs/avatar7.svg';
 import Profile from '../../assets/images/profile_av.svg';
 import { connect } from 'react-redux';
 import { Onopenmodalsetting } from '../../Redux/Actions/Action';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 function Header (props) {
     const data=localStorage.getItem("user");
     const  headerData=JSON.parse(data)
-
+   const history=useHistory();
     const handleSignout=()=>{
         localStorage.removeItem("user")
+        history.push("/user/sign-in");
     }
     //  console.log("headerData",headerData);
         return (
@@ -159,7 +160,7 @@ function Header (props) {
                                         <div className="list-group m-2 ">
                                             <Link to={process.env.PUBLIC_URL+"/profile-pages"} className="list-group-item list-group-item-action border-0 "><i className="icofont-ui-user fs-5 me-3"></i>Profile Page</Link>
                                             <Link to={process.env.PUBLIC_URL+"/order-invoice"} className="list-group-item list-group-item-action border-0 "><i className="icofont-file-text fs-5 me-3"></i>Order Invoices</Link>
-                                            <Link to={process.env.PUBLIC_URL+"/sign-in"} onClick={handleSignout} className="list-group-item list-group-item-action border-0 "><i className="icofont-logout fs-5 me-3"></i>Signout</Link>
+                                            <div onClick={handleSignout} className="list-group-item list-group-item-action border-0 "><i className="icofont-logout fs-5 me-3"></i>Signout</div>
                                         </div>
                                     </div>
                                 </Dropdown.Menu>
