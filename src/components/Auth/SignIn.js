@@ -9,6 +9,7 @@ import { userEmail } from '../../Redux/Actions/userEmail';
 
 function SignIn(props) {
 
+    console.log(props,"props");
     const history = useHistory();
 
     const dispatch =useDispatch()
@@ -23,12 +24,16 @@ function SignIn(props) {
               data && data.user && localStorage.setItem("user",JSON.stringify(data?.user));
             if (data?.user?.status === "ACTIVE") {
                 ToastMessage(data);
-                history.push(`${props?.url + "/dashboard"}`)
+                if(data?.user?.role==="ADMIN"){
+                history.push("/admin/dashboard");
+                }else{
+                history.push("/brand/dashboard");
+                }
             }else if(data?.status===false){
                 ToastMessage(data);
             }
             else{
-                history.push(`${process.env.PUBLIC_URL+"/verification"}`)
+                history.push(`${props?.url+"/verification"}`)
             }
         } catch (err) {
             console.log(err);
@@ -48,7 +53,7 @@ function SignIn(props) {
                         {/* <span>Free access to our dashboard.</span> */}
                     </div>
                     <div className="col-12 text-center mb-4">
-                        <Link className="btn btn-lg btn-light btn-block" to={process.env.PUBLIC_URL + "/dashboard"}>
+                        <Link className="btn btn-lg btn-light btn-block" to={props?.url + "/dashboard"}>
                             <span className="d-flex justify-content-center align-items-center">
                                 <img className="avatar xs me-2" src={ImageSrc} alt="img Description" />
                                 Sign in with Google
@@ -67,7 +72,7 @@ function SignIn(props) {
                             <div className="form-label">
                                 <span className="d-flex justify-content-between align-items-center">
                                     Password
-                                    <Link className="text-secondary" to={process.env.PUBLIC_URL + "/reset-password"}>Forgot Password?</Link>
+                                    <Link className="text-secondary" to={ "/user/reset-password"}>Forgot Password?</Link>
                                 </span>
                             </div>
                             <input type="password" onChange={(e)=>setBrandData({...brandData,password:e.target.value})} className="form-control form-control-lg lift" placeholder="***************" />
@@ -85,7 +90,7 @@ function SignIn(props) {
                         <div type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleLogin}>SIGN IN</div>
                     </div>
                     <div className="col-12 text-center mt-4">
-                        <span>Don't have an account yet? <Link to={process.env.PUBLIC_URL + "/sign-up"} className="text-secondary">Sign up here</Link></span>
+                        <span>Don't have an account yet? <Link to={"/user/sign-up"} className="text-secondary">Sign up here</Link></span>
                     </div>
                 </form>
             </div>

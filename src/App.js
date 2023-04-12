@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, withRouter } from 'react-router-dom';
+import { Redirect, Switch, withRouter } from 'react-router-dom';
 import AddModal from './components/common/AddModal';
 import Sidebar from './components/common/Sidebar';
 import AuthIndex from "./screens/AuthIndex";
@@ -12,14 +12,15 @@ function App(props) {
   let user = JSON.parse(user1);
  // let user = 
   let url=user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "/user";
+  console.log(url,"url");
   const activekey = () => {
     var res = window.location.pathname;
-  //  var res = user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "xyz";
+  //  var res = url;
     var baseUrl = user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "/user";
    // var baseUrl = process.env.PUBLIC_URL;
-    baseUrl = baseUrl.split("/");
-    res = res.split("/");
-    res = res.length > 0 ? res[baseUrl.length] : "/";
+    baseUrl = baseUrl?.split("/");
+    res = res?.split("/");
+    res = res?.length > 0 ? res[baseUrl.length] : "/";
     res = res ? "/" + res : "/";
     const activeKey1 = res;
     return activeKey1
@@ -29,7 +30,7 @@ function App(props) {
       <div id="ebazar-layout" className='theme-blue'>
         <Toaster />
         <Switch>
-          <AuthIndex url={url} />
+          <AuthIndex user={user} url={url} />
         </Switch>
       </div>
     );
@@ -38,25 +39,30 @@ function App(props) {
     return (
       <div id="ebazar-layout" className='theme-blue'>
         <Toaster />
-        <Sidebar user={user} activekey={activekey()} history={props.history} />
+        <Sidebar url={"/brand"} user={user} activekey={activekey()} history={props.history} />
         <AddModal />
         <Switch>
-          <BrandIndex url={url} activekey={activekey()} />
+          <BrandIndex url={"/brand"} activekey={activekey()} />
         </Switch>
       </div>
     )
   }
-  else {
+  else if(user && user.role === "ADMIN"){
     return (
       <div id="ebazar-layout" className='theme-blue'>
         <Toaster />
-        <Sidebar user={user} activekey={activekey()} history={props.history} />
+        <Sidebar url={"/admin"} user={user} activekey={activekey()} history={props.history} />
         <AddModal />
         <Switch>
-          <MainIndex url={url} activekey={activekey()} />
+          <MainIndex url={"/admin"} activekey={activekey()} />
         </Switch>
       </div>
     )
+  }
+  else{
+    <Switch>
+      <Redirect from="/" to="/user/page-404" />
+    </Switch>
   }
 }
 export default withRouter(App);

@@ -133,7 +133,7 @@ const BrandIndex = (props) => {
             <Route exact path={props?.url + '/changelog'} render={() => { return <Changelog /> }} />
 
             <Route exact path={props?.url + '/help'} render={() => { return <Help /> }} />
-            <Redirect from='/' to={props?.url+'/sign-in'}/>
+            <Redirect from='/' to={'/user/page-404'}/>
           </Switch>
                 </div>
       </div>

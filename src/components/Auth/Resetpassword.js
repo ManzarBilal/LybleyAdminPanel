@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
 
 
-function Resetpassword() {
+function Resetpassword(props) {
 
     const history = useHistory()
    const dispatch=useDispatch()
@@ -34,7 +34,7 @@ function Resetpassword() {
             let { data } = response;
             ToastMessage(data)
             if (data?.status === true) {
-                history.push(`${process.env.PUBLIC_URL + "/new-password"}`)
+                history.push(`${props?.url + "/new-password"}`)
             }
             else {
                 return null;
@@ -79,7 +79,7 @@ function Resetpassword() {
                     <div onClick={handleSubmit} className="btn btn-lg btn-block btn-light lift text-uppercase">SUBMIT</div>
                 </div>
                 <div className="col-12 text-center mt-4">
-                    <span className="text-muted"><Link to={process.env.PUBLIC_URL + '/sign-in'} className="text-secondary">Back to Sign in</Link></span>
+                    <span className="text-muted"><Link to={props?.url + '/sign-in'} className="text-secondary">Back to Sign in</Link></span>
                 </div>
 
             </form>

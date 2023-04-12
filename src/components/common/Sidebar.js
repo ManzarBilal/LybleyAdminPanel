@@ -5,6 +5,8 @@ import {brand} from '../Data/Menu/brand.json';
 import { menu2 } from '../Data/Menu/menu2.json';
 
 function Sidebar(props) {
+
+    console.log("props",props)
     const [isSidebarMini, setIsSidebarMini] = useState(false);
    // const [menuData, setMenuData] = useState([...menu]);
     const menuData=props?.user && props?.user?.role==="ADMIN" ? [...menu] : [...brand];
@@ -93,7 +95,7 @@ function Sidebar(props) {
                         }
                         if (d.children.length === 0) {
                             return <li key={"dsfshsdg" + i} className=" collapsed">
-                                <Link to={process.env.PUBLIC_URL + "/" + d.routerLink[0]} className={`m-link ${(d.routerLink[0] === activekey) ? "active" : ""}`} >
+                                <Link to={props?.url + "/" + d.routerLink[0]} className={`m-link ${(d.routerLink[0] === activekey) ? "active" : ""}`} >
                                     <i className={d.iconClass}></i>
                                     <span>{d.name}</span>
                                     <span className="ms-auto text-end fs-5">
@@ -121,7 +123,7 @@ function Sidebar(props) {
 
                                             }
                                             return <li key={"jfdgj" + ind}>
-                                                <Link className={activekey === "/" + data.routerLink[0] ? "ms-link active" : "ms-link"} to={process.env.PUBLIC_URL + "/" + data.routerLink[0]}> <span>{data.name}</span></Link>
+                                                <Link className={activekey === "/" + data.routerLink[0] ? "ms-link active" : "ms-link"} to={props?.url + "/" + data.routerLink[0]}> <span>{data.name}</span></Link>
                                             </li>
                                         })}
                                     </ul>

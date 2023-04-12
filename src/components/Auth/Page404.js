@@ -2,7 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Notfound from '../../assets/images/not_found.svg';
 
-function Page404() {
+function Page404(props) {
+    let url=(props?.user && props?.user?.role==="ADMIN") ? "/admin/dashboard" : (props?.user && props?.user?.role==="BRAND") ? "/brand/dashboard" : "/user/sign-in";
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
             <div className="w-100 p-3 p-md-5 card border-0 shadow-sm" style={{ maxWidth: '32rem' }}>
@@ -13,7 +14,7 @@ function Page404() {
                         <span className="">Sorry, the page you're looking for doesn;t exist. if you think something is brlken, report a problem.</span>
                     </div>
                     <div className="col-12 text-center">
-                        <Link to={process.env.PUBLIC_URL + "/sign-in"} title="" className="btn btn-lg btn-block btn-light lift text-uppercase">Back to Home</Link>
+                        <Link to={url} title="" className="btn btn-lg btn-block btn-light lift text-uppercase">Back to Home</Link>
                     </div>
                 </form>
             </div>

@@ -17,12 +17,12 @@ function AuthIndex (props) {
             <div className='row g-0'>
               <AuthLeft />
               <Switch>
-                <Route exact path={props?.url+"/sign-in"} render={() => { return <SignIn url={props?.url} /> }} />
-                <Route exact path={props?.url+"/sign-up"} render={() => { return <Signup /> }} />
-                <Route exact path={props?.url+"/new-password"} render={() => { return <Newpassword /> }} />
-                <Route exact path={props?.url+"/reset-password"} render={() => { return <Resetpassword /> }} />
-                <Route exact path={props?.url+"/verification"} render={() => { return <Verification /> }} />
-                <Route exact path={props?.url+"/page-404"} render={() => { return <Page404 /> }} />
+                <Route exact path={"/user"+"/sign-in"} render={(props) => { return <SignIn url={props?.url} {...props} /> }} />
+                <Route exact path={"/user"+"/sign-up"} render={() => { return <Signup url={props?.url}/> }} />
+                <Route exact path={"/user"+"/new-password"} render={() => { return <Newpassword url={props?.url}/> }} />
+                <Route exact path={"/user"+"/reset-password"} render={() => { return <Resetpassword url={props?.url} /> }} />
+                <Route exact path={"/user"+"/verification"} render={() => { return <Verification url={props?.url}/> }} />
+                <Route exact path={"/user"+"/page-404"} render={() => { return <Page404 user={props?.user} /> }} />
               </Switch>
             </div>
           </div>
