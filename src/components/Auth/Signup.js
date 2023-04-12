@@ -169,10 +169,10 @@ function Signup(props) {
                             // {...register('gstDocument')}
 
                             />
-                           { gstView &&  gstDocument==="" ?  <div className='text-danger'>
+                         {gstView ?  <> {  gstDocument==="" ?  <div className='text-danger'>
                                 Gst Document is required.
                             </div> :""}
-
+                            </>:""}
                         </div>
                     </div>
                     <div className="col-12">
