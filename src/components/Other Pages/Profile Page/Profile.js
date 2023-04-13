@@ -1,16 +1,22 @@
 import React, { useState } from 'react';
 import Avatar4 from '../../../assets/images/lg/avatar4.svg'
 import { Modal } from 'react-bootstrap';
+import {ConfirmBox} from '../../common/ConfirmBox';
 
 const defaultBanner="https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
 function Profile(props) {
+    const [bool, setBool] = useState(false)
 
-    console.log(props);
+    // console.log(props);
+    const handleDelete=()=>{
+          setBool(true);
+    }
     const [ismodal, setIsmodal] = useState(false)
     return (
+        
         <div className="card profile-card flex-column mb-3">
             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
-                <h6 className="mb-0 fw-bold ">Profile</h6>
+                <h6 className="mb-0 fw-bold " onClick={handleDelete}>Profile</h6><ConfirmBox setBool={setBool} bool={bool}/>
             </div>
             <div className="card-body d-flex profile-fulldeatil flex-column">
                 <div className="profile-block text-center w220 mx-auto">
