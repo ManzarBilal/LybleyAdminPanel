@@ -1,85 +1,103 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
 import { ToastMessage } from '../../common/ToastMessage';
 import httpCommon from "../../../http-common";
 
-function ProfileSetting() {
-  const[user,setUser]=useState([])
-   
-
-    useEffect(()=>{
-     const userrId=localStorage.getItem("user")
-     const obj=JSON.parse(userrId)
-     setUser(obj)
-    },[])
-
+function ProfileSetting(props) {
+    const[userDetail,setUserDetail]=useState({});
     const [gstView, setGstView] = useState(false)
     const [file, setFile] = useState("")
     const history = useHistory()
 
-    const validationSchema = Yup.object().shape({
-        name: Yup.string().required(' Brand Name is required')
-            .min(4, "Brand Name must be at least 4 characters"),
-        contact: Yup.string()
-            .required('Contact No. is required')
-            .min(10, 'Contact No. must be at least 10 characters')
-            .max(10, 'Contact No. must not exceed 10 characters'),
-        gstNo: Yup.string()
-            .required('GST No. is required')
-            .min(10, 'GST No. must be at least 10 characters'),
-        address: Yup.string()
-            .required('address is required')
-            .min(10, 'address must be at least 10 characters'),
-        email: Yup.string()
-            .required('Email is required')
-            .email('Email is invalid'),
-    });
-
-
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-    } = useForm({
-        resolver: yupResolver(validationSchema)
-    });
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0])
-            if (e.target.name === "gstDocument") {
+            if (e.target.name === "file") {
                 // console.log(e.target.files[0]);
                 setFile(e.target.files[0]);
             }
         }
     };
-  
     
-    const UpdateProfile = async (obj) => {
-      const id=user?._id;
+    useEffect(()=>{
+        setUserDetail(props?.user);
+    },[])
 
+   
+
+    const updateProfile = async (userDetail) => {
+        const user=localStorage.getItem("user")
+        const obj=JSON.parse(user);
         try {
-            let response = await httpCommon.patch(`/updateBrandBy/${id}`, obj);
+            let response = await httpCommon.patch(`/updateBrandBy/${obj?._id}`, userDetail);
             let { data } = response;
+            let x = Math.random() * 10;
+            props.setRandomValue(x);
             ToastMessage(data)
-           
         } catch (err) {
             console.log(err);
         }
     }
-    const onUpdate = data => {
-        console.log("data", data);
-        let obj = { name: data?.name, email: data?.email, contact: data?.contact ,address:data?.address,gstNo:data.gstNo }
-        console.log("obj", obj);
-    
-        // UpdateProfile(obj);
-        // dispatch(userEmail(data?.email))
+
+    const handleSave=()=>{
+        let {brandName,email,contact,address,gstNo}=props?.user;
+        let obj={brandName:brandName,email:email,contact:contact,address:address,gstNo:gstNo};
+        updateProfile(obj);
+        
     }
 
-    console.log("user",user);
+    const uploadGstDocument=async()=>{
+        const user=localStorage.getItem("user")
+        const obj=JSON.parse(user);
+        const formData=new FormData();
+        formData.append("file",file);
+       try{
+        let response= await httpCommon.patch(`/updateBrandGstDocumentBy/${obj?._id}`,formData);
+        let { data } = response;
+        setFile("")
+        let x = Math.random() * 10;
+        props.setRandomValue(x);
+        ToastMessage(data);
+       }catch(err){
+        console.log(err);
+       }
+    }
+    const uploadBrandLogo=async()=>{
+        const user=localStorage.getItem("user")
+        const obj=JSON.parse(user);
+        const formData=new FormData();
+        formData.append("file",file);
+       try{
+        let response= await httpCommon.patch(`/updateBrandLogoBy/${obj?._id}`,formData);
+        let { data } = response;
+        setFile("")
+        let x = Math.random() * 10;
+        props.setRandomValue(x);
+        ToastMessage(data);
+       }catch(err){
+        console.log(err);
+       }
+    }
+    const uploadBrandBanner=async()=>{
+        const user=localStorage.getItem("user")
+        const obj=JSON.parse(user);
+        const formData=new FormData();
+        formData.append("file",file);
+       try{
+        let response= await httpCommon.patch(`/updateBrandBannerBy/${obj?._id}`,formData);
+        let { data } = response;
+        setFile("")
+        let x = Math.random() * 10;
+        props.setRandomValue(x);
+        ToastMessage(data);
+       }catch(err){
+        console.log(err);
+       }
+    }
+
+    let {brandName,email,contact,address,gstNo}=props?.user;
+
     return (
         <div className="card mb-3">
             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
@@ -92,13 +110,11 @@ function ProfileSetting() {
                     <div className="col-md-6 col-sm-12">
                         <div className="form-group">
                             <label className="form-label">Company Name <span className="text-danger">*</span></label>
-                            <input className={(errors && errors.name) ? "form-control   border-danger " : "form-control "} type="text" 
-                            defaultValue={user?.brandName}
-                             {...register('name')}
+                            <input className="form-control" type="text" name='brandName' value={brandName} onChange={(e)=>props?.onChange(e)}
 
                              />
                              <div className='text-danger'>
-                                 {errors.name?.message}
+                                 {/* {errors.name?.message} */}
                              </div>
                         </div>
                     </div>
@@ -106,24 +122,20 @@ function ProfileSetting() {
                     <div className="col-md-6 col-sm-12">
                         <div className="form-group">
                             <label className="form-label">Contact Number <span className="text-danger">*</span></label>
-                            <input className={(errors && errors.contact) ? "form-control   border-danger " : "form-control "}type="text" 
-                             defaultValue={user?.contact}
-                             {...register('contact')}
-
+                            <input className="form-control" type="text" name='contact' value={contact} onChange={props.onChange}
                              />
                              <div className='text-danger'>
-                                 {errors.contact?.message}
+                                 {/* {errors.contact?.message} */}
                              </div>
                         </div>
                     </div>
                     <div className="col-12">
                         <div className="form-group">
                             <label className="form-label">Address</label>
-                            <textarea className={(errors && errors.address) ? "form-control   border-danger " : "form-control "} aria-label="With textarea"
-                            defaultValue={user?.address}
-                            {...register('address')}></textarea>
+                            <textarea className="form-control" aria-label="With textarea" name='address' value={address} onChange={props.onChange}>
+                            </textarea>
                             <div className='text-danger'>
-                                {errors.address?.message}
+                                {/* {errors.address?.message} */}
                             </div>
                         </div>
                     </div>
@@ -131,38 +143,29 @@ function ProfileSetting() {
                         <label className="form-label">Email <span className="text-danger">*</span></label>
                         <div className="input-group">
                             <span className="input-group-text">@</span>
-                            <input type="text" className={(errors && errors.email) ? "form-control   border-danger " : "form-control "}
-                            defaultValue={user?.email}
-                           {...register('email')}
-
-                             />
+                            <input type="text" className="form-control" name='email' value={email} onChange={props.onChange} />
                             
                         </div>
                         <div className='text-danger'>
-                                 {errors.email?.message}
+                                 {/* {errors.email?.message} */}
                              </div>
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <div className="mb-1">
                             <label className="form-label">GST No.</label>
-                            <input type="text" className={(errors && errors.gstNo) ? "form-control   border-danger " : "form-control "} placeholder="GST No."
-                               
-                               defaultValue={user?.gstNo}
-                               {...register('gstNo')}
-
-                            />
+                            <input type="text" className="form-control" placeholder="GST No." name='gstNo' value={gstNo} onChange={props.onChange}></input>
                             <div className='text-danger'>
-                                {errors.gstNo?.message}
+                                {/* {errors.gstNo?.message} */}
                             </div>
                         </div>
                     </div>
                     <div className="col-12 mt-4">
-                        <button type="button" className="btn btn-primary text-uppercase px-5" onClick={handleSubmit(onUpdate)} >SAVE</button>
+                        <button type="button" className="btn btn-primary text-uppercase px-5" onClick={handleSave} >SAVE</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <div className="mb-1">
                             <label className="form-label">Upload GST Document</label>
-                            <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
 
                             />
@@ -170,12 +173,12 @@ function ProfileSetting() {
                         </div>
                     </div>
                     <div className="col-md-6 mt-5 pt-2 col-sm-12">
-                        <button type="button" className="btn btn-primary text-uppercase px-5"   >Upload</button>
+                        <button type="button" className="btn btn-primary text-uppercase px-5" onClick={uploadGstDocument}  >Upload</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <div className="mb-1">
                             <label className="form-label">Upload Brand Logo</label>
-                            <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
 
                             />
@@ -183,12 +186,12 @@ function ProfileSetting() {
                         </div>
                     </div>
                     <div className="col-md-6 mt-5 pt-2 col-sm-12">
-                        <button type="button" className="btn btn-primary text-uppercase px-5"   >Upload</button>
+                        <button type="button" className="btn btn-primary text-uppercase px-5"   onClick={uploadBrandLogo}>Upload</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <div className="mb-1">
                             <label className="form-label">Upload Brand Banner</label>
-                            <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
 
                             />
@@ -196,7 +199,7 @@ function ProfileSetting() {
                         </div>
                     </div>
                     <div className="col-md-6 mt-5 pt-2 col-sm-12">
-                        <button type="button" className="btn btn-primary text-uppercase px-5"   >Upload</button>
+                        <button type="button" className="btn btn-primary text-uppercase px-5"  onClick={uploadBrandBanner} >Upload</button>
                     </div>
 
                      
