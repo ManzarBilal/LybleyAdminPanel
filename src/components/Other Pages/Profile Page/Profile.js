@@ -30,42 +30,42 @@ function Profile(props) {
 
                         <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className="icofont-ui-touch-phone"></i>
+                                <i className="icofont-ui-touch-phone text-primary"></i>
                                 <span className="ms-2">{props?.user?.contact}</span>
                             </div>
                         </div>
                         <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className="icofont-email"></i>
+                                <i className="icofont-email text-primary"></i>
                                 <span className="ms-2">{props?.user?.email}</span>
                             </div>
                         </div>
                         <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className="icofont-address-book"></i>
+                                <i className="icofont-address-book text-primary"></i>
                                 <span className="ms-2">{props?.user?.address}</span>
                             </div>
                         </div>
                         <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className="icofont-license"></i>
+                                <i className="icofont-license text-primary"></i>
                                 <span className="ms-2">{props?.user?.gstNo}</span>
                             </div>
                         </div>
                         <div className="col-xl-12 mt-5 pt-5">
-                            <div className="d-flex align-items-center mt-2">GST Document :
+                            <div className="d-flex align-items-center mt-2 fw-bold">GST Document :
                            
                             </div>
-                            <div className='border' ><a target='_blank' href={props?.user?.gstDocument} >{props?.user?.gstDocument}</a></div>
+                            <div className='border' ><a className='text-primary 'rel="noopener noreferrer" href={props?.user?.gstDocument}  target='_blank'><u>{props?.user?.gstDocument}</u></a></div>
                         </div>
                         <div className="col-12 mt-3">
-                            <div className='pb-2' > Brand Logo</div>
+                            <div className='pb-2 fw-bold' > Brand Logo</div>
                             <div className="d-flex align-items-center">
                                 <img height="70" width="100%" alt='brandImage' src= {props?.user?.brandLogo?props?.user?.brandLogo: Avatar4} />
                             </div>
                         </div>
                         <div className="col-12 mt-3">
-                            <div className='pb-2'> Brand Banner</div>
+                            <div className='pb-2 fw-bold'> Brand Banner</div>
                             <div className="d-flex align-items-center">
                                 <img height="70" width="100%" alt='brandImage' src={props?.user?.brandBanner?props?.user?.brandBanner: defaultBanner } />
                             </div>

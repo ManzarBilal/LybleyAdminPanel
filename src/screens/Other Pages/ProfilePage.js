@@ -3,7 +3,7 @@ import Profile from '../../components/Other Pages/Profile Page/Profile';
 import ProfileSetting from '../../components/Other Pages/Profile Page/ProfileSetting'
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
-import { ToastMessage } from '../../components/common/ToastMessage';
+ 
 
 function ProfilePage() {
 

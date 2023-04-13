@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, {  useState } from 'react';
+ 
 import { ToastMessage } from '../../common/ToastMessage';
 import httpCommon from "../../../http-common";
 
 function ProfileSetting(props) {
-    const[userDetail,setUserDetail]=useState({});
-    const [gstView, setGstView] = useState(false)
+    // const[userDetail,setUserDetail]=useState({});
+   
     const [file, setFile] = useState("")
-    const history = useHistory()
+  
 
     const handleFileChange = (e) => {
         const reader = new FileReader();
@@ -20,9 +20,9 @@ function ProfileSetting(props) {
         }
     };
     
-    useEffect(()=>{
-        setUserDetail(props?.user);
-    },[])
+    // useEffect(()=>{
+    //    // setUserDetail(props?.user);
+    // },[props?.user])
 
    
 
@@ -163,7 +163,7 @@ function ProfileSetting(props) {
                         <button type="button" className="btn btn-primary text-uppercase px-5" onClick={handleSave} >SAVE</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
-                        <div className="mb-1">
+                        <div className="mt-3 mb-1">
                             <label className="form-label">Upload GST Document</label>
                             <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
@@ -172,11 +172,11 @@ function ProfileSetting(props) {
                             
                         </div>
                     </div>
-                    <div className="col-md-6 mt-5 pt-2 col-sm-12">
+                    <div className="col-md-6 mt-5 pt-3 col-sm-12">
                         <button type="button" className="btn btn-primary text-uppercase px-5" onClick={uploadGstDocument}  >Upload</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
-                        <div className="mb-1">
+                        <div className="mt-2 mb-1">
                             <label className="form-label">Upload Brand Logo</label>
                             <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
@@ -185,11 +185,11 @@ function ProfileSetting(props) {
                             
                         </div>
                     </div>
-                    <div className="col-md-6 mt-5 pt-2 col-sm-12">
+                    <div className="col-md-6 mt-5 pt-3 col-sm-12">
                         <button type="button" className="btn btn-primary text-uppercase px-5"   onClick={uploadBrandLogo}>Upload</button>
                     </div>
-                    <div className="col-md-6 col-sm-12">
-                        <div className="mb-1">
+                    <div className="col-md-6 col-sm-12 ">
+                        <div className="mt-2 mb-1">
                             <label className="form-label">Upload Brand Banner</label>
                             <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
@@ -198,7 +198,7 @@ function ProfileSetting(props) {
                             
                         </div>
                     </div>
-                    <div className="col-md-6 mt-5 pt-2 col-sm-12">
+                    <div className="col-md-6 mt-5 pt-3 col-sm-12">
                         <button type="button" className="btn btn-primary text-uppercase px-5"  onClick={uploadBrandBanner} >Upload</button>
                     </div>
 
