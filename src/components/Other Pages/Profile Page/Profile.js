@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ProfileData } from '../../Data/OtherPagesData';
 import Avatar4 from '../../../assets/images/lg/avatar4.svg'
 import { Modal } from 'react-bootstrap';
 
-function Profile() {
+function Profile(props) {
+
+    console.log(props);
     const [ismodal, setIsmodal] = useState(false)
     return (
         <div className="card profile-card flex-column mb-3">
@@ -21,20 +22,35 @@ function Profile() {
                     </div>
                 </div>
                 <div className="profile-info w-100">
-                    <h6 className="mb-0 mt-2  fw-bold d-block fs-6 text-center">Adrian	Allan</h6>
+                    <h6 className="mb-0 mt-2  fw-bold d-block fs-6 text-center"> {props?.user?.brandName}</h6>
                     <span className="py-1 fw-bold small-11 mb-0 mt-1 text-muted text-center mx-auto d-block">24 years, California</span>
                     <p className="mt-2">Duis felis ligula, pharetra at nisl sit amet, ullamcorper fringilla mi. Cras luctus metus non enim porttitor sagittis. Sed tristique scelerisque arcu id dignissim.</p>
                     <div className="row g-2 pt-2">
-                        {
-                            ProfileData.map((d, i) => {
-                                return <div key={'s' + i} className="col-xl-12">
-                                    <div className="d-flex align-items-center">
-                                        <i className={`${d.icon}`}></i>
-                                        <span className="ms-2">{d.detail} </span>
-                                    </div>
-                                </div>
-                            })
-                        }
+
+                         <div   className="col-xl-12">
+                            <div className="d-flex align-items-center">
+                                <i className= "icofont-ui-touch-phone"></i>
+                                <span className="ms-2">{props?.user?.contact}</span>
+                            </div>
+                        </div>
+                        <div   className="col-xl-12">
+                            <div className="d-flex align-items-center">
+                                <i className= "icofont-email"></i>
+                                <span className="ms-2">{props?.user?.email}</span>
+                            </div>
+                        </div>
+                        <div   className="col-xl-12">
+                            <div className="d-flex align-items-center">
+                                <i className= "icofont-address-book"></i>
+                                <span className="ms-2">{props?.user?.address}</span>
+                            </div>
+                        </div>
+                        <div   className="col-xl-12">
+                            <div className="d-flex align-items-center">
+                                <i className= "icofont-birthday-cake"></i>
+                                <span className="ms-2">{props?.user?.gstNo}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
