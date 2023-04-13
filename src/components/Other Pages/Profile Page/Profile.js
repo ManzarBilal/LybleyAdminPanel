@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Avatar4 from '../../../assets/images/lg/avatar4.svg'
 import { Modal } from 'react-bootstrap';
 
+const defaultBanner="https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
 function Profile(props) {
 
     console.log(props);
@@ -14,41 +15,59 @@ function Profile(props) {
             <div className="card-body d-flex profile-fulldeatil flex-column">
                 <div className="profile-block text-center w220 mx-auto">
                     <a href="#!">
-                        <img src={Avatar4} alt="" className="avatar xl rounded img-thumbnail shadow-sm" />
+                        <img src={props?.user?.brandLogo?props?.user?.brandLogo: Avatar4} alt="brandLogo" className="avatar xl rounded img-thumbnail shadow-sm" />
                     </a>
-                    <button className="btn btn-primary" onClick={() => { setIsmodal(true) }} style={{ position: 'absolute', top: '15px', right: '15px' }}><i className="icofont-edit"></i></button>
+                    {/* <button className="btn btn-primary" onClick={() => { setIsmodal(true) }} style={{ position: 'absolute', top: '15px', right: '15px' }}><i className="icofont-edit"></i></button> */}
                     <div className="about-info d-flex align-items-center mt-3 justify-content-center flex-column">
-                        <span className="text-muted small">Admin ID : PXL-0001</span>
+                        {/* <span className="text-muted small">Admin ID : PXL-0001</span> */}
                     </div>
                 </div>
                 <div className="profile-info w-100">
                     <h6 className="mb-0 mt-2  fw-bold d-block fs-6 text-center"> {props?.user?.brandName}</h6>
-                    <span className="py-1 fw-bold small-11 mb-0 mt-1 text-muted text-center mx-auto d-block">24 years, California</span>
-                    <p className="mt-2">Duis felis ligula, pharetra at nisl sit amet, ullamcorper fringilla mi. Cras luctus metus non enim porttitor sagittis. Sed tristique scelerisque arcu id dignissim.</p>
-                    <div className="row g-2 pt-2">
+                    {/* <span className="py-1 fw-bold small-11 mb-0 mt-1 text-muted text-center mx-auto d-block">24 years, California</span> */}
+                    {/* <p className="mt-2">Duis felis ligula, pharetra at nisl sit amet, ullamcorper fringilla mi. Cras luctus metus non enim porttitor sagittis. Sed tristique scelerisque arcu id dignissim.</p> */}
+                    <div className="row g-2 pt-3">
 
-                         <div   className="col-xl-12">
+                        <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className= "icofont-ui-touch-phone"></i>
+                                <i className="icofont-ui-touch-phone"></i>
                                 <span className="ms-2">{props?.user?.contact}</span>
                             </div>
                         </div>
-                        <div   className="col-xl-12">
+                        <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className= "icofont-email"></i>
+                                <i className="icofont-email"></i>
                                 <span className="ms-2">{props?.user?.email}</span>
                             </div>
                         </div>
-                        <div   className="col-xl-12">
+                        <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className= "icofont-address-book"></i>
+                                <i className="icofont-address-book"></i>
                                 <span className="ms-2">{props?.user?.address}</span>
                             </div>
                         </div>
-                        <div   className="col-xl-12">
+                        <div className="col-xl-12">
                             <div className="d-flex align-items-center">
-                                <i className= "icofont-birthday-cake"></i>
+                                <i className="icofont-license"></i>
                                 <span className="ms-2">{props?.user?.gstNo}</span>
+                            </div>
+                        </div>
+                        <div className="col-xl-12 mt-5 pt-5">
+                            <div className="d-flex align-items-center mt-2">GST Document :
+                           
+                            </div>
+                            <div className='border' ><a target='_blank' href={props?.user?.gstDocument} >{props?.user?.gstDocument}</a></div>
+                        </div>
+                        <div className="col-12 mt-3">
+                            <div className='pb-2' > Brand Logo</div>
+                            <div className="d-flex align-items-center">
+                                <img height="70" width="100%" alt='brandImage' src= {props?.user?.brandLogo?props?.user?.brandLogo: Avatar4} />
+                            </div>
+                        </div>
+                        <div className="col-12 mt-3">
+                            <div className='pb-2'> Brand Banner</div>
+                            <div className="d-flex align-items-center">
+                                <img height="70" width="100%" alt='brandImage' src={props?.user?.brandBanner?props?.user?.brandBanner: defaultBanner } />
                             </div>
                         </div>
                     </div>
