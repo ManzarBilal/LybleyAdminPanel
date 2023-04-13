@@ -73,6 +73,7 @@ function Signup(props) {
             formData.append("gstDocument", gstDocument);
             formData.append("gstNo", obj.gstNo);
             formData.append("brandName", obj.name,)
+            formData.append("address", obj.address,)
             formData.append("email", obj.email,)
             formData.append("contact", +obj.contact,)
             formData.append("password", obj.password,)
