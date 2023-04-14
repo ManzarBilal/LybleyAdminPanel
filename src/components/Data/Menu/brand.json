@@ -92,7 +92,28 @@
 
             ]
         },
-
+        {
+            "name": "Category",
+            "routerLink": [""],
+            "identifier": "Category",
+            "iconClass": "icofont-chart-flow fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                {
+                    "name": "Category List",
+                    "routerLink": ["category-list"],
+                    "identifier": "Category List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                  
+            ]
+        },
         {
             "name": "Categories",
             "routerLink": [""],
