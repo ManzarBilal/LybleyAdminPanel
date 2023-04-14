@@ -41,8 +41,8 @@ function ProfileSetting(props) {
     }
 
     const handleSave=()=>{
-        let {brandName,email,contact,address,gstNo}=props?.user;
-        let obj={brandName:brandName,email:email,contact:contact,address:address,gstNo:gstNo};
+        let {brandName,email,contact,address,aboutUs,gstNo}=props?.user;
+        let obj={brandName:brandName,email:email,contact:contact,address:address,aboutUs:aboutUs,gstNo:gstNo};
         updateProfile(obj);
         
     }
@@ -96,7 +96,7 @@ function ProfileSetting(props) {
        }
     }
 
-    let {brandName,email,contact,address,gstNo}=props?.user;
+    let {brandName,email,contact,address,aboutUs,gstNo}=props?.user;
 
     return (
         <div className="card mb-3">
@@ -129,16 +129,6 @@ function ProfileSetting(props) {
                              </div>
                         </div>
                     </div>
-                    <div className="col-12">
-                        <div className="form-group">
-                            <label className="form-label">Address</label>
-                            <textarea className="form-control" aria-label="With textarea" name='address' value={address} onChange={props.onChange}>
-                            </textarea>
-                            <div className='text-danger'>
-                                {/* {errors.address?.message} */}
-                            </div>
-                        </div>
-                    </div>
                     <div className="col-md-6 col-sm-12">
                         <label className="form-label">Email <span className="text-danger">*</span></label>
                         <div className="input-group">
@@ -156,6 +146,26 @@ function ProfileSetting(props) {
                             <input type="text" className="form-control" placeholder="GST No." name='gstNo' value={gstNo} onChange={props.onChange}></input>
                             <div className='text-danger'>
                                 {/* {errors.gstNo?.message} */}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="form-group">
+                            <label className="form-label">Address</label>
+                            <textarea className="form-control" aria-label="With textarea" name='address' value={address} onChange={props.onChange}>
+                            </textarea>
+                            <div className='text-danger'>
+                                {/* {errors.address?.message} */}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="form-group">
+                            <label className="form-label">About Us</label>
+                            <textarea className="form-control" aria-label="With textarea" name='aboutUs' value={aboutUs} onChange={props.onChange}>
+                            </textarea>
+                            <div className='text-danger'>
+                                {/* {errors.address?.message} */}
                             </div>
                         </div>
                     </div>

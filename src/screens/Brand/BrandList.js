@@ -3,6 +3,8 @@ import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
+import { ConfirmBox } from '../../components/common/ConfirmBox';
+import { ToastMessage } from '../../components/common/ToastMessage';
 import Avatar4 from "../../assets/images/lg/avatar4.svg";
 const defaultBanner = "https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
 function BrandList() {
@@ -11,6 +13,8 @@ function BrandList() {
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
     const [randomValue, setRandomValue] = useState("");
+    const [confirmBoxView,setConfirmBoxView]=useState(false);
+    const [brandId,setBrandId]=useState("");
     const columns = () => {
         return [
             {
@@ -50,8 +54,8 @@ function BrandList() {
                 selector: (row) => row?.status,
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {row?.approval === "APPROVED" ? <button type="button" className="btn btn-success">Approve</button>
-                        : <button type="button" className="btn btn-danger">Disapprove</button>}
+                    {row?.approval === "DISAPPROVED" ? <button type="button" className="btn text-white btn-success" onClick={()=>approval(row?._id,"APPROVED")}>Approve</button>
+                        : <button type="button" className="btn text-white btn-danger" onClick={()=>approval(row?._id,"DISAPPROVED")} >Disapprove</button>}
 
                 </div>
             },
@@ -60,8 +64,8 @@ function BrandList() {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    <button onClick={() => { setIseditmodal(true) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
-                    <button type="button" onClick={() => { onDeleteRow(row) }} className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
+                    {/* <button onClick={() => { setIseditmodal(true) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button> */}
+                    <button type="button" onClick={() => { handleBrand(row?._id) }} className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
             }
         ]
@@ -74,6 +78,7 @@ function BrandList() {
     }
     useEffect(() => {
         GetAllBrands()
+        console.log(randomValue);
     }, [randomValue])
     const GetAllBrands = async () => {
         try {
@@ -85,6 +90,34 @@ function BrandList() {
             console.log(err)
         }
     }
+     const approval=async (_id,body)=>{
+        try{
+            let response= await httpCommon.patch(`/brandApproval/${_id}`,{approval:body});
+            let {data}=response;
+            let x = Math.random() * 5;
+            setRandomValue(x);
+            ToastMessage(data); 
+        }catch(err){
+            console.log(err);
+        }
+     }
+
+     const deleteBrand=async ()=>{
+          try{
+            let response=await httpCommon.deleteData(`/deleteBrandBy/${brandId}`);
+            let {data}=response;
+            setConfirmBoxView(false);
+            let x = Math.random() * 5;
+            setRandomValue(x);
+            ToastMessage(data); 
+          }catch(err){
+            console.log(err);
+          }
+     }
+   const handleBrand=(id)=>{
+       setBrandId(id)
+       setConfirmBoxView(true);
+   }
    
     const handleViewDetail = (id) => {
         const findData=table_row.find(obj=>{
@@ -97,6 +130,7 @@ function BrandList() {
     // console.log(table_row)
     // console.log("viewDetail",viewDetail)
     return (
+        <>
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
                 <PageHeader1 pagetitle='Brand Information' modalbutton={() => {
@@ -255,7 +289,10 @@ function BrandList() {
                 </Modal.Footer>
 
             </Modal>
+            
         </div>
+        <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteBrand}/>
+        </>
     )
 }
 export default BrandList;

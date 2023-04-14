@@ -58,6 +58,12 @@ function Profile(props) {
                                 <span className="ms-2">{props?.user?.gstNo}</span>
                             </div>
                         </div>
+                        <div className="col-xl-12">
+                            <div className="d-flex align-items-center">
+                                <i className="icofont-license text-primary"></i>
+                                <span className="ms-2">{props?.user?.aboutUs}</span>
+                            </div>
+                        </div>
                         <div className="col-xl-12 mt-5 pt-5">
                             <div className="d-flex align-items-center mt-2 fw-bold">GST Document :
                            

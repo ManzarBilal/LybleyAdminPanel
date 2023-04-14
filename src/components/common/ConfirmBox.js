@@ -5,25 +5,27 @@ import httpCommon from "../../http-common"
 
 export function ConfirmBox(props) {
 
-    const handleDelete = async (id) => {
-        try {
-            let response = await httpCommon.patch(`/deleteBrand/${id}`);
-            let { data } = response;
-            let x = Math.random() * 10;
-            props.setRandomValue(x);
-            props?.setBool(false)
-            ToastMessage(data)
-        } catch (err) {
-            console.log(err);
-        }
+    // const handleDelete = async (id) => {
+    //     try {
+    //         let response = await httpCommon.patch(`/deleteBrand/${id}`);
+    //         let { data } = response;
+    //         let x = Math.random() * 10;
+    //         props.setRandomValue(x);
+    //         props?.setBool(false)
+    //         ToastMessage(data)
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
 
-    }
-
+    // }
+ const handleDelete=()=>{
+      props.onSubmit();
+ }
     return (
         <>
             <Modal
                 show={props?.bool}
-                onClick={() => props?.setBool(false)}
+                onClick={() => props?.setConfirmBoxView(false)}
                 size="md"
                 aria-labelledby="contained-modal-title-vcenter"
                 centered
@@ -46,8 +48,8 @@ export function ConfirmBox(props) {
                     <p className='text-center' >Are you sure to proceed?</p>
                 </Modal.Body>
                 <Modal.Footer className='d-flex justify-content-between'>
-                    <button className='btn btn-primary' onClick={() => handleDelete}>Cancel</button>
-                    <button className='btn btn-danger text-white' onClick={() => props?.setBool(false)}>Yes, delete it!</button>
+                    <button className='btn btn-primary' onClick={() => props?.setConfirmBoxView(false)}>Cancel</button>
+                    <button className='btn btn-danger text-white' onClick={() =>props?.onSubmit()}>Yes, delete it!</button>
 
                 </Modal.Footer>
             </Modal>
