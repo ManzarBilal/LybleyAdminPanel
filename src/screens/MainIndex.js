@@ -61,6 +61,7 @@ import CategoriesAdd from './Categories/CategoriesAdd';
 import StoreLocation from './StoreLocation/Storelocation';
 import Help from './Help/Help';
 import SimpleInvoice from '../components/Accounts/Invoice/SimpleInvoice';
+import BrandList from './Brand/BrandList';
 
 function MainIndex (props) {
   
@@ -73,6 +74,7 @@ function MainIndex (props) {
           <Switch>
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
             <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
+            <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList /> }} />
             <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid /> }} />
             <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList /> }} />
             <Route exact path={props?.url + '/product-edit'} render={() => { return <ProductEdit /> }} />

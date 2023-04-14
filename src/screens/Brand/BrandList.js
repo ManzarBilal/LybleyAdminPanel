@@ -1,52 +1,59 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { CustomerData } from '../../components/Data/CustomerData';
+import httpCommon from "../../http-common";
 
 function BrandList() {
-    const [table_row, setTable_row] = useState([...CustomerData.rows]);
+    const [table_row, setTable_row] = useState([]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
+    const [randomValue, setRandomValue] = useState("");
     const columns = () => {
         return [
             {
-                name: " ID",
-                selector: (row) => row.id,
+                name: " SR. NO.",
+                selector: (row) => row?._id,
                 sortable: true,
             },
             {
-                name: "CUSTOMER",
-                selector: (row) => row.name,
-                cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> <span className="px-2"><Link to={process.env.PUBLIC_URL + '/customer-detail'}>{row.name}</Link></span></>,
+                name: "BRAND",
+                selector: (row) => row?.brandName,
+                cell: row => <><img className="avatar rounded lg border" src={row?.brandLogo} alt="" /> <span className="px-2"><Link to={process.env.PUBLIC_URL + '/customer-detail'}>{row.brandName}</Link></span></>,
                 sortable: true, minWidth: "200px"
             },
             {
                 name: "REGISTER DATE",
-                selector: (row) => row.date,
+                selector: (row) => new Date(row?.createdAt).toDateString(),
                 sortable: true,
 
             },
             {
                 name: "MAIL",
-                selector: (row) => row.mail,
+                selector: (row) => row?.email,
                 sortable: true
             },
             {
                 name: "PHONE",
-                selector: (row) => row.phone,
+                selector: (row) => row?.contact,
                 sortable: true
             },
             {
-                name: "COUNTRY",
-                selector: (row) => row.country,
+                name: "ADDRESS",
+                selector: (row) => row?.address,
                 sortable: true,
             },
             {
-                name: "TOTAL ORDER",
-                selector: (row) => row.order,
+                name: "STATUS",
+                selector: (row) => row?.status,
                 sortable: true,
+                cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
+                    {row?.approval === "APPROVED" ? <button type="button" className="btn btn-success">Approve</button>
+                        : <button type="button" className="btn btn-danger">Disapprove</button>}
+
+                </div>
             },
             {
                 name: "ACTION",
@@ -60,11 +67,26 @@ function BrandList() {
         ]
     }
     async function onDeleteRow(row) {
-       //eslint-disable-next-line
-        var result = await table_row.filter((d) => {  if (d !== row) { return d } });
-        
+        //eslint-disable-next-line
+        var result = await table_row.filter((d) => { if (d !== row) { return d } });
+
         setTable_row([...result])
     }
+    useEffect(() => {
+        GetAllBrands()
+    }, [randomValue])
+    const GetAllBrands = async () => {
+        try {
+            let response = await httpCommon.get("/getAllBrands")
+            let { data } = response
+            console.log("data", data);
+            setTable_row(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+    console.log(table_row)
 
     return (
         <div className="body d-flex py-lg-3 py-md-2">
