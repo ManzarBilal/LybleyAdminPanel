@@ -1,26 +1,10 @@
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { ToastMessage } from './ToastMessage';
-import httpCommon from "../../http-common"
+ 
 
 export function ConfirmBox(props) {
 
-    // const handleDelete = async (id) => {
-    //     try {
-    //         let response = await httpCommon.patch(`/deleteBrand/${id}`);
-    //         let { data } = response;
-    //         let x = Math.random() * 10;
-    //         props.setRandomValue(x);
-    //         props?.setBool(false)
-    //         ToastMessage(data)
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-
-    // }
- const handleDelete=()=>{
-      props.onSubmit();
- }
+    
     return (
         <>
             <Modal
