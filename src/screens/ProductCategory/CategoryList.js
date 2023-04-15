@@ -46,8 +46,23 @@ function CategoryList() {
             }
         ]
     }
-   
-    
+
+    useEffect(() => {
+        GetAllCategory()
+    }, [randomValue])
+    const GetAllCategory = async () => {
+        try {
+            let user=localStorage.getItem("user"); 
+            const id=user?._id;
+            let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
+            let { data } = response
+            setTable_row(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+ 
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
@@ -57,7 +72,7 @@ function CategoryList() {
             }
         }
     };
-    
+
     const edit=()=>{
         setIseditmodal(true);
         
