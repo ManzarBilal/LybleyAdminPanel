@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import PageHeader1 from '../../components/common/PageHeader1';
-import { CustomerData } from '../../components/Data/CustomerData';
 
 function CategoryList() {
-    const [table_row, setTable_row] = useState([...CustomerData.rows]);
+    const [table_row, setTable_row] = useState([]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
+    const [randomValue, setRandomValue] = useState("");
     const columns = () => {
         return [
             {
@@ -18,18 +18,17 @@ function CategoryList() {
             },
             {
                 name: "CATEGORY NAME",
-                selector: (row) => row.name,
+                selector: (row) => row?.categoryName,
                 sortable: true, minWidth: "200px"
             }, 
             {
                 name: "CATEGORY IMAGE",
-                selector: (row) => row.name,
-                cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> </>, 
+                cell: row => <><img className="avatar rounded lg border" src={row?.categoryImage} alt="" /> </>, 
                 sortable: true, minWidth: "200px"
             }, 
             {
                 name: "STATUS",
-                selector: (row) => row.order,
+                selector: (row) => row?.status,
                 sortable: true,
             },
             {
@@ -49,7 +48,23 @@ function CategoryList() {
         
         setTable_row([...result])
     }
-
+    useEffect(() => {
+        GetAllCategory()
+    }, [randomValue])
+    const GetAllCategory = async () => {
+        let userId =localStorage.getItem('user')
+        let id=userId?.user?._id
+        try {
+            let response = await httpCommon.get(`/getProductCategoryBy/:${id}`)
+            let { data } = response
+            setTable_row(data)
+            let x =Math.random() * 5;
+            setRandomValue(x)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -136,7 +151,7 @@ function CategoryList() {
                 </div>
 
             </Modal>
-            <Modal className="modal fade show" id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+            <Modal   show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Customers</h5>
                 </Modal.Header>
