@@ -62,7 +62,7 @@ function CategoryList() {
             console.log(err)
         }
     }
-     console.log("table_row",table_row);
+ 
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
@@ -72,7 +72,7 @@ function CategoryList() {
             }
         }
     };
-    
+
     const edit=()=>{
         setIseditmodal(true);
         
