@@ -57,6 +57,7 @@ function CategoryList() {
             }
         }
     };
+    
     const edit=()=>{
         setIseditmodal(true);
         
