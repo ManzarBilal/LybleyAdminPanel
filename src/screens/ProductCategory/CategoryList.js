@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
-import { CustomerData } from '../../components/Data/CustomerData';
 import httpCommon from "../../http-common";
 import {ToastMessage} from "../../components/common/ToastMessage";
 
 function CategoryList() {
-    const [table_row, setTable_row] = useState([...CustomerData.rows]);
+    const [table_row, setTable_row] = useState([]);
+    const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
     const [categoryName,setCategoryName]=useState("");
@@ -17,23 +17,22 @@ function CategoryList() {
         return [
             {
                 name: " ID",
-                selector: (row) => row.id,
+                selector: (row) => row?._id,
                 sortable: true,
             },
             {
                 name: "CATEGORY NAME",
-                selector: (row) => row.name,
+                selector: (row) => row?.categoryName,
                 sortable: true, minWidth: "200px"
             }, 
             {
                 name: "CATEGORY IMAGE",
-                selector: (row) => row.name,
-                cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> </>, 
+                cell: row => <><img className="avatar rounded lg border" src={row?.categoryImage} alt="" /> </>, 
                 sortable: true, minWidth: "200px"
             }, 
             {
                 name: "STATUS",
-                selector: (row) => row.order,
+                selector: (row) => row?.status,
                 sortable: true,
             },
             {
@@ -47,19 +46,28 @@ function CategoryList() {
             }
         ]
     }
-    // async function onDeleteRow(row) {
-    //    //eslint-disable-next-line
-    //     var result = await table_row.filter((d) => {  if (d !== row) { return d } });
-        
-    //     setTable_row([...result])
-    // }
-    
+
+    useEffect(() => {
+        GetAllCategory()
+    }, [randomValue])
+    const GetAllCategory = async () => {
+        try {
+            let user=localStorage.getItem("user"); 
+            const id=user?._id;
+            let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
+            let { data } = response
+            setTable_row(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+     console.log("table_row",table_row);
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0])
             if (e.target.name === "file") {
-                // console.log(e.target.files[0]);
                 setCategoryImage(e.target.files[0]);
             }
         }
