@@ -61,7 +61,7 @@ import CategoriesAdd from './Categories/CategoriesAdd';
 import StoreLocation from './StoreLocation/Storelocation';
 import Help from './Help/Help';
 import SimpleInvoice from '../components/Accounts/Invoice/SimpleInvoice';
-import CategoryList from './ProductCategory/CateoryList';
+import CategoryList from './ProductCategory/CategoryList';
 const BrandIndex = (props) => {
   const { activekey } = props;
     return (
