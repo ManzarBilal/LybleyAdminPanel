@@ -3,15 +3,15 @@ import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
-import {ToastMessage} from "../../components/common/ToastMessage";
+import { ToastMessage } from "../../components/common/ToastMessage";
 
 function CategoryList() {
     const [table_row, setTable_row] = useState([]);
     const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
-    const [categoryName,setCategoryName]=useState("");
-    const [categoryImage,setCategoryImage]=useState("");
+    const [categoryName, setCategoryName] = useState("");
+    const [categoryImage, setCategoryImage] = useState("");
 
     const columns = () => {
         return [
@@ -24,15 +24,20 @@ function CategoryList() {
                 name: "CATEGORY NAME",
                 selector: (row) => row?.categoryName,
                 sortable: true, minWidth: "200px"
-            }, 
+            },
             {
                 name: "CATEGORY IMAGE",
-                cell: row => <><img className="avatar rounded lg border" src={row?.categoryImage} alt="" /> </>, 
+                cell: row => <><img className="avatar rounded lg border" src={row?.categoryImage} alt="" /> </>,
                 sortable: true, minWidth: "200px"
-            }, 
+            },
             {
                 name: "STATUS",
                 selector: (row) => row?.status,
+                cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
+                    {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "ACTIVE")}>ACTIVE</button>
+                        : <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "INACTIVE")} >INACTIVE</button>}
+
+                </div>,
                 sortable: true,
             },
             {
@@ -52,8 +57,8 @@ function CategoryList() {
     }, [randomValue])
     const GetAllCategory = async () => {
         try {
-            let user=localStorage.getItem("user"); 
-            const id=user?._id;
+            let user = localStorage.getItem("user");
+            const id = user?._id;
             let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
             let { data } = response
             setTable_row(data)
@@ -62,7 +67,7 @@ function CategoryList() {
             console.log(err)
         }
     }
- 
+
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
@@ -72,23 +77,34 @@ function CategoryList() {
             }
         }
     };
-
-    const edit=()=>{
-        setIseditmodal(true);
-        
+    const approval = async (_id, body) => {
+        try {
+            let response = await httpCommon.patch(`/updateProductCategoryBy/${_id}`, { status: body });
+            let { data } = response;
+            let x = Math.random() * 5;
+            setRandomValue(x);
+            ToastMessage(data);
+        } catch (err) {
+            console.log(err);
+        }
     }
-    const addCategory=async ()=>{
-        try{
-            let user=localStorage.getItem("user"); 
+
+    const edit = () => {
+        setIseditmodal(true);
+
+    }
+    const addCategory = async () => {
+        try {
+            let user = localStorage.getItem("user");
             const formData = new FormData();
-            formData.append("userId",user?._id);
-            formData.append("categoryName",categoryName);
-            formData.append("categoryImage",categoryImage);
-            let response=await httpCommon.post("/addProductCategory",formData);
-            let {data}=response;
+            formData.append("userId", user?._id);
+            formData.append("categoryName", categoryName);
+            formData.append("categoryImage", categoryImage);
+            let response = await httpCommon.post("/addProductCategory", formData);
+            let { data } = response;
             setIsmodal(false)
             ToastMessage(data);
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
     }
@@ -143,7 +159,7 @@ function CategoryList() {
                                     <input type="file" className="form-control" id="taxtno1" onChange={() => { }} />
                                 </div>
                             </div>
-                        </form> 
+                        </form>
                     </div>
 
                 </Modal.Body>
@@ -153,7 +169,7 @@ function CategoryList() {
                 </div>
 
             </Modal>
-            <Modal show={ismodal}   style={{ display: 'block' }}>
+            <Modal show={ismodal} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Category</h5>
                 </Modal.Header>
@@ -163,11 +179,11 @@ function CategoryList() {
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
                                     <label htmlFor="item" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item" value={categoryName} onChange={(e)=>setCategoryName(e.currentTarget.value)} />
+                                    <input type="text" className="form-control" id="item" value={categoryName} onChange={(e) => setCategoryName(e.currentTarget.value)} />
                                 </div>
                                 <div className="col-sm-12">
                                     <label htmlFor="taxtno" className="form-label">Category Image</label>
-                                    <input type="File" className="form-control" id="taxtno" name='file' onChange={(e)=>handleFileChange(e)}  />
+                                    <input type="File" className="form-control" id="taxtno" name='file' onChange={(e) => handleFileChange(e)} />
                                 </div>
                             </div>
                         </form>
