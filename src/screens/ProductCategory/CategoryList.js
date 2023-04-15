@@ -46,23 +46,8 @@ function CategoryList() {
             }
         ]
     }
-
-    useEffect(() => {
-        GetAllCategory()
-    }, [randomValue])
-    const GetAllCategory = async () => {
-        try {
-            let user=localStorage.getItem("user"); 
-            const id=user?._id;
-            let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
-            let { data } = response
-            setTable_row(data)
-        }
-        catch (err) {
-            console.log(err)
-        }
-    }
-     console.log("table_row",table_row);
+   
+    
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
