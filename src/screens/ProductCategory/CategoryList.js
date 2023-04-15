@@ -4,6 +4,7 @@ import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
 import { ToastMessage } from "../../components/common/ToastMessage";
+import { ConfirmBox } from '../../components/common/ConfirmBox';
 
 function CategoryList() {
     const [table_row, setTable_row] = useState([]);
@@ -13,6 +14,9 @@ function CategoryList() {
     const [categoryName, setCategoryName] = useState("");
     const [categoryImage, setCategoryImage] = useState("");
     const [id,setCatId]=useState("");
+    const [brandId, setBrandId] = useState("");
+    const [confirmBoxView, setConfirmBoxView] = useState(false);
+
 
     const columns = () => {
         return [
@@ -35,8 +39,8 @@ function CategoryList() {
                 name: "STATUS",
                 selector: (row) => row?.status,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "ACTIVE")}>ACTIVE</button>
-                        : <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "INACTIVE")} >INACTIVE</button>}
+                    {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "INACTIVE")}>INACTIVE</button>
+                        : <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "ACTIVE")} >ACTIVE</button>}
 
                 </div>,
                 sortable: true,
@@ -47,7 +51,7 @@ function CategoryList() {
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
                     <button onClick={() => { edit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
-                    <button type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
+                    <button onClick={() => { handleBrand(row?._id) }} type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
             }
         ]
@@ -141,8 +145,9 @@ function CategoryList() {
             let user=localStorage.getItem("user");
             let obj=JSON.parse(user);
             const formData = new FormData();
-            formData.append("userId",user?._id);
+            formData.append("userId",obj?._id);
             formData.append("categoryName",categoryName);
+            formData.append("categoryImage",categoryImage);
             let response=await httpCommon.post("/addProductCategory",formData);
             let {data}=response;
             setIsmodal(false)
@@ -153,7 +158,22 @@ function CategoryList() {
             console.log(err);
         }
     }
-
+    const deleteCategory = async () => {
+        try {
+            let response = await httpCommon.deleteData(`/deleteProductCategoryBy/${brandId}`);
+            let { data } = response;
+            setConfirmBoxView(false);
+            let x = Math.random() * 5;
+            setRandomValue(x);
+            ToastMessage(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    const handleBrand = (id) => {
+        setBrandId(id)
+        setConfirmBoxView(true);
+    }
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -241,6 +261,8 @@ function CategoryList() {
                 </Modal.Footer>
 
             </Modal>
+            <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteCategory} />
+
         </div>
     )
 }
