@@ -12,6 +12,7 @@ function CategoryList() {
     const [iseditmodal, setIseditmodal] = useState(false);
     const [categoryName,setCategoryName]=useState("");
     const [categoryImage,setCategoryImage]=useState("");
+    const [id,setCatId]=useState("");
 
     const columns = () => {
         return [
@@ -40,7 +41,7 @@ function CategoryList() {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    <button onClick={() => { edit(row?.id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
+                    <button onClick={() => { edit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
                     <button type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
             }
@@ -53,7 +54,8 @@ function CategoryList() {
     const GetAllCategory = async () => {
         try {
             let user=localStorage.getItem("user"); 
-            const id=user?._id;
+            let obj=JSON.parse(user);
+            const id=obj?._id;
             let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
             let { data } = response
             setTable_row(data)
@@ -73,20 +75,42 @@ function CategoryList() {
         }
     };
 
-    const edit=()=>{
+    const edit=(id)=>{
         setIseditmodal(true);
-        
+        let table_row1=[...table_row];
+        let editData=table_row1.find(c1=>c1._id===id);
+        setCategoryName(editData?.categoryName);
+        setCatId(id);
+    }
+
+    const editCategory=async()=>{
+          try{
+            const formData = new FormData();
+            formData.append("categoryName",categoryName);
+            formData.append("categoryName",categoryName);
+            let response=await httpCommon.patch(`/updateProductCategoryBy/${id}`,{categoryName:categoryName});
+            let {data}=response;
+            setIseditmodal(false)
+            let x=Math.random * 5;
+            setRandomValue(x)
+            ToastMessage(data);
+          }catch(err){
+            console.log(err);
+          }
     }
     const addCategory=async ()=>{
         try{
-            let user=localStorage.getItem("user"); 
+            let user=localStorage.getItem("user");
+            let obj=JSON.parse(user);
             const formData = new FormData();
-            formData.append("userId",user?._id);
+            formData.append("userId",obj?._id);
             formData.append("categoryName",categoryName);
             formData.append("categoryImage",categoryImage);
             let response=await httpCommon.post("/addProductCategory",formData);
             let {data}=response;
             setIsmodal(false)
+            let x=Math.random * 5;
+            setRandomValue(x)
             ToastMessage(data);
         }catch(err){
             console.log(err);
@@ -127,7 +151,7 @@ function CategoryList() {
             </div>
             <Modal show={iseditmodal} onHide={() => { setIseditmodal(false) }} className="" style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" closeButton>
-                    <h5 className="modal-title  fw-bold" id="expeditLabel"> Edit Customers</h5>
+                    <h5 className="modal-title  fw-bold" id="expeditLabel"> Edit Category</h5>
                 </Modal.Header>
                 <Modal.Body className="modal-body">
 
@@ -136,11 +160,11 @@ function CategoryList() {
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="item1" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item1" value="Joan Dyer" onChange={() => { }} />
+                                    <input type="text" className="form-control" id="item1" name="categoryName" value={categoryName} onChange={(e)=>setCategoryName(e.currentTarget.value)} />
                                 </div>
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="taxtno1" className="form-label">Category Image</label>
-                                    <input type="file" className="form-control" id="taxtno1" onChange={() => { }} />
+                                    <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => {handleFileChange(e) }} />
                                 </div>
                             </div>
                         </form> 
@@ -148,13 +172,13 @@ function CategoryList() {
 
                 </Modal.Body>
                 <div className="modal-footer">
-                    <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Done</button>
-                    <button type="submit" className="btn btn-primary">Save</button>
+                    <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" className="btn btn-primary" onClick={()=>editCategory()}>Save</button>
                 </div>
 
             </Modal>
             <Modal show={ismodal}   style={{ display: 'block' }}>
-                <Modal.Header className="modal-header" closeButton>
+                <Modal.Header className="modal-header" onClick={() => { setIsmodal(false) }} closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Category</h5>
                 </Modal.Header>
                 <Modal.Body className="modal-body">
