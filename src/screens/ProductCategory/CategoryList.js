@@ -79,6 +79,18 @@ function CategoryList() {
             }
         }
     };
+
+    const handleFileUpload = (e) => {
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0])
+            if (e.target.name === "file") {
+                setCategoryImage(e.target.files[0]);
+                imageUpload(e.target.files[0]);
+            }
+        }
+    };
+
     const approval = async (_id, body) => {
         try {
             let response = await httpCommon.patch(`/updateProductCategoryBy/${_id}`, { status: body });
@@ -99,10 +111,20 @@ function CategoryList() {
         setCatId(id);
     }
 
+    const imageUpload=async(obj)=>{
+          try{
+            const formData = new FormData();
+            formData.append("categoryImage",obj);
+            let response=await httpCommon.patch(`/updateProductCategoryImageBy/${id}`,{categoryImage:formData});
+            let {data}=response;
+            ToastMessage(data);
+          }catch(err){
+            console.log(err);
+          }
+    }
     const editCategory=async()=>{
           try{
             const formData = new FormData();
-            formData.append("categoryName",categoryName);
             formData.append("categoryName",categoryName);
             let response=await httpCommon.patch(`/updateProductCategoryBy/${id}`,{categoryName:categoryName});
             let {data}=response;
@@ -179,7 +201,7 @@ function CategoryList() {
                                 </div>
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="taxtno1" className="form-label">Category Image</label>
-                                    <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => {handleFileChange(e) }} />
+                                    <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => {handleFileUpload(e) }} />
                                 </div>
                             </div>
                         </form>
