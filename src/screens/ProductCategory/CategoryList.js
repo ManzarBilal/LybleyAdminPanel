@@ -47,12 +47,7 @@ function CategoryList() {
             }
         ]
     }
-    // async function onDeleteRow(row) {
-    //    //eslint-disable-next-line
-    //     var result = await table_row.filter((d) => {  if (d !== row) { return d } });
-        
-    //     setTable_row([...result])
-    // }
+   
     
     const handleFileChange = (e) => {
         const reader = new FileReader();
