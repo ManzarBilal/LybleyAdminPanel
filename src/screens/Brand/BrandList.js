@@ -17,23 +17,14 @@ function BrandList() {
     const [brandId, setBrandId] = useState("");
     const columns = () => {
         return [
-            // {
-            //     name: " SR. NO.",
-            //     selector: (row) =>  row?._id,
-            //     sortable: true,
-            // },
+        
             {
                 name: "BRAND",
                 selector: (row) => row?.brandName,
                 cell: row => <div className='text-primary' style={{ cursor: "pointer" }} onClick={() => { handleViewDetail(row?._id) }}><img className="avatar rounded lg border" src={row?.brandLogo} alt="" /> <span className="px-2"><span   >{row.brandName}</span></span></div>,
                 sortable: true, minWidth: "200px"
             },
-            // {
-            //     name: "REGISTER DATE",
-            //     selector: (row) => new Date(row?.createdAt).toDateString(),
-            //     sortable: true,
-
-            // },
+        
             {
                 name: "MAIL",
                 selector: (row) => row?.email,
@@ -88,7 +79,7 @@ function BrandList() {
         try {
             let response = await httpCommon.patch(`/brandApproval/${_id}`, { approval: body });
             let { data } = response;
-            let x = Math.random() * 5;
+            let x=Math.floor((Math.random() * 10) + 1);
             setRandomValue(x);
             ToastMessage(data);
         } catch (err) {
@@ -101,7 +92,7 @@ function BrandList() {
             let response = await httpCommon.deleteData(`/deleteBrandBy/${brandId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x = Math.random() * 5;
+            let x=Math.floor((Math.random() * 10) + 1);
             setRandomValue(x);
             ToastMessage(data);
         } catch (err) {

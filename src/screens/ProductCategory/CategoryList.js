@@ -132,7 +132,7 @@ function CategoryList() {
             let response=await httpCommon.patch(`/updateProductCategoryBy/${id}`,{categoryName:categoryName});
             let {data}=response;
             setIseditmodal(false)
-            let x=Math.random * 5;
+            let x=Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
             ToastMessage(data);
           }catch(err){
@@ -150,7 +150,7 @@ function CategoryList() {
             let response=await httpCommon.post("/addProductCategory",formData);
             let {data}=response;
             setIsmodal(false)
-            let x=Math.random * 5;
+            let x=Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
             ToastMessage(data);
         } catch (err) {
@@ -162,7 +162,7 @@ function CategoryList() {
             let response = await httpCommon.deleteData(`/deleteProductCategoryBy/${brandId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x = Math.random() * 5;
+            let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x);
             ToastMessage(data);
         } catch (err) {
