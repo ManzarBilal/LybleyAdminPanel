@@ -73,7 +73,6 @@ function BrandList() {
 
     useEffect(() => {
         GetAllBrands()
-        console.log(randomValue);
     }, [randomValue])
     const GetAllBrands = async () => {
         try {
