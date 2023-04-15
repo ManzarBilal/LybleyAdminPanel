@@ -117,11 +117,10 @@ function CategoryList() {
 
     const imageUpload=async(obj)=>{
           try{
-            console.log(obj);
             const formData = new FormData();
             formData.append("categoryImage",obj);
             let response=await httpCommon.patch(`/updateProductCategoryImageBy/${id}`,formData);
-            let {data}=response;
+            console.log(response);
           }catch(err){
             console.log(err);
           }
