@@ -39,8 +39,8 @@ function CategoryList() {
                 name: "STATUS",
                 selector: (row) => row?.status,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "INACTIVE")}>INACTIVE</button>
-                        : <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "ACTIVE")} >ACTIVE</button>}
+                    {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "ACTIVE")}>INACTIVE</button>
+                        : <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "INACTIVE")} >ACTIVE</button>}
 
                 </div>,
                 sortable: true,

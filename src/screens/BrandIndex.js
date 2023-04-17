@@ -72,9 +72,9 @@ const BrandIndex = (props) => {
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
             <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
             <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
-            <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid /> }} />
-            <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList /> }} />
-            <Route exact path={props?.url + '/product-edit'} render={() => { return <ProductEdit /> }} />
+            <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid url={props?.url} /> }} />
+            <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList url={props?.url} /> }} />
+            <Route exact path={props?.url + '/product-edit/:id'} render={() => { return <ProductEdit url={props?.url}/> }} />
             <Route exact path={props?.url + '/product-detail'} render={() => { return <ProductDetail /> }} />
             <Route exact path={props?.url + '/product-Add'} render={() => { return <ProductAdd /> }} />
             <Route exact path={props?.url + '/shopping-cart'} render={() => { return <ShoppingCart /> }} />

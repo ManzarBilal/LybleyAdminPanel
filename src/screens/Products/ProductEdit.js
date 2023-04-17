@@ -1,24 +1,81 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PageHeader1 from '../../components/common/PageHeader1';
-import Categories from '../../components/Products/ProductEdit/Categories';
-import InventoryInfo from '../../components/Products/ProductEdit/InventoryInfo';
-import PricingInfo from '../../components/Products/ProductEdit/PricingInfo';
-import PublicaSchedule from '../../components/Products/ProductEdit/PublicaSchedule';
-import Size from '../../components/Products/ProductEdit/Size';
-import Tags from '../../components/Products/ProductEdit/Tags';
-import VisibilityStatus from '../../components/Products/ProductEdit/VisibilityStatus';
+// import Categories from '../../components/Products/ProductEdit/Categories';
+// import InventoryInfo from '../../components/Products/ProductEdit/InventoryInfo';
+// import PricingInfo from '../../components/Products/ProductEdit/PricingInfo';
+// import PublicaSchedule from '../../components/Products/ProductEdit/PublicaSchedule';
+// import Size from '../../components/Products/ProductEdit/Size';
+// import Tags from '../../components/Products/ProductEdit/Tags';
+// import VisibilityStatus from '../../components/Products/ProductEdit/VisibilityStatus';
 import BasicInformation from '../../components/Products/ProductEdit/BasicInformation';
-import ShippingCountries from '../../components/Products/ProductEdit/ShippingCountries';
+// import ShippingCountries from '../../components/Products/ProductEdit/ShippingCountries';
 import Images from '../../components/Products/ProductEdit/Images';
-import CroppedImages from '../../components/Products/ProductEdit/CroppedImages';
+// import CroppedImages from '../../components/Products/ProductEdit/CroppedImages';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCategory } from '../../Redux/Actions/category';
+import httpCommon from "../../http-common"
+import { ToastMessage } from '../../components/common/ToastMessage';
+import { useHistory, useParams } from 'react-router-dom';
 
+function ProductEdit(props) {
+    const params = useParams()
+    const { id } = params;
+ 
+    const history=useHistory()
 
-function ProductEdit() {
+    const dispatch=useDispatch()
+    const categories=useSelector(state=>state?.category)
+    const products = useSelector(state => state?.products);
+ 
+    const [product,setProduct]=useState({});
+    const [img,setImage]=useState("");
+    useEffect(()=>{
+        let user=localStorage.getItem("user");
+        let obj=JSON.parse(user);
+        dispatch(getCategory(obj?._id));
+    const filterProduct = products.find(e1 => e1?._id === id)
+     setProduct(filterProduct);
+    },[id,dispatch,products])
+   // console.log("filterProduct", filterProduct);
+    // const [product, setProduct] = useState({
+    //     productName: "",
+    //     productDescription: "",
+    //     productCategory: "",
+    //     productImage: "",
+    // })
+
+    const handleChange = (e) => {
+        const { currentTarget: input } = e;
+        let product1 = { ...product };
+        product1[input.name] = input.value;
+        setProduct(product1);
+    }
+    const handleImage = (file) => {
+        setImage(file);
+        setProduct({...product,productImage:""});
+    }
+
+    const editProduct = async () => {
+        try {
+            let obj={productName:product.productName,productCategory:product.productCategory,productDescription:product.productDescription};
+            let response = await httpCommon.patch(`/updateProduct/${id}`,obj);
+            let { data } = response;
+            ToastMessage(data);
+              history.push(`${props?.url}/product-grid`)
+        } catch (err) {
+            console.log(err);
+        }
+    }
+   
     return (
         <div className="container-xxl">
-            <PageHeader1 pagetitle='Products Edit' button={true} />
+            <PageHeader1
+                pagetitle='Products Edit'
+            //  button={true} 
+
+            />
             <div className="row g-3">
-                <div className="col-xl-4 col-lg-4">
+                {/* <div className="col-xl-4 col-lg-4">
                     <div className="sticky-lg-top">
                         <div className="card mb-3">
                             <PricingInfo />
@@ -42,20 +99,24 @@ function ProductEdit() {
                             <InventoryInfo />
                         </div>
                     </div>
-                </div>
-                <div className="col-xl-8 col-lg-8">
+                </div> */}
+                <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation />
+                        <BasicInformation categories={categories} product={product} onChange={handleChange} />
                     </div>
-                    <div className="card mb-3">
+                    {/* <div className="card mb-3">
                         <ShippingCountries />
+                    </div> */}
+
+                    <div className="card mb-3">
+                        <Images img={img} product={product} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <Images />
+                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={editProduct}>Save</button>
                     </div>
-                    <div className="card">
+                    {/* <div className="card">
                         <CroppedImages />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>
