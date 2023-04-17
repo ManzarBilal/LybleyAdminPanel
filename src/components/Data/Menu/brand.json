@@ -39,16 +39,7 @@
                     "isApp": false,
                     "children": []
                 },
-                {
-                    "name": "Product Edit",
-                    "routerLink": ["product-edit"],
-                    "identifier": "Product Edit",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
+                
                 {
                     "name": "Product Detail",
                     "routerLink": ["product-detail"],

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ColorBlock from '../../components/Products/ProductGrid/ColorBlock';
 import Categoriesblock from '../../components/Products/ProductGrid/CategoriesBlock'
 import Sizeblock from '../../components/Products/ProductGrid/SizeBlock';
@@ -6,8 +6,19 @@ import PricingBlock from '../../components/Products/ProductGrid/PricingBlock';
 import RatingBlock from '../../components/Products/ProductGrid/RatingBlock';
 import CardBlock from '../../components/Products/ProductGrid/CardBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProduct } from '../../Redux/Actions/product';
 
-function ProductGrid() {
+function ProductGrid(props) {
+
+    const dispatch=useDispatch();
+    const products=useSelector(state=>state?.products);
+    useEffect(()=>{
+        let user=localStorage.getItem("user");
+        let obj=JSON.parse(user);
+        dispatch(getProduct(obj?._id));
+    },[dispatch])
+
     return (
 
         <div className="container-xxl">
@@ -43,7 +54,7 @@ function ProductGrid() {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock />
+                    <CardBlock url={props?.url} product={products} />
                     <div className="row g-3 mb-3">
                         <div className="col-md-12">
                             <nav className="justify-content-end d-flex">
