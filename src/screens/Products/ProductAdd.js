@@ -17,9 +17,9 @@ function ProductAdd() {
     return (
         <div className="container-xxl">
             <PageHeader1
-             pagetitle='Products Add' 
+                pagetitle='Products Add'
             //  button={true} 
-            
+
             />
             <div className="row g-3">
                 {/* <div className="col-xl-4 col-lg-4">
@@ -54,11 +54,12 @@ function ProductAdd() {
                     {/* <div className="card mb-3">
                         <ShippingCountries />
                     </div> */}
+                   
                     <div className="card mb-3">
                         <Images />
                     </div>
                     <div className="card mb-3">
-                    <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5">Save</button>
+                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5">Save</button>
                     </div>
                     {/* <div className="card">
                         <CroppedImages />
