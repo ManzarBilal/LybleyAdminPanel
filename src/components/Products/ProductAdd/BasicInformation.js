@@ -13,22 +13,22 @@ function BasicInformation() {
             <div className="card-body">
                 <form>
                     <div className="row g-3 align-items-center">
-                        <div className="col-md-6">
-                            <label className="form-label">Name</label>
+                        <div className="col-md-12">
+                            <label className="form-label"> Product Name</label>
                             <input type="text" className="form-control" value="Oculus VR" onChange={() => { }} />
                         </div>
-                        <div className="col-md-6">
-                            <label className="form-label">Page Title</label>
-                            <input type="text" className="form-control" value="Gaming VR" onChange={() => { }} />
-                        </div>
                         <div className="col-md-12">
+                            <label className="form-label">Product  Description</label>
+                            <textarea type="text" className="form-control" value="Gaming VR" onChange={() => { }} ></textarea>
+                        </div>
+                        {/* <div className="col-md-12">
                             <label className="form-label">Product Identifier URL</label>
                             <div className="input-group mb-3">
                                 <span className="input-group-text">https://eBazar.com</span>
                                 <input type="text" className="form-control" value="/product/Fossilsmart" onChange={() => { }} />
                             </div>
-                        </div>
-                        <div className="col-md-12">
+                        </div> */}
+                        {/* <div className="col-md-12">
                             <label className="form-label">Product Description</label>
                             <CKEditor
                                 editor={ClassicEditor}
@@ -60,7 +60,7 @@ function BasicInformation() {
                                     ]
                                 }}
                             />
-                        </div>
+                        </div> */}
                     </div>
                 </form>
             </div>

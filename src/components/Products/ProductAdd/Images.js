@@ -30,7 +30,7 @@ function Images(props) {
                             <input id='filesize' onChange={(e) => { props.OnchangeAddimage(e.target.files) }} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
                         </div>
                     </div>
-                    <div className="col-md-12">
+                    {/* <div className="col-md-12">
                         <label className="form-label w-100">Select Product Color</label>
                         <input type="color" id="color" />
                     </div>
@@ -92,7 +92,7 @@ function Images(props) {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </form>
         </div>
