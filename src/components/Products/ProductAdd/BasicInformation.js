@@ -21,6 +21,20 @@ function BasicInformation() {
                             <label className="form-label">Product  Description</label>
                             <textarea type="text" className="form-control" value="Gaming VR" onChange={() => { }} ></textarea>
                         </div>
+                        <div className="col-xl-12 col-lg-12">
+                        <div className="card-body">
+                            <label className="form-label">Categories Select</label>
+                            <select className="form-select"   >
+                                <option >Gaming accessories</option>
+                                <option value="1">Watch</option>
+                                <option value="2">Clothes</option>
+                                <option value="3">Toy</option>
+                                <option value="4">Cosmetic</option>
+                                <option value="5">Laptop</option>
+                                <option value="6">Mobile</option>
+                            </select>
+                        </div>
+                    </div>
                         {/* <div className="col-md-12">
                             <label className="form-label">Product Identifier URL</label>
                             <div className="input-group mb-3">
