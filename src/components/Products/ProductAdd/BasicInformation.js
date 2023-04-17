@@ -1,9 +1,11 @@
 import React from 'react';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import { CKEditor } from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 
-function BasicInformation() {
+function BasicInformation(props) {
+ 
+let {productName,productDescription,productCategory}=props?.product;
 
     return (
         <>
@@ -15,23 +17,20 @@ function BasicInformation() {
                     <div className="row g-3 align-items-center">
                         <div className="col-md-12">
                             <label className="form-label"> Product Name</label>
-                            <input type="text" className="form-control" value="Oculus VR" onChange={() => { }} />
+                            <input type="text" className="form-control" name='productName' value={productName} onChange={(e) => {props.onChange(e) }} />
                         </div>
                         <div className="col-md-12">
                             <label className="form-label">Product  Description</label>
-                            <textarea type="text" className="form-control" value="Gaming VR" onChange={() => { }} ></textarea>
+                            <textarea type="text" className="form-control" name='productDescription' value={productDescription} onChange={(e) => {props.onChange(e) }} ></textarea>
                         </div>
                         <div className="col-xl-12 col-lg-12">
                         <div className="card-body">
                             <label className="form-label">Categories Select</label>
-                            <select className="form-select"   >
-                                <option >Gaming accessories</option>
-                                <option value="1">Watch</option>
-                                <option value="2">Clothes</option>
-                                <option value="3">Toy</option>
-                                <option value="4">Cosmetic</option>
-                                <option value="5">Laptop</option>
-                                <option value="6">Mobile</option>
+                            <select className="form-select" name='productCategory' value={productCategory} onChange={(e)=>props.onChange(e)}  >
+                                <option value="" selected>Choose Category</option>
+                                {props?.categories?.filter(c1=>c1.status==="ACTIVE")?.map(c1=>
+                                    <option value={c1.categoryName} >{c1.categoryName}</option>
+                                    )}
                             </select>
                         </div>
                     </div>
