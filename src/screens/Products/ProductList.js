@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import CategoriesBlock from '../../components/Products/ProductList/CategoriesBlock';
 import SizeBlock from '../../components/Products/ProductList/SizeBlock';
 import ColorBlock from '../../components/Products/ProductList/ColorBlock';
@@ -11,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../../Redux/Actions/product';
 
 function ProductList(props) {
- 
+
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
     useEffect(()=>{
