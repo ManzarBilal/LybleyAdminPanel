@@ -22,7 +22,7 @@ function ProductGrid(props) {
     return (
 
         <div className="container-xxl">
-            <PageHeader1 pagetitle='Products' productgrid={true} />
+            <PageHeader1 pagetitle='Products' url={props?.url} productgrid={true} />
             <div className="row g-3 mb-3">
                 <div className="col-md-12 col-lg-4 col-xl-4 col-xxl-3">
                     <div className="sticky-lg-top">

@@ -75,8 +75,8 @@ function MainIndex (props) {
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
             <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
             <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList /> }} />
-            <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid /> }} />
-            <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList /> }} />
+            <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid url={props?.url} /> }} />
+            <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList url={props?.url} /> }} />
             <Route exact path={props?.url + '/product-edit'} render={() => { return <ProductEdit /> }} />
             <Route exact path={props?.url + '/product-detail'} render={() => { return <ProductDetail /> }} />
             <Route exact path={props?.url + '/product-Add'} render={() => { return <ProductAdd /> }} />

@@ -3,6 +3,7 @@ import React from 'react';
 //mport { ImageTableData } from '../../Data/ProductAddData';
 import { connect } from 'react-redux';
 import { OnchangeAddimage } from '../../../Redux/Actions/Action'
+import httpCommon from "../../../http-common";
 
 function Images(props) {
     //const { addimage } = props.Mainreducer
@@ -13,10 +14,23 @@ function Images(props) {
             reader.readAsDataURL(e.target.files[0])
             if (e.target.name === "file") {
               // setImage(e.target.files[0]);
-               props.onImage(e.target.files[0])
+               props.onImage(e.target.files[0]);
+               changeImage(e.target.files[0]);
             }
         }
     };
+
+    const changeImage=async (img)=>{
+          try{
+            const formData=new FormData();
+            formData.append("productImage",img)
+            let response=await httpCommon.patch(`/updateProductImageBy/${props?.id}`,formData);
+            let {data}=response;
+          }catch(err){
+            console.log(err);
+          }
+    }
+
     let {productImage}=props.product;
     return (<>
         <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">

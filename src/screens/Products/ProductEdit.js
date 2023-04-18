@@ -109,7 +109,7 @@ function ProductEdit(props) {
                     </div> */}
 
                     <div className="card mb-3">
-                        <Images img={img} product={product} onImage={handleImage} />
+                        <Images id={id} img={img} product={product} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
                         <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={editProduct}>Save</button>

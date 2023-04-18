@@ -12,7 +12,7 @@ function CardBlock(props) {
                             <div className="product">
                                 <div className="product-image">
                                     <div className="product-item active">
-                                        <img src={d.productImage} alt="product" className="img-fluid w-100" />
+                                        <img src={d.productImage} alt="product" className="img-fluid w-100" style={{height:"280px"}} />
                                     </div>
                                     <a className="add-wishlist" href="#!">
                                         <i className= "icofont-heart"></i>
@@ -20,9 +20,9 @@ function CardBlock(props) {
                                 </div>
                                 <div className="product-content p-3">
                                     <span className="rating mb-2 d-block"><i className= "* * *"></i>{4.5} </span>
-                                    <Link to={process.env.PUBLIC_URL + "/product-detail"} className="fw-bold">{d.productName} </Link>
+                                    <Link to={props?.url + "/product-detail"} className="fw-bold">{d.productName} </Link>
                                     <p className="text-muted">{d.productDescription}</p>
-                                    <Link to={props?.url + `/product-edit/${d?._id}`} className="btn btn-primary mt-3"> edit</Link>
+                                    <Link to={props?.url + `/product-edit/${d?._id}`} className="btn btn-primary mt-3">Edit</Link>
                                 </div>
                             </div>
                         </div>
