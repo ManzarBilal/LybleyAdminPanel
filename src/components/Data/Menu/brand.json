@@ -11,6 +11,28 @@
             "children": []
         },
         {
+            "name": "Category",
+            "routerLink": [""],
+            "identifier": "Category",
+            "iconClass": "icofont-chart-flow fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                {
+                    "name": "Category List",
+                    "routerLink": ["category-list"],
+                    "identifier": "Category List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                  
+            ]
+        },
+        {
             "name": "Products",
             "routerLink": [""],
             "identifier": "Products",
@@ -59,50 +81,63 @@
                     "isCategory": false,
                     "isApp": false,
                     "children": []
-                },
-                {
-                    "name": "Shopping Cart",
-                    "routerLink": ["shopping-cart"],
-                    "identifier": "Shopping Cart",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
-                {
-                    "name": "Checkout",
-                    "routerLink": ["check-out"],
-                    "identifier": "Checkout",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
                 }
+                 
 
             ]
         },
         {
-            "name": "Category",
+            "name": "Spare Parts",
             "routerLink": [""],
-            "identifier": "Category",
-            "iconClass": "icofont-chart-flow fs-5",
+            "identifier": "Spare Parts",
+            "iconClass": "icofont-repair fs-5",
             "breadcrumbMessage": "",
             "isCategory": false,
-            "isApp": true,
+            "isApp": false,
             "children": [
                 {
-                    "name": "Category List",
-                    "routerLink": ["category-list"],
-                    "identifier": "Category List",
+                    "name": "Spare Parts Grid",
+                    "routerLink": ["spareParts-grid"],
+                    "identifier": "Product Grid",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "Spare Parts List",
+                    "routerLink": ["spareParts-list"],
+                    "identifier": "Spare Parts List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                
+                {
+                    "name": "Spare Parts Detail",
+                    "routerLink": ["spareParts-detail"],
+                    "identifier": "Spare Parts Detail",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "Spare Parts Add",
+                    "routerLink": ["spareParts-Add"],
+                    "identifier": "Spare Parts Add",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
                     "isApp": false,
                     "children": []
                 }
-                  
+                 
+
             ]
         },
         {
