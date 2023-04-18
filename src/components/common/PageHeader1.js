@@ -63,14 +63,14 @@ function PageHeader1 (props) {
                         }
                         {
                             productgrid ? <div className="btn-group group-link btn-set-task w-sm-100">
-                                <Link to={process.env.PUBLIC_URL+"/product-grid"} className="btn active d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
-                                <Link to={process.env.PUBLIC_URL+"/product-list"} className="btn d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
+                                <Link to={props?.url+"/product-grid"} className="btn active d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
+                                <Link to={props?.url+"/product-list"} className="btn d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
                             </div> : null
                         }
                         {
                             productlist ? <div className="btn-group group-link btn-set-task w-sm-100">
-                                <Link to={process.env.PUBLIC_URL+"/product-grid"} className="btn  d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
-                                <Link to={process.env.PUBLIC_URL+"/product-list"} className="btn active d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
+                                <Link to={props?.url+"/product-grid"} className="btn  d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
+                                <Link to={props?.url+"/product-list"} className="btn active d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
                             </div> : null
                         }
                         {

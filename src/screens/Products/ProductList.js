@@ -9,7 +9,7 @@ import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../../Redux/Actions/product';
 
-function ProductList() {
+function ProductList(props) {
 
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
@@ -19,10 +19,9 @@ function ProductList() {
         dispatch(getProduct(obj?._id));
     },[dispatch])
 
-console.log("products",products)
     return (
         <div className="container-xxl">
-            <PageHeader1 pagetitle='Products' productlist={true} />
+            <PageHeader1 pagetitle='Products' url={props?.url} productlist={true} />
             <div className="row g-3 mb-3">
                 <div className="col-md-12 col-lg-4 col-xl-4 col-xxl-3">
                     <div className="sticky-lg-top">
@@ -54,7 +53,7 @@ console.log("products",products)
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock />
+                    <CardBlock product={products}/>
                 </div>
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">
