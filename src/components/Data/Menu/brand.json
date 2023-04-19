@@ -135,8 +135,17 @@
                     "isCategory": false,
                     "isApp": false,
                     "children": []
+                },
+                {
+                    "name": "Spare Parts Faults",
+                    "routerLink": ["spareParts-fault"],
+                    "identifier": "Spare Parts Faults",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
                 }
-                 
 
             ]
         },

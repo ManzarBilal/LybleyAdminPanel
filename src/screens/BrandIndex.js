@@ -66,6 +66,7 @@ import SparePartAdd from './SpareParts/SparePartAdd';
 import SparePartGrid from './SpareParts/SparePartGrid';
 import SparePartList from './SpareParts/SparePartList';
 import SparePartEdit from './SpareParts/SparePartEdit';
+import FaultList from './SpareParts/FaultList';
 const BrandIndex = (props) => {
   const { activekey } = props;
     return (
@@ -88,6 +89,8 @@ const BrandIndex = (props) => {
             <Route exact path={props?.url + '/spareParts-edit/:id'} render={() => { return <SparePartEdit url={props?.url}/> }} />
             <Route exact path={props?.url + '/spareParts-detail'} render={() => { return <ProductDetail /> }} />
             <Route exact path={props?.url + '/spareParts-Add'} render={() => { return <SparePartAdd /> }} />
+            <Route exact path={props?.url + '/spareParts-fault'} render={() => { return <FaultList /> }} />
+
 
             <Route exact path={props?.url + '/shopping-cart'} render={() => { return <ShoppingCart /> }} />
             <Route exact path={props?.url + '/check-out'} render={() => { return <CheckOut /> }} />
