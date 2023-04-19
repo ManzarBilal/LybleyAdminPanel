@@ -1,9 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
  
 
 function BasicInformation(props) {
- 
-let {productName,productDescription,productCategory}=props?.product;
+const [category,setCategory]=useState();
+const [fault,setFault]=useState("");
+ const fault1=(f)=>{
+    setFault(f);
+      props.onSubmit(f);
+ }
+ const handleIndex=(i)=>{
+      props.onDelete(i);
+ }
+let {partName,description,faultType,MRP,bestPrice,productModel}=props?.sparePart;
+let {categories}=props;
 
     return (
         <>
@@ -14,23 +23,54 @@ let {productName,productDescription,productCategory}=props?.product;
                 <form>
                     <div className="row g-3 align-items-center">
                         <div className="col-md-12">
-                            <label className="form-label"> Product Name</label>
-                            <input type="text" className="form-control" name='productName' value={productName} onChange={(e) => {props.onChange(e) }} />
+                            <label className="form-label"> Spare Part Name</label>
+                            <input type="text" className="form-control" name='partName' value={partName} onChange={(e) => {props.onChange(e) }} />
                         </div>
                         <div className="col-md-12">
-                            <label className="form-label">Product  Description</label>
-                            <textarea type="text" className="form-control" name='productDescription' value={productDescription} onChange={(e) => {props.onChange(e) }} ></textarea>
+                            <label className="form-label">Description</label>
+                            <textarea type="text" className="form-control" name='description' value={description} onChange={(e) => {props.onChange(e) }} ></textarea>
+                        </div>
+                        <div className="col-md-12">
+                            <label className="form-label"> MRP</label>
+                            <input type="number" className="form-control" name='MRP' value={MRP} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-12">
+                            <label className="form-label"> Best Price</label>
+                            <input type="number" className="form-control" name='bestPrice' value={bestPrice} onChange={(e) => {props.onChange(e) }} />
                         </div>
                         <div className="col-xl-12 col-lg-12">
-                        <div className="card-body">
-                            <label className="form-label">Categories Select</label>
-                            <select className="form-select" name='productCategory' value={productCategory} onChange={(e)=>props.onChange(e)}  >
+                        <div className="card-body m-0 p-0">
+                            <label className="form-label">Category</label>
+                            <select className="form-select" name='category' value={category} onChange={(e)=>setCategory(e.currentTarget.value)}  >
                                 <option value="" selected>Choose Category</option>
-                                {props?.categories?.filter(c1=>c1.status==="ACTIVE")?.map(c1=>
+                                {categories?.map(c1=>
                                     <option value={c1.categoryName} >{c1.categoryName}</option>
                                     )}
                             </select>
                         </div>
+                    </div>
+                        <div className="col-xl-12 col-lg-12">
+                        <div className="card-body m-0 p-0">
+                            <label className="form-label">Product Model</label>
+                            <select className="form-select" name='productModel' value={productModel} onChange={(e)=>props.onChange(e)}  >
+                                <option value="" selected>Choose Model</option>
+                                {props?.products?.filter(p1=>p1?.productCategory===category)?.map(c1=>
+                                    <option value={c1.productName} >{c1.productName}</option>
+                                    )}
+                            </select>
+                        </div>
+                    </div>
+                        <div className="col-xl-12 col-lg-12">
+                        <div className="card-body m-0 p-0">
+                            <label className="form-label">Fault Type </label>{" "} <span className='text-muted'>(Select max 5)</span>
+                            <select className="form-select" name='fault' value={fault} onChange={(e)=>fault1(e.currentTarget.value)}  >
+                                <option value="" selected>Choose Fault</option>
+                                {props?.faultType?.map(c1=>
+                                    <option value={c1} >{c1}</option>
+                                    )}
+                            </select>
+                        </div>
+                        {faultType?.map((f1,i)=><button className='btn btn-sm bg-dark text-white m-1'>{f1} <i className='ms-2 icofont-close-circled' onClick={(e)=> handleIndex(i)}></i></button>)}
                     </div>
                         
                     </div>

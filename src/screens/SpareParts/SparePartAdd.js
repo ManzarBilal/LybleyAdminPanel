@@ -1,54 +1,78 @@
 import React, { useState ,useEffect} from 'react';
 import PageHeader1 from '../../components/common/PageHeader1';
-import BasicInformation from '../../components/Products/ProductAdd/BasicInformation';
-import Images from '../../components/Products/ProductAdd/Images';
-import { useDispatch, useSelector } from 'react-redux';
-import { getCategory } from '../../Redux/Actions/category';
 import httpCommon from "../../http-common";
 import { ToastMessage } from '../../components/common/ToastMessage';
+import BasicInformation from './BasicInformation';
+import Image from './Images';
+import { useDispatch, useSelector } from 'react-redux';
+import { getProduct } from '../../Redux/Actions/product';
+import { getCategory } from '../../Redux/Actions/category';
 
 function SparePartAdd() {
-
+    
     const dispatch=useDispatch();
+    const products=useSelector(state=>state?.products);
     const categories=useSelector(state=>state?.category);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getCategory(obj?._id));
+        dispatch(getProduct(obj?._id));
     },[dispatch])
-    
-    const [product,setProduct]=useState({
-        productName:"",
-        productDescription:"",
-        productCategory:"",
-        productImage:"",
-    })
 
+    const [sparePart,setSpareParts]=useState({
+        partName:"",
+        description:"",
+        MRP:"",
+        bestPrice:"",
+        faultType:[],
+        productModel:"",
+        images:[]
+    })
+    
     const handleChange=(e)=>{
         const {currentTarget:input}=e;
-        let product1={...product};
-        product1[input.name]=input.value;
-        setProduct(product1);
+        let sparePart1={...sparePart};
+        sparePart1[input.name]=input.value;
+        setSpareParts(sparePart1);
     }
     const handleImage=(file)=>{
-       setProduct({...product,productImage:file});
+        //  let sparePart1={...sparePart};
+        //  sparePart1?.images?.push(file);
+        //  setSpareParts(sparePart1);
+        setSpareParts({...sparePart,images:file});
     }
 
-    const addProduct=async ()=>{
+    const handleFault=(fault)=>{
+        let sparePart1={...sparePart};
+         sparePart1?.faultType?.push(fault);
+         setSpareParts(sparePart1);
+    }
+
+    const handleFaultDelete=(i)=>{
+        let sparePart1={...sparePart};
+         sparePart1?.faultType?.splice(i,1);
+         setSpareParts(sparePart1);
+    }
+
+    const addSparePart=async ()=>{
         try{
-            let category=categories.find(c1=>c1?.categoryName===product?.productCategory);
-            console.log(category);
+            let product=products?.find(p1=>p1.productName===sparePart.productModel);
             const formData=new FormData();
-            formData.append("productName",product?.productName);
-            formData.append("productImage",product?.productImage);
-            formData.append("productCategory",product?.productCategory);
-            formData.append("productDescription",product?.productDescription);
-            formData.append("userId",category?.userId);
-            formData.append("categoryId",category?._id);
-            let response=await httpCommon.post("/addProduct",formData);
+            formData.append("partName",sparePart?.partName);
+            formData.append("description",sparePart?.description);
+            formData.append("MRP",sparePart?.MRP);
+            formData.append("bestPrice",sparePart?.bestPrice);
+            formData.append("faultType",sparePart?.faultType);
+            formData.append("productModel",sparePart?.productModel);
+            formData.append("images",sparePart?.images)
+            formData.append("userId",product?.userId);
+            formData.append("productId",product?._id);
+            
+            let response=await httpCommon.post("/addSparePart",formData);
             let {data}=response;
             ToastMessage(data);
-            setProduct({productName:"",productDescription:"",productCategory:"",productImage:""});
+            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:""});
         }catch(err){
             console.log(err);
         }
@@ -56,7 +80,7 @@ function SparePartAdd() {
     return (
         <div className="container-xxl">
             <PageHeader1
-                pagetitle='Products Add'
+                pagetitle='Add Spare Part'
             //  button={true} 
 
             />
@@ -64,15 +88,15 @@ function SparePartAdd() {
                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation categories={categories} product={product} onChange={handleChange} />
+                        <BasicInformation onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={["A","B"]} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                    
                     <div className="card mb-3">
-                        <Images product={product} onImage={handleImage} />
+                        <Image product={sparePart} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addProduct}>Save</button>
+                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addSparePart}>Save</button>
                     </div>
                      
                 </div>
