@@ -62,6 +62,10 @@ import StoreLocation from './StoreLocation/Storelocation';
 import Help from './Help/Help';
 import SimpleInvoice from '../components/Accounts/Invoice/SimpleInvoice';
 import CategoryList from './ProductCategory/CategoryList';
+import SparePartAdd from './SpareParts/SparePartAdd';
+import SparePartGrid from './SpareParts/SparePartGrid';
+import SparePartList from './SpareParts/SparePartList';
+import SparePartEdit from './SpareParts/SparePartEdit';
 const BrandIndex = (props) => {
   const { activekey } = props;
     return (
@@ -72,11 +76,19 @@ const BrandIndex = (props) => {
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
             <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
             <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
+
             <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid url={props?.url} /> }} />
             <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList url={props?.url} /> }} />
             <Route exact path={props?.url + '/product-edit/:id'} render={() => { return <ProductEdit url={props?.url}/> }} />
             <Route exact path={props?.url + '/product-detail'} render={() => { return <ProductDetail /> }} />
             <Route exact path={props?.url + '/product-Add'} render={() => { return <ProductAdd /> }} />
+
+            <Route exact path={props?.url + '/spareParts-grid'} render={() => { return <SparePartGrid url={props?.url} /> }} />
+            <Route exact path={props?.url + '/spareParts-list'} render={() => { return <SparePartList url={props?.url} /> }} />
+            <Route exact path={props?.url + '/spareParts-edit/:id'} render={() => { return <SparePartEdit url={props?.url}/> }} />
+            <Route exact path={props?.url + '/spareParts-detail'} render={() => { return <ProductDetail /> }} />
+            <Route exact path={props?.url + '/spareParts-Add'} render={() => { return <SparePartAdd /> }} />
+
             <Route exact path={props?.url + '/shopping-cart'} render={() => { return <ShoppingCart /> }} />
             <Route exact path={props?.url + '/check-out'} render={() => { return <CheckOut /> }} />
             <Route exact path={props?.url + '/categories-list'} render={() => { return <CategoriesList /> }} />
