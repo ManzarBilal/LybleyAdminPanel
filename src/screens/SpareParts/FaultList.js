@@ -11,29 +11,23 @@ function FaultList() {
     const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
-    const [categoryName, setCategoryName] = useState("");
-    const [categoryImage, setCategoryImage] = useState("");
+    const [faultName, setFaultName] = useState("");
     const [id,setCatId]=useState("");
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
 
-
+const index=1;
     const columns = () => {
         return [
             {
                 name: " ID",
-                selector: (row) => row?._id,
+                selector: (row) => row?._id ,
                 sortable: true,
             },
             {
                 name: "FAULT NAME",
                 selector: (row) => row?.faultName,
-                sortable: true, minWidth: "200px"
-            },
-            {
-                name: "FAULT DESCRIPTION",
-                selector: row => row?.faultDescription ,
-                sortable: true, minWidth: "200px"
+                sortable: true, minWidth: "400px"
             },
             {
                 name: "STATUS",
@@ -51,21 +45,21 @@ function FaultList() {
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
                     <button onClick={() => { edit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
-                    <button onClick={() => { handleBrand(row?._id) }} type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
+                    <button onClick={() => { handleFault(row?._id) }} type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
             }
         ]
     }
 
     useEffect(() => {
-        GetAllCategory()
+        GetAllFault()
     }, [randomValue])
-    const GetAllCategory = async () => {
+    const GetAllFault = async () => {
         try {
             let user = localStorage.getItem("user");
             let obj=JSON.parse(user);
             const id = obj?._id;
-            let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
+            let response = await httpCommon.get(`/getFaultBy/${id}`)
             let { data } = response
             setTable_row(data)
         }
@@ -74,30 +68,11 @@ function FaultList() {
         }
     }
 
-    const handleFileChange = (e) => {
-        const reader = new FileReader();
-        if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0])
-            if (e.target.name === "file") {
-                setCategoryImage(e.target.files[0]);
-            }
-        }
-    };
-
-    const handleFileUpload = (e) => {
-        const reader = new FileReader();
-        if (e.target.files[0]) {
-            reader.readAsDataURL(e.target.files[0])
-            if (e.target.name === "file") {
-                setCategoryImage(e.target.files[0]);
-                imageUpload(e.target.files[0]);
-            }
-        }
-    };
+    
 
     const approval = async (_id, body) => {
         try {
-            let response = await httpCommon.patch(`/updateProductCategoryBy/${_id}`, { status: body });
+            let response = await httpCommon.patch(`/updateFaultBy/${_id}`, { status: body });
             let { data } = response;
             let x = Math.random() * 5;
             setRandomValue(x);
@@ -111,25 +86,13 @@ function FaultList() {
         setIseditmodal(true);
         let table_row1=[...table_row];
         let editData=table_row1.find(c1=>c1._id===id);
-        setCategoryName(editData?.categoryName);
+        setFaultName(editData?.faultName);
         setCatId(id);
     }
-
-    const imageUpload=async(obj)=>{
-          try{
-            const formData = new FormData();
-            formData.append("categoryImage",obj);
-            let response=await httpCommon.patch(`/updateProductCategoryImageBy/${id}`,formData);
-            console.log(response);
-          }catch(err){
-            console.log(err);
-          }
-    }
-    const editCategory=async()=>{
-          try{
-            const formData = new FormData();
-            formData.append("categoryName",categoryName);
-            let response=await httpCommon.patch(`/updateProductCategoryBy/${id}`,{categoryName:categoryName});
+ 
+    const editFault=async()=>{
+          try{            
+            let response=await httpCommon.patch(`/updateFaultBy/${id}`,{faultName:faultName});
             let {data}=response;
             setIseditmodal(false)
             let x=Math.floor((Math.random() * 10) + 1);
@@ -139,15 +102,12 @@ function FaultList() {
             console.log(err);
           }
     }
-    const addCategory=async ()=>{
+    const addFault=async ()=>{
         try{
             let user=localStorage.getItem("user");
             let obj=JSON.parse(user);
-            const formData = new FormData();
-            formData.append("userId",obj?._id);
-            formData.append("categoryName",categoryName);
-            formData.append("categoryImage",categoryImage);
-            let response=await httpCommon.post("/addProductCategory",formData);
+            const dataObj={faultName:faultName,userId:obj?._id}
+            let response=await httpCommon.post("/addFault",dataObj);
             let {data}=response;
             setIsmodal(false)
             let x=Math.floor((Math.random() * 10) + 1);
@@ -157,9 +117,9 @@ function FaultList() {
             console.log(err);
         }
     }
-    const deleteCategory = async () => {
+    const deleteFault = async () => {
         try {
-            let response = await httpCommon.deleteData(`/deleteProductCategoryBy/${brandId}`);
+            let response = await httpCommon.deleteData(`/deleteFaultBy/${brandId}`);
             let { data } = response;
             setConfirmBoxView(false);
             let x = Math.floor((Math.random() * 10) + 1);
@@ -169,16 +129,16 @@ function FaultList() {
             console.log(err);
         }
     }
-    const handleBrand = (id) => {
+    const handleFault = (id) => {
         setBrandId(id)
         setConfirmBoxView(true);
     }
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
-                <PageHeader1 pagetitle='All Category' modalbutton={() => {
+                <PageHeader1 pagetitle='All Faults' modalbutton={() => {
                     return <div className="col-auto d-flex w-sm-100">
-                        <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Category</button>
+                        <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Fault</button>
                     </div>
                 }} />
                 <div className="row clearfix g-3">
@@ -216,12 +176,9 @@ function FaultList() {
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="item1" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item1" name="categoryName" value={categoryName} onChange={(e)=>setCategoryName(e.currentTarget.value)} />
+                                    <input type="text" className="form-control" id="item1" name="faultName" value={faultName} onChange={(e)=>setFaultName(e.currentTarget.value)} />
                                 </div>
-                                <div className="col-sm-12">
-                                    <label htmlhtmlFor="taxtno1" className="form-label">Category Image</label>
-                                    <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => {handleFileUpload(e) }} />
-                                </div>
+                                
                             </div>
                         </form>
                     </div>
@@ -229,26 +186,23 @@ function FaultList() {
                 </Modal.Body>
                 <div className="modal-footer">
                     <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={()=>editCategory()}>Save</button>
+                    <button type="submit" className="btn btn-primary" onClick={()=>editFault()}>Save</button>
                 </div>
 
             </Modal>
             <Modal show={ismodal}   style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" onClick={() => { setIsmodal(false) }} closeButton>
-                    <h5 className="modal-title  fw-bold" id="expaddLabel">Add Category</h5>
+                    <h5 className="modal-title  fw-bold" id="expaddLabel">Add Fault</h5>
                 </Modal.Header>
                 <Modal.Body className="modal-body">
                     <div className="deadline-form">
                         <form>
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
-                                    <label htmlFor="item" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item" value={categoryName} onChange={(e) => setCategoryName(e.currentTarget.value)} />
+                                    <label htmlFor="item" className="form-label">Fault Name</label>
+                                    <input type="text" className="form-control" id="item" value={faultName} onChange={(e) => setFaultName(e.currentTarget.value)} />
                                 </div>
-                                <div className="col-sm-12">
-                                    <label htmlFor="taxtno" className="form-label">Category Image</label>
-                                    <input type="File" className="form-control" id="taxtno" name='file' onChange={(e) => handleFileChange(e)} />
-                                </div>
+                                
                             </div>
                         </form>
                     </div>
@@ -256,11 +210,11 @@ function FaultList() {
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={addCategory}>Add</button>
+                    <button type="submit" className="btn btn-primary" onClick={addFault}>Add</button>
                 </Modal.Footer>
 
             </Modal>
-            <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteCategory} />
+            <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteFault} />
 
         </div>
     )
