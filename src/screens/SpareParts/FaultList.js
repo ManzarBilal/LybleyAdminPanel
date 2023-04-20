@@ -16,12 +16,13 @@ function FaultList() {
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
 
-const index=1;
+ 
+let table_row1=table_row.map((t1,i)=>({...t1,i:i+1}));
     const columns = () => {
         return [
             {
-                name: " ID",
-                selector: (row) => row?._id ,
+                name: "Sr. No.",
+                selector: (row) => row?.i,
                 sortable: true,
             },
             {
@@ -150,7 +151,7 @@ const index=1;
                                         <div className="col-sm-12">
                                             <DataTable
                                                 columns={columns()}
-                                                data={table_row}
+                                                data={table_row1}
                                                 defaultSortField="title"
                                                 pagination
                                                 selectableRows={false}
