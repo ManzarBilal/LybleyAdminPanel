@@ -5,11 +5,12 @@ function BasicInformation(props) {
 const [category,setCategory]=useState();
 const [fault,setFault]=useState("");
  const fault1=(f)=>{
-    setFault(f);
-      props.onSubmit(f);
+     setFault(f);
+     props.onSubmit(f);
  }
  const handleIndex=(i)=>{
       props.onDelete(i);
+      setFault("");
  }
 let {partName,description,faultType,MRP,bestPrice,productModel}=props?.sparePart;
 let {categories}=props;
@@ -66,11 +67,11 @@ let {categories}=props;
                             <select className="form-select" name='fault' value={fault} onChange={(e)=>fault1(e.currentTarget.value)}  >
                                 <option value="" selected>Choose Fault</option>
                                 {props?.faultType?.map(c1=>
-                                    <option value={c1} >{c1}</option>
+                                    <option value={c1.faultName} >{c1.faultName}</option>
                                     )}
                             </select>
                         </div>
-                        {faultType?.map((f1,i)=><button className='btn btn-sm bg-dark text-white m-1'>{f1} <i className='ms-2 icofont-close-circled' onClick={(e)=> handleIndex(i)}></i></button>)}
+                        {faultType?.map((f1,i)=><div className='btn btn-sm bg-dark text-white m-1'>{f1} <i className='ms-2 icofont-close-circled' onClick={(e)=> handleIndex(i)}></i></div>)}
                     </div>
                         
                     </div>
