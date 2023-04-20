@@ -80,4 +80,4 @@ function SparePartGrid(props) {
     )
 }
 
-export default SparePartGrid
+export default SparePartGrid;

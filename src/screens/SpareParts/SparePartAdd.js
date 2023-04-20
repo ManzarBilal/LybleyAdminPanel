@@ -13,11 +13,13 @@ function SparePartAdd() {
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
     const categories=useSelector(state=>state?.category);
+    const [faults,setFault]=useState([]);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getCategory(obj?._id));
         dispatch(getProduct(obj?._id));
+        getFaults();
     },[dispatch])
 
     const [sparePart,setSpareParts]=useState({
@@ -63,6 +65,16 @@ function SparePartAdd() {
          setSpareParts(sparePart1);
     }
 
+    const getFaults=async()=>{
+        try{
+         let response=await httpCommon.get("/getAllFault");
+         let {data}=response;
+         setFault(data);
+        }catch(err){
+         console.log(err);
+        }
+    }
+
     const addSparePart=async ()=>{
         try{
             let product=products?.find(p1=>p1.productName===sparePart.productModel);
@@ -98,7 +110,7 @@ function SparePartAdd() {
                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={["A","B"]} sparePart={sparePart} onChange={handleChange} />
+                        <BasicInformation onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                    
