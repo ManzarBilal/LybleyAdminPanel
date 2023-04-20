@@ -37,15 +37,23 @@ function SparePartAdd() {
         setSpareParts(sparePart1);
     }
     const handleImage=(file)=>{
-        //  let sparePart1={...sparePart};
-        //  sparePart1?.images?.push(file);
-        //  setSpareParts(sparePart1);
-        setSpareParts({...sparePart,images:file});
+         let sparePart1={...sparePart};
+         sparePart1?.images?.push(file);
+         setSpareParts(sparePart1);
+       // setSpareParts({...sparePart,images:file});
     }
 
     const handleFault=(fault)=>{
         let sparePart1={...sparePart};
-         sparePart1?.faultType?.push(fault);
+        let index=sparePart1?.faultType?.findIndex(f1=>f1===fault);
+        if(index>=0){
+            return null;
+        }else if(sparePart1?.faultType?.length>=5){
+            return null;
+        }
+        else{
+            sparePart1?.faultType?.push(fault);
+        }
          setSpareParts(sparePart1);
     }
 
@@ -65,14 +73,16 @@ function SparePartAdd() {
             formData.append("bestPrice",sparePart?.bestPrice);
             formData.append("faultType",sparePart?.faultType);
             formData.append("productModel",sparePart?.productModel);
-            formData.append("images",sparePart?.images)
+            for(let x=0; x<sparePart?.images?.length; x++){
+                formData.append("images",sparePart?.images[x]);
+            }
             formData.append("userId",product?.userId);
             formData.append("productId",product?._id);
             
             let response=await httpCommon.post("/addSparePart",formData);
             let {data}=response;
             ToastMessage(data);
-            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:""});
+            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[]});
         }catch(err){
             console.log(err);
         }
