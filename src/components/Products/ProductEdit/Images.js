@@ -26,6 +26,7 @@ function Images(props) {
             formData.append("productImage",img)
             let response=await httpCommon.patch(`/updateProductImageBy/${props?.id}`,formData);
             let {data}=response;
+            console.log("data",data)
           }catch(err){
             console.log(err);
           }
