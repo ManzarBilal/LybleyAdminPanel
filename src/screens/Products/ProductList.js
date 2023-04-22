@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CategoriesBlock from '../../components/Products/ProductList/CategoriesBlock';
 import SizeBlock from '../../components/Products/ProductList/SizeBlock';
 import ColorBlock from '../../components/Products/ProductList/ColorBlock';
@@ -10,14 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../../Redux/Actions/product';
 
 function ProductList(props) {
-
+const [randomValue,setRandomValue]=useState("")
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getProduct(obj?._id));
-    },[dispatch])
+    },[dispatch,randomValue])
 
     return (
         <div className="container-xxl">
@@ -53,7 +53,7 @@ function ProductList(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock product={products}/>
+                    <CardBlock url={props?.url} product={products} setRandomValue={setRandomValue}/>
                 </div>
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">

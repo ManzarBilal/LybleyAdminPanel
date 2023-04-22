@@ -1,28 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ColorBlock from '../../components/Products/ProductGrid/ColorBlock';
 import Categoriesblock from '../../components/Products/ProductGrid/CategoriesBlock'
 import Sizeblock from '../../components/Products/ProductGrid/SizeBlock';
 import PricingBlock from '../../components/Products/ProductGrid/PricingBlock';
 import RatingBlock from '../../components/Products/ProductGrid/RatingBlock';
-import CardBlock from '../../components/Products/ProductGrid/CardBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct } from '../../Redux/Actions/product';
+import { getSpareParts } from '../../Redux/Actions/sparePart';
+import CardBlock from './CardBlock';
+ 
 
 function SparePartGrid(props) {
 
+    const [randomValue, setRandomValue] = useState("");
     const dispatch=useDispatch();
-    const products=useSelector(state=>state?.products);
+    const spareParts=useSelector(state=>state?.spareParts);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getProduct(obj?._id));
-    },[dispatch])
-
+        dispatch(getSpareParts(obj?._id));
+    },[dispatch,randomValue])
+ 
+   
     return (
 
         <div className="container-xxl">
-            <PageHeader1 pagetitle='Products' url={props?.url} productgrid={true} />
+            <PageHeader1 pagetitle='Spare Parts' url={props?.url} sparePartgrid={true} />
             <div className="row g-3 mb-3">
                 <div className="col-md-12 col-lg-4 col-xl-4 col-xxl-3">
                     <div className="sticky-lg-top">
@@ -54,7 +57,7 @@ function SparePartGrid(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock url={props?.url} product={products} />
+                    <CardBlock url={props?.url} setRandomValue={setRandomValue} sparePart={spareParts}   />
                     <div className="row g-3 mb-3">
                         <div className="col-md-12">
                             <nav className="justify-content-end d-flex">

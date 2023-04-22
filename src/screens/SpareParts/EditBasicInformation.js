@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
  
 
-function BasicInformation(props) {
+function EditBasicInformation(props) {
 // const [category,setCategory]=useState();
 const [fault,setFault]=useState("");
  const fault1=(f)=>{
@@ -12,9 +12,9 @@ const [fault,setFault]=useState("");
       props.onDelete(i);
       setFault("");
  }
-let {partName,description,faultType,MRP,bestPrice,productModel,category,}=props?.sparePart;
+let {partName,description,faultType,MRP,bestPrice,productModel,category}=props?.sparePart;
 let {categories}=props;
-
+ 
     return (
         <>
             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
@@ -42,10 +42,10 @@ let {categories}=props;
                         <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
                             <label className="form-label">Category</label>
-                            <select className="form-select" name='category' value={category} onChange={(e)=>props.onChange(e)}  >
+                            <select className="form-select" name='category' value={category} onChange={(e)=>props.onChange(e)} >
                                 <option value="" selected>Choose Category</option>
                                 {categories?.map(c1=>
-                                    <option value={c1.categoryName} >{c1.categoryName}</option>
+                                    <option value={c1.category} >{c1.categoryName}</option>
                                     )}
                             </select>
                         </div>
@@ -59,6 +59,7 @@ let {categories}=props;
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>
+                             
                         </div>
                     </div>
                         <div className="col-xl-12 col-lg-12">
@@ -80,4 +81,4 @@ let {categories}=props;
         </>
     )
 }
-export default BasicInformation
+export default EditBasicInformation

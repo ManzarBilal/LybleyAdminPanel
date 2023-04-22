@@ -63,16 +63,6 @@
                 },
                 
                 {
-                    "name": "Product Detail",
-                    "routerLink": ["product-detail"],
-                    "identifier": "Product Detail",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
-                {
                     "name": "Product Add",
                     "routerLink": ["product-Add"],
                     "identifier": "Product Add",

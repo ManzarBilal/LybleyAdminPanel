@@ -27,6 +27,7 @@ function SparePartAdd() {
         description:"",
         MRP:"",
         bestPrice:"",
+        category:"",
         faultType:[],
         productModel:"",
         images:[]
@@ -83,7 +84,9 @@ function SparePartAdd() {
             formData.append("description",sparePart?.description);
             formData.append("MRP",sparePart?.MRP);
             formData.append("bestPrice",sparePart?.bestPrice);
-            formData.append("faultType",sparePart?.faultType);
+            // formData.append("faultType",sparePart?.faultType);
+            sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
+            formData.append("category",sparePart?.category);
             formData.append("productModel",sparePart?.productModel);
             for(let x=0; x<sparePart?.images?.length; x++){
                 formData.append("images",sparePart?.images[x]);
