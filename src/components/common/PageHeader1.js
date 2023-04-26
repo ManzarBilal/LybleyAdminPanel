@@ -3,7 +3,7 @@ import { Nav } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function PageHeader1 (props) {
-        const { pagetitle, righttitle, link, routebutton, modalbutton, button, invoicetab, changelog, Orderdetail, productgrid, productlist,documentation,cantactus } = props
+        const { pagetitle, righttitle, link, routebutton, modalbutton, button, invoicetab, changelog, Orderdetail,sparePartgrid,sparePartlist, productgrid, productlist,documentation,cantactus } = props
         return (
             <div className="row align-items-center">
                 <div className="border-0 mb-4">
@@ -71,6 +71,18 @@ function PageHeader1 (props) {
                             productlist ? <div className="btn-group group-link btn-set-task w-sm-100">
                                 <Link to={props?.url+"/product-grid"} className="btn  d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
                                 <Link to={props?.url+"/product-list"} className="btn active d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
+                            </div> : null
+                        }
+                        {
+                            sparePartgrid ? <div className="btn-group group-link btn-set-task w-sm-100">
+                                <Link to={props?.url+"/spareParts-grid"} className="btn active d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
+                                <Link to={props?.url+"/spareParts-list"} className="btn d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
+                            </div> : null
+                        }
+                        {
+                            sparePartlist ? <div className="btn-group group-link btn-set-task w-sm-100">
+                                <Link to={props?.url+"/spareParts-grid"} className="btn  d-inline-flex align-items-center" aria-current="page"><i className="icofont-wall px-2 fs-5"></i>Grid View</Link>
+                                <Link to={props?.url+"/spareParts-list"} className="btn active d-inline-flex align-items-center"><i className="icofont-listing-box px-2 fs-5"></i> List View</Link>
                             </div> : null
                         }
                         {

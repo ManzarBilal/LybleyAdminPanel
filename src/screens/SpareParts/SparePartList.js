@@ -1,27 +1,30 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import CategoriesBlock from '../../components/Products/ProductList/CategoriesBlock';
 import SizeBlock from '../../components/Products/ProductList/SizeBlock';
 import ColorBlock from '../../components/Products/ProductList/ColorBlock';
 import PricingBlock from '../../components/Products/ProductList/PricingBlock';
 import RatingBlock from '../../components/Products/ProductList/RatingBlock';
-import CardBlock from '../../components/Products/ProductList/CardBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct } from '../../Redux/Actions/product';
+import { getSpareParts } from '../../Redux/Actions/sparePart';
+import CardBlockList from './CardBlocList';
 
 function SparePartList(props) {
 
+    const [randomValue, setRandomValue] = useState("");
+
     const dispatch=useDispatch();
-    const products=useSelector(state=>state?.products);
+    const spareParts=useSelector(state=>state?.spareParts);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getProduct(obj?._id));
-    },[dispatch])
+        dispatch(getSpareParts(obj?._id));
+    },[dispatch,randomValue])
+ 
 
     return (
         <div className="container-xxl">
-            <PageHeader1 pagetitle='Products' url={props?.url} productlist={true} />
+            <PageHeader1 pagetitle='Spare Parts' url={props?.url} sparePartlist={true} />
             <div className="row g-3 mb-3">
                 <div className="col-md-12 col-lg-4 col-xl-4 col-xxl-3">
                     <div className="sticky-lg-top">
@@ -53,7 +56,7 @@ function SparePartList(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock product={products}/>
+                    <CardBlockList url={props?.url} spareParts={spareParts} setRandomValue={setRandomValue}   />
                 </div>
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">

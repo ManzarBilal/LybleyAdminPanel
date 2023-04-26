@@ -7,8 +7,11 @@ import { ToastMessage } from "../../components/common/ToastMessage";
 import { ConfirmBox } from '../../components/common/ConfirmBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../../Redux/Actions/product';
+import ReactPlayer from 'react-player'
+import { useRef } from 'react';
 
-function FaultList() {
+
+function SparePartVideos() {
     const [table_row, setTable_row] = useState([]);
     const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
@@ -17,24 +20,29 @@ function FaultList() {
     const [id, setCatId] = useState("");
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
-    
+    const [hasWindow, setHasWindow] = useState(false);
 
     let table_row1 = table_row.map((t1, i) => ({ ...t1, i: i + 1 }));
+
+    const playerRef = useRef(null);
     const columns = () => {
-        return [
+  return [
             {
-                name: "Sr. No.",
+                name: "SR. NO.",
                 selector: (row) => row?.i,
-                sortable: true,
+                sortable: true, width: "100px",
+            },
+            {
+                name: "VIDEO",
+                selector: (row) => row?.faultName,
+                cell:row=><>  
+              {hasWindow &&   <ReactPlayer ref={playerRef} url="https://youtu.be/0BIaDVnYp2A" controls height="60px"  />}
+              </>,
+                sortable: true, width: "200px", 
             },
             {
                 name: "FAULT NAME",
                 selector: (row) => row?.faultName,
-                sortable: true, minWidth: "350px"
-            },
-            {
-                name: "PRODUCT NAME",
-                selector: (row) => row?.productModel,
                 sortable: true,  
             },
             {
@@ -65,6 +73,9 @@ function FaultList() {
         let obj = JSON.parse(user);
         dispatch(getProduct(obj?._id));
         GetAllFault()
+        if (typeof window !== "undefined") {
+            setHasWindow(true);
+          }
     }, [randomValue, dispatch])
 
     const products = useSelector(state => state?.products)
@@ -264,4 +275,4 @@ function FaultList() {
         </div>
     )
 }
-export default FaultList;
+export default SparePartVideos;

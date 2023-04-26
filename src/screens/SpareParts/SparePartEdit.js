@@ -1,67 +1,93 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader1 from '../../components/common/PageHeader1';
-// import Categories from '../../components/Products/ProductEdit/Categories';
-// import InventoryInfo from '../../components/Products/ProductEdit/InventoryInfo';
-// import PricingInfo from '../../components/Products/ProductEdit/PricingInfo';
-// import PublicaSchedule from '../../components/Products/ProductEdit/PublicaSchedule';
-// import Size from '../../components/Products/ProductEdit/Size';
-// import Tags from '../../components/Products/ProductEdit/Tags';
-// import VisibilityStatus from '../../components/Products/ProductEdit/VisibilityStatus';
-import BasicInformation from '../../components/Products/ProductEdit/BasicInformation';
-// import ShippingCountries from '../../components/Products/ProductEdit/ShippingCountries';
-import Images from '../../components/Products/ProductEdit/Images';
-// import CroppedImages from '../../components/Products/ProductEdit/CroppedImages';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategory } from '../../Redux/Actions/category';
 import httpCommon from "../../http-common"
 import { ToastMessage } from '../../components/common/ToastMessage';
 import { useHistory, useParams } from 'react-router-dom';
+import EditBasicInformation from './EditBasicInformation';
+import { getProduct } from '../../Redux/Actions/product';
+import EditImage from './EditImage';
 
 function SparePartEdit(props) {
     const params = useParams()
+    const history=useHistory()
     const { id } = params;
  
-    const history=useHistory()
+    const dispatch=useDispatch();
+    const products=useSelector(state=>state?.products);
+    const categories=useSelector(state=>state?.category);
+    const spareParts=useSelector(state=>state?.spareParts);
 
-    const dispatch=useDispatch()
-    const categories=useSelector(state=>state?.category)
-    const products = useSelector(state => state?.products);
- 
-    const [product,setProduct]=useState({});
     const [img,setImage]=useState("");
+    const [faults,setFault]=useState([]);
+    const [sparePart,setSpareParts]=useState({ })
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getCategory(obj?._id));
-    const filterProduct = products.find(e1 => e1?._id === id)
-     setProduct(filterProduct);
-    },[id,dispatch,products])
-   // console.log("filterProduct", filterProduct);
-    // const [product, setProduct] = useState({
-    //     productName: "",
-    //     productDescription: "",
-    //     productCategory: "",
-    //     productImage: "",
-    // })
+        dispatch(getProduct(obj?._id));
+        getFaults();
+        const filterPart = spareParts.find(e1 => e1?._id === id)
+     
+        setSpareParts(filterPart)
+    },[ dispatch,id,spareParts])
 
-    const handleChange = (e) => {
-        const { currentTarget: input } = e;
-        let product1 = { ...product };
-        product1[input.name] = input.value;
-        setProduct(product1);
+    
+    
+    const handleChange=(e)=>{
+        const {currentTarget:input}=e;
+        let sparePart1={...sparePart};
+        sparePart1[input.name]=input.value;
+        setSpareParts(sparePart1);
     }
-    const handleImage = (file) => {
-        setImage(file);
-        setProduct({...product,productImage:""});
+    const handleImage=(file)=>{
+         let sparePart1={...sparePart};
+         sparePart1?.images?.push(file);
+         setSpareParts(sparePart1);
+       // setSpareParts({...sparePart,images:file});
     }
 
+    const handleFault=(fault)=>{
+        let sparePart1={...sparePart};
+        let index=sparePart1?.faultType?.findIndex(f1=>f1===fault);
+        if(index>=0){
+            return null;
+        }else if(sparePart1?.faultType?.length>=5){
+            return null;
+        }
+        else{
+            sparePart1?.faultType?.push(fault);
+        }
+         setSpareParts(sparePart1);
+    }
+
+    const handleFaultDelete=(i)=>{
+        let sparePart1={...sparePart};
+         sparePart1?.faultType?.splice(i,1);
+         setSpareParts(sparePart1);
+    }
+
+    const getFaults=async()=>{
+        try{
+         let response=await httpCommon.get("/getAllFault");
+         let {data}=response;
+         setFault(data);
+        }catch(err){
+         console.log(err);
+        }
+    }
+
+    //  console.log("sparePart",sparePart);
     const editProduct = async () => {
+        let obj={partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
+            MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType};
         try {
-            let obj={productName:product.productName,productCategory:product.productCategory,productDescription:product.productDescription};
-            let response = await httpCommon.patch(`/updateProduct/${id}`,obj);
+           
+            let response = await httpCommon.patch(`/updateSparePart/${id}`,obj);
             let { data } = response;
             ToastMessage(data);
-              history.push(`${props?.url}/product-grid`)
+              history.push(`${props?.url}/spareParts-grid`)
         } catch (err) {
             console.log(err);
         }
@@ -75,48 +101,19 @@ function SparePartEdit(props) {
 
             />
             <div className="row g-3">
-                {/* <div className="col-xl-4 col-lg-4">
-                    <div className="sticky-lg-top">
-                        <div className="card mb-3">
-                            <PricingInfo />
-                        </div>
-                        <div className="card mb-3">
-                            <VisibilityStatus />
-                        </div>
-                        <div className="card mb-3">
-                            <Size />
-                        </div>
-                        <div className="card mb-3">
-                            <PublicaSchedule />
-                        </div>
-                        <div className="card mb-3">
-                            <Tags />
-                        </div>
-                        <div className="card mb-3">
-                            <Categories />
-                        </div>
-                        <div className="card">
-                            <InventoryInfo />
-                        </div>
-                    </div>
-                </div> */}
+                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation categories={categories} product={product} onChange={handleChange} />
+                        <EditBasicInformation onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
-                    {/* <div className="card mb-3">
-                        <ShippingCountries />
-                    </div> */}
-
+                    
                     <div className="card mb-3">
-                        <Images id={id} img={img} product={product} onImage={handleImage} />
+                        <EditImage id={id} img={img} setImage={setImage} sparePart={sparePart} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={editProduct}>Save</button>
+                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5"onClick={editProduct} >Save</button>
                     </div>
-                    {/* <div className="card">
-                        <CroppedImages />
-                    </div> */}
+                   
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import ColorBlock from '../../components/Products/ProductGrid/ColorBlock';
 import Categoriesblock from '../../components/Products/ProductGrid/CategoriesBlock'
 import Sizeblock from '../../components/Products/ProductGrid/SizeBlock';
@@ -11,13 +11,14 @@ import { getProduct } from '../../Redux/Actions/product';
 
 function ProductGrid(props) {
 
+    const [randomValue,setRandomValue]=useState("")
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getProduct(obj?._id));
-    },[dispatch])
+    },[dispatch,randomValue])
 
     return (
 
@@ -54,7 +55,7 @@ function ProductGrid(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock url={props?.url} product={products} />
+                    <CardBlock url={props?.url} product={products} setRandomValue={setRandomValue}/>
                     <div className="row g-3 mb-3">
                         <div className="col-md-12">
                             <nav className="justify-content-end d-flex">
