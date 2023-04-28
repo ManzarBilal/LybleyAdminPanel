@@ -16,45 +16,38 @@ function SparePartVideos() {
     const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
-    const [fault, setFault] = useState({ faultName: "", productId: "", productModel: "" });
-    const [id, setCatId] = useState("");
-    const [brandId, setBrandId] = useState("");
+    const [faultVideo, setFaultVideo] = useState({ video: "", brandId: "", productModel: "" });
+    const [v_id, setCatId] = useState("");
+    const [videoId, setVideoId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [hasWindow, setHasWindow] = useState(false);
-
+    const [video, setVideo] = useState([])
+    const [videoUrl, setVideoUrl] = useState("")
+    const [loading, setLoading] = useState(false);
     let table_row1 = table_row.map((t1, i) => ({ ...t1, i: i + 1 }));
 
     const playerRef = useRef(null);
     const columns = () => {
-  return [
+        return [
             {
                 name: "SR. NO.",
                 selector: (row) => row?.i,
                 sortable: true, width: "100px",
             },
             {
-                name: "VIDEO",
-                selector: (row) => row?.faultName,
-                cell:row=><>  
-              {hasWindow &&   <ReactPlayer ref={playerRef} url="https://youtu.be/0BIaDVnYp2A" controls height="60px"  />}
-              </>,
-                sortable: true, width: "200px", 
+                name: " FAULT VIDEO",
+                selector: (row) => row?.video,
+                cell: row => <>
+                    {hasWindow && <ReactPlayer ref={playerRef} url= {row?.video} controls height="60px" />}
+                </>,
+                sortable: true, width: "200px",
             },
             {
-                name: "FAULT NAME",
-                selector: (row) => row?.faultName,
-                sortable: true,  
-            },
-            {
-                name: "STATUS",
-                selector: (row) => row?.status,
-                cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "ACTIVE")}>INACTIVE</button>
-                        : <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "INACTIVE")} >ACTIVE</button>}
-
-                </div>,
+                name: "FAULT PRODUCT",
+                selector: (row) => row?.productModel,
                 sortable: true,
             },
+          
             {
                 name: "ACTION",
                 selector: (row) => { },
@@ -72,20 +65,20 @@ function SparePartVideos() {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         dispatch(getProduct(obj?._id));
-        GetAllFault()
+        GetAllFaultVideo()
         if (typeof window !== "undefined") {
             setHasWindow(true);
-          }
+        }
     }, [randomValue, dispatch])
 
     const products = useSelector(state => state?.products)
 
-    const GetAllFault = async () => {
+    const GetAllFaultVideo = async () => {
+        let user = localStorage.getItem("user");
+        let obj = JSON.parse(user);
         try {
-            let user = localStorage.getItem("user");
-            let obj = JSON.parse(user);
-            const id = obj?._id;
-            let response = await httpCommon.get(`/getFaultBy/${id}`)
+             
+            let response = await httpCommon.get(`/getAllVideosBybrand/${obj?._id}`)
             let { data } = response
             setTable_row(data)
         }
@@ -94,50 +87,46 @@ function SparePartVideos() {
         }
     }
 
-
-
-    const approval = async (_id, body) => {
-        try {
-            let response = await httpCommon.patch(`/updateFaultBy/${_id}`, { status: body });
-            let { data } = response;
-            let x = Math.random() * 5;
-            setRandomValue(x);
-            ToastMessage(data);
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
     const edit = (id) => {
         setIseditmodal(true);
         let table_row1 = [...table_row];
         let editData = table_row1.find(c1 => c1._id === id);
-        setFault({faultName:editData?.faultName ,productModel:editData?.productModel});
+       
+        setFaultVideo({ video: editData?.video, productModel: editData?.productModel });
         setCatId(id);
     }
-
-    const editFault = async () => {
+ 
+    const editFaultVideo = async () => {
+        const formData = new FormData()
+        formData.append("productModel", faultVideo?.productModel);
+        formData.append("video",video);
+       
         try {
-            let response = await httpCommon.patch(`/updateFaultBy/${id}`, fault);
+            setLoading(true);
+            let response = await httpCommon.patch(`/editVideo/${v_id}`, formData);
             let { data } = response;
             setIseditmodal(false)
             let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
+            setLoading(false)
             ToastMessage(data);
         } catch (err) {
             console.log(err);
         }
     }
-    const addFault = async () => {
-        let product = products?.find(p1 => p1?.productName === fault?.productModel);
-
+    const addFaultVideo = async () => {
+        let product = products?.find(p1 => p1?.productName === faultVideo?.productModel);
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
-        const dataObj = { faultName: fault?.faultName, productModel: product?.productName, productId: product?._id, userId: obj?._id }
-      
-        try {         
-            let response = await httpCommon.post("/addFault", dataObj);
+        const formData = new FormData()
+        formData.append("productModel", product?.productName);
+        formData.append("brandId", obj?._id);
+        formData.append("video",video);
+        try {
+            setLoading(true);
+            let response = await httpCommon.post("/uploadVideo", formData);
             let { data } = response;
+            setLoading(false);
             setIsmodal(false)
             let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
@@ -146,9 +135,9 @@ function SparePartVideos() {
             console.log(err);
         }
     }
-    const deleteFault = async () => {
+    const deleteFaultVideo = async () => {
         try {
-            let response = await httpCommon.deleteData(`/deleteFaultBy/${brandId}`);
+            let response = await httpCommon.deleteData(`/deleteVideo/${videoId}`);
             let { data } = response;
             setConfirmBoxView(false);
             let x = Math.floor((Math.random() * 10) + 1);
@@ -159,16 +148,37 @@ function SparePartVideos() {
         }
     }
     const handleFault = (id) => {
-        setBrandId(id)
+        setVideoId(id)
         setConfirmBoxView(true);
     }
-   
+
     const handleChange = (e) => {
         const { currentTarget: input } = e;
-        let fault1 = { ...fault };
+        let fault1 = { ...faultVideo };
         fault1[input.name] = input.value;
-        setFault(fault1);
+        setFaultVideo(fault1);
     }
+
+    
+    // const handleFileChange = (event) => {
+    //     const file = event.target.files[0];
+    //     if (!file) return;
+    //     setVideo(URL.createObjectURL(file));
+    // };
+    const handleFileChange = (e) => {
+        const reader = new FileReader();
+        const file = e.target.files[0];
+        if (!file) return;
+        setVideoUrl(URL.createObjectURL(file));
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0])
+            if (e.target.name === "file") {
+              // setImage(e.target.files[0]);
+               setVideo(e.target.files[0])
+            }
+        }
+    };
+ 
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -203,24 +213,31 @@ function SparePartVideos() {
             </div>
             <Modal show={iseditmodal} onHide={() => { setIseditmodal(false) }} className="" style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" closeButton>
-                    <h5 className="modal-title  fw-bold" id="expeditLabel"> Edit Category</h5>
+                    <h5 className="modal-title  fw-bold" id="expeditLabel"> Edit Video</h5>
                 </Modal.Header>
                 <Modal.Body className="modal-body">
 
                     <div className="deadline-form">
                         <form>
                             <div className="row g-3 mb-3">
-                                <div className="col-sm-12">
-                                    <label htmlhtmlFor="item1" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item1" name="faultName" value={fault?.faultName} onChange={(e) => setFault({faultName:e.currentTarget.value})} />
+                                <div className="col-md-12">
+                                    <label className="form-label">Product video Upload</label>
+                                    <small className="d-block text-muted mb-2">Only portrait or square video, 2M max and 2000px max-height.</small>
+                                    <div id='create-token' className='dropzoneww'>
+
+                                        <div className='mb-3' >
+                                            <input id='filesize' onChange={(e) => handleFileChange(e)} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
+                                        </div>
+                                        <ReactPlayer ref={playerRef} url={faultVideo?.video} controls width="100%" height="200px" />
+                                    </div>
                                 </div>
                                 <div className="col-xl-12 col-lg-12">
                                     <div className="card-body m-0 p-0">
                                         <label className="form-label">Product Model</label>
-                                        <select className="form-select" name='productModel' value={fault?.productModel} onChange={handleChange}  >
+                                        <select className="form-select" name='productModel' value={faultVideo?.productModel} onChange={handleChange}  >
                                             <option value="" selected>Choose Model</option>
-                                            {products?.map(c1 =>
-                                                <option value={c1.productName} >{c1.productName}</option>
+                                            {products?.map((c1, i) =>
+                                                <option key={i} value={c1.productName} >{c1.productName}</option>
                                             )}
                                         </select>
                                     </div>
@@ -232,29 +249,36 @@ function SparePartVideos() {
                 </Modal.Body>
                 <div className="modal-footer">
                     <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={() => editFault()}>Save</button>
+                    <button type="submit" className="btn btn-primary" disabled={loading} onClick={() => editFaultVideo()}> {loading ? "Uploading" : "Edit "}  </button>
                 </div>
 
             </Modal>
             <Modal show={ismodal} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" onClick={() => { setIsmodal(false) }} closeButton>
-                    <h5 className="modal-title  fw-bold" id="expaddLabel">Add Fault</h5>
+                    <h5 className="modal-title  fw-bold" id="expaddLabel">Add Fault Video</h5>
                 </Modal.Header>
                 <Modal.Body className="modal-body">
                     <div className="deadline-form">
                         <form>
                             <div className="row g-3 mb-3">
-                                <div className="col-sm-12">
-                                    <label htmlFor="item" className="form-label">Fault Name</label>
-                                    <input type="text" className="form-control" id="item" value={fault?.faultName} onChange={(e) => setFault({faultName:e.currentTarget.value})} />
+                                <div className="col-md-12">
+                                    <label className="form-label">Product video Upload</label>
+                                    <small className="d-block text-muted mb-2">Only portrait or square video, 2M max and 2000px max-height.</small>
+                                    <div id='create-token' className='dropzoneww'>
+                                        <div className='mb-3' >
+                                            <input id='filesize' onChange={(e) => handleFileChange(e)} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
+                                        </div>
+                                        {videoUrl === "" ? <div className='text-danger fw-bold text-center'>Please select Video</div> : <ReactPlayer ref={playerRef} url={videoUrl} controls width="100%" height="200px" />}
+
+                                    </div>
                                 </div>
                                 <div className="col-xl-12 col-lg-12">
                                     <div className="card-body m-0 p-0">
                                         <label className="form-label">Product Model</label>
-                                        <select className="form-select" name='productModel' value={fault?.productModel} onChange={handleChange}  >
+                                        <select className="form-select" name='productModel' value={faultVideo?.productModel} onChange={handleChange}  >
                                             <option value="" selected>Choose Model</option>
-                                            {products?.map(c1 =>
-                                                <option value={c1.productName} >{c1.productName}</option>
+                                            {products?.map((c1, i) =>
+                                                <option key={i} value={c1.productName} >{c1.productName}</option>
                                             )}
                                         </select>
                                     </div>
@@ -266,11 +290,11 @@ function SparePartVideos() {
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={addFault}>Add</button>
+                    <button type="submit" className="btn btn-primary" disabled={loading} onClick={addFaultVideo}>{loading ? "Uploading" : "Add Video"}</button>
                 </Modal.Footer>
 
             </Modal>
-            <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteFault} />
+            <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteFaultVideo} />
 
         </div>
     )
