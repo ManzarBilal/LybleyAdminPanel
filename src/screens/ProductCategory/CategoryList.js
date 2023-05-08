@@ -145,6 +145,7 @@ function CategoryList() {
             let obj=JSON.parse(user);
             const formData = new FormData();
             formData.append("userId",obj?._id);
+            formData.append("brandName",obj?.brandName);
             formData.append("categoryName",categoryName);
             formData.append("categoryImage",categoryImage);
             let response=await httpCommon.post("/addProductCategory",formData);

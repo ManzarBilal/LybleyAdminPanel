@@ -93,7 +93,8 @@ function SparePartAdd() {
             }
             formData.append("userId",product?.userId);
             formData.append("productId",product?._id);
-            
+            formData.append("brandName",product?.brandName);
+
             let response=await httpCommon.post("/addSparePart",formData);
             let {data}=response;
             ToastMessage(data);
