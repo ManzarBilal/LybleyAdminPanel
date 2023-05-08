@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Profile from '../../components/Other Pages/Profile Page/Profile';
-import ProfileSetting from '../../components/Other Pages/Profile Page/ProfileSetting'
+import ProfileSetting from '../../components/Other Pages/Profile Page/ProfileSetting';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
  
@@ -8,7 +8,7 @@ import httpCommon from "../../http-common";
 function ProfilePage() {
 
     const[userDetail,setUserDetail]=useState({});
-    const [randomValue,setRandomValue]=useState("")
+    const [randomValue,setRandomValue]=useState("");
 
 useEffect(()=>{
     GetProfile()

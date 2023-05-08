@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { OrderListData } from '../../components/Data/OrderListData';
-
+import httpCommon from "../../http-common";
 function OrderList() {
+    const [orders,setOrders]=useState([]);
+    useEffect(()=>{
+       getAllOrder();
+    },[]);
+
+    const getAllOrder=async()=>{
+        try{
+          let response=await httpCommon.get("/getAllOrder");
+          let {data}=response;
+          setOrders(data);
+        }catch(err){
+            console.log(err);
+        }
+    }
+
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">

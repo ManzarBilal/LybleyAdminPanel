@@ -1,64 +1,124 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
 import { Link } from 'react-router-dom';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { CustomerData } from '../../components/Data/CustomerData';
+import { allCustomers } from '../../Redux/Actions/customer';
+import {useDispatch,useSelector} from "react-redux"
+import httpCommon from "../../http-common"
 
 function CustomerList() {
     const [table_row, setTable_row] = useState([...CustomerData.rows]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
+    const dispatch=useDispatch();
+    const [data,setData]=useState([]);
+    const [refresh,setRefresh]=useState("");
+    
+    useEffect(()=>{
+       allCustomers();
+    },[refresh])
+   // const data=useSelector(state=>state?.userDetail);
+
     const columns = () => {
         return [
-            {
-                name: " ID",
-                selector: (row) => row.id,
-                sortable: true,
-            },
+            // {
+            //     name: " ID",
+            //     selector: (row) => row._id,
+            //     sortable: true,
+            // },
             {
                 name: "CUSTOMER",
                 selector: (row) => row.name,
-                cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> <span className="px-2"><Link to={process.env.PUBLIC_URL + '/customer-detail'}>{row.name}</Link></span></>,
-                sortable: true, minWidth: "200px"
+                //cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> <span className="px-2"><Link to={process.env.PUBLIC_URL + '/customer-detail'}>{row.name}</Link></span></>,
+                sortable: true,width:"150px"
+            },
+            {
+                name: "ROLE",
+                selector: (row) => row.role,
+                sortable: true,width:"100px"
             },
             {
                 name: "REGISTER DATE",
-                selector: (row) => row.date,
-                sortable: true,
+                selector: (row) => new Date(row?.createdAt)?.toLocaleDateString(),
+                sortable: true,width:"150px"
 
             },
             {
                 name: "MAIL",
-                selector: (row) => row.mail,
-                sortable: true
+                selector: (row) => row.email,
+                sortable: true,width:"180px"
             },
             {
                 name: "PHONE",
-                selector: (row) => row.phone,
-                sortable: true
+                selector: (row) => row.contact,
+                sortable: true,width:"110px"
+            },
+
+            {
+                name: "DOCUMENT",
+                selector: (row) => {},
+                sortable: true,width:"150px",
+                cell:(row)=> <div className='text-primary text-decoration-underline'><a href={row.document} className='text-primary'> {row.document} </a></div>
             },
             {
-                name: "COUNTRY",
-                selector: (row) => row.country,
-                sortable: true,
+                name: "DISCOUNT STATUS",
+                selector: (row) => {},
+                sortable: true,width:"180px",
+                cell:(row)=>row.role==="Reseller" &&  <button className={`btn text-white ${row.discount==="NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={()=>{row.discount==="NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id)}}>{row.discount}</button>
             },
-            {
-                name: "TOTAL ORDER",
-                selector: (row) => row.order,
-                sortable: true,
-            },
+            // {
+            //     name: "COUNTRY",
+            //     selector: (row) => row.country,
+            //     sortable: true,
+            // },
+            // {
+            //     name: "TOTAL ORDER",
+            //     selector: (row) => row.order,
+            //     sortable: true,
+            // },
             {
                 name: "ACTION",
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    <button onClick={() => { setIseditmodal(true) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
+                    {/* <button onClick={() => { setIseditmodal(true) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button> */}
                     <button type="button" onClick={() => { onDeleteRow(row) }} className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
             }
         ]
     }
+
+    const allCustomers=async()=>{
+        try{
+            let response= await httpCommon.get("/allUserDetail");
+            let {data}=response;
+            setData(data);
+        }catch(err){
+            console.log(err);
+        }
+    }
+    
+    const verifyCustomer=async(id)=>{
+          try{
+             let response=await httpCommon.patch(`/verifyReseller/${id}`,{discount:"VERIFIED"});
+             let {data}=response;
+             setRefresh(data);
+          }catch(err){
+           console.log(err);
+          }
+    }
+    const notVerifyCustomer=async(id)=>{
+        try{
+           let response=await httpCommon.patch(`/notVerifyReseller/${id}`,{discount:"NOT_VERIFIED"});
+           let {data}=response;
+           setRefresh(data);
+        }catch(err){
+         console.log(err);
+        }
+  }
+
     async function onDeleteRow(row) {
        //eslint-disable-next-line
         var result = await table_row.filter((d) => {  if (d !== row) { return d } });
@@ -83,7 +143,7 @@ function CustomerList() {
                                         <div className="col-sm-12">
                                             <DataTable
                                                 columns={columns()}
-                                                data={table_row}
+                                                data={data}
                                                 defaultSortField="title"
                                                 pagination
                                                 selectableRows={false}
