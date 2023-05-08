@@ -6,7 +6,7 @@ import PricingBlock from '../../components/Products/ProductGrid/PricingBlock';
 import RatingBlock from '../../components/Products/ProductGrid/RatingBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSpareParts } from '../../Redux/Actions/sparePart';
+import { getAllSpareParts, getSpareParts } from '../../Redux/Actions/sparePart';
 import CardBlock from './CardBlock';
  
 
@@ -15,10 +15,14 @@ function SparePartGrid(props) {
     const [randomValue, setRandomValue] = useState("");
     const dispatch=useDispatch();
     const spareParts=useSelector(state=>state?.spareParts);
+    let user=localStorage.getItem("user");
+    let obj=JSON.parse(user);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getSpareParts(obj?._id));
+    
+        obj?.role==='ADMIN' ? dispatch(getAllSpareParts()) 
+        : dispatch(getSpareParts(obj?._id));
     },[dispatch,randomValue])
  
    
@@ -57,7 +61,7 @@ function SparePartGrid(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock url={props?.url} setRandomValue={setRandomValue} sparePart={spareParts}   />
+                    <CardBlock url={props?.url} role={obj?.role} setRandomValue={setRandomValue} sparePart={spareParts}   />
                     <div className="row g-3 mb-3">
                         <div className="col-md-12">
                             <nav className="justify-content-end d-flex">

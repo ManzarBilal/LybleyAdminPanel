@@ -7,16 +7,19 @@ import RatingBlock from '../../components/Products/ProductList/RatingBlock';
 import CardBlock from '../../components/Products/ProductList/CardBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct } from '../../Redux/Actions/product';
+import { getAllProduct, getProduct } from '../../Redux/Actions/product';
 
 function ProductList(props) {
 const [randomValue,setRandomValue]=useState("")
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
-    useEffect(()=>{
+    let user=localStorage.getItem("user");
+    let obj=JSON.parse(user);
+    useEffect(()=>{ 
         let user=localStorage.getItem("user");
-        let obj=JSON.parse(user);
-        dispatch(getProduct(obj?._id));
+    let obj=JSON.parse(user);
+        obj?.role==='ADMIN' ? dispatch(getAllProduct()) 
+       : dispatch(getProduct(obj?._id));
     },[dispatch,randomValue])
 
     return (
@@ -53,7 +56,7 @@ const [randomValue,setRandomValue]=useState("")
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock url={props?.url} product={products} setRandomValue={setRandomValue}/>
+                    <CardBlock url={props?.url}  role={obj?.role} product={products} setRandomValue={setRandomValue}/>
                 </div>
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">

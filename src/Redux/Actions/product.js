@@ -1,9 +1,9 @@
 import httpCommon from "../../http-common";
 
-export const getProduct=(id)=>{
+export const getAllProduct=()=>{
        return async (dispatch)=>{
         try{
-            let response= await httpCommon.get(`/allProductsByBrand/${id}`)
+            let response= await httpCommon.get(`/getAllProducts`)
             dispatch({
                 type:"All_PRODUCT",
                 payload:response.data
@@ -12,4 +12,18 @@ export const getProduct=(id)=>{
         console.log(err);
        }
     }
+}
+
+export const getProduct=(id)=>{
+    return async (dispatch)=>{
+     try{
+         let response= await httpCommon.get(`/allProductsByBrand/${id}`)
+         dispatch({
+             type:"All_PRODUCT",
+             payload:response.data
+         })
+    }catch(err){
+     console.log(err);
+    }
+ }
 }
