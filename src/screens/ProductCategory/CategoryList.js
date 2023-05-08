@@ -13,11 +13,13 @@ function CategoryList() {
     const [iseditmodal, setIseditmodal] = useState(false);
     const [categoryName, setCategoryName] = useState("");
     const [categoryImage, setCategoryImage] = useState("");
-    const [id,setCatId]=useState("");
+    const [id, setCatId] = useState("");
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
 
-
+    const admin = localStorage.getItem("user");
+    const Admindata = JSON.parse(admin);
+    
     const columns = () => {
         return [
             {
@@ -35,6 +37,11 @@ function CategoryList() {
                 cell: row => <><img className="avatar rounded lg border" src={row?.categoryImage} alt="" /> </>,
                 sortable: true, minWidth: "200px"
             },
+            Admindata?.role === "ADMIN" ? {
+                name: "BRAND NAME",
+                cell: row => row?.brandName,
+                sortable: true,
+            } : "",
             {
                 name: "STATUS",
                 selector: (row) => row?.status,
@@ -58,12 +65,26 @@ function CategoryList() {
     }
 
     useEffect(() => {
-        GetAllCategory()
+        const admin = localStorage.getItem("user");
+    const Admindata = JSON.parse(admin);
+        Admindata?.role === "ADMIN" ? GetAllCategory()
+            : GetAllCategoryByBrand()
     }, [randomValue])
     const GetAllCategory = async () => {
         try {
+            let response = await httpCommon.get(`/getAllProductCategories`)
+            let { data } = response
+            setTable_row(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+    const GetAllCategoryByBrand = async () => {
+        try {
             let user = localStorage.getItem("user");
-            let obj=JSON.parse(user);
+            let obj = JSON.parse(user);
             const id = obj?._id;
             let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
             let { data } = response
@@ -107,50 +128,50 @@ function CategoryList() {
         }
     }
 
-    const edit=(id)=>{
+    const edit = (id) => {
         setIseditmodal(true);
-        let table_row1=[...table_row];
-        let editData=table_row1.find(c1=>c1._id===id);
+        let table_row1 = [...table_row];
+        let editData = table_row1.find(c1 => c1._id === id);
         setCategoryName(editData?.categoryName);
         setCatId(id);
     }
 
-    const imageUpload=async(obj)=>{
-          try{
+    const imageUpload = async (obj) => {
+        try {
             const formData = new FormData();
-            formData.append("categoryImage",obj);
-            let response=await httpCommon.patch(`/updateProductCategoryImageBy/${id}`,formData);
+            formData.append("categoryImage", obj);
+            let response = await httpCommon.patch(`/updateProductCategoryImageBy/${id}`, formData);
             console.log(response);
-          }catch(err){
+        } catch (err) {
             console.log(err);
-          }
+        }
     }
-    const editCategory=async()=>{
-          try{
+    const editCategory = async () => {
+        try {
             const formData = new FormData();
-            formData.append("categoryName",categoryName);
-            let response=await httpCommon.patch(`/updateProductCategoryBy/${id}`,{categoryName:categoryName});
-            let {data}=response;
+            formData.append("categoryName", categoryName);
+            let response = await httpCommon.patch(`/updateProductCategoryBy/${id}`, { categoryName: categoryName });
+            let { data } = response;
             setIseditmodal(false)
-            let x=Math.floor((Math.random() * 10) + 1);
+            let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
             ToastMessage(data);
-          }catch(err){
+        } catch (err) {
             console.log(err);
-          }
+        }
     }
-    const addCategory=async ()=>{
-        try{
-            let user=localStorage.getItem("user");
-            let obj=JSON.parse(user);
+    const addCategory = async () => {
+        try {
+            let user = localStorage.getItem("user");
+            let obj = JSON.parse(user);
             const formData = new FormData();
-            formData.append("userId",obj?._id);
-            formData.append("categoryName",categoryName);
-            formData.append("categoryImage",categoryImage);
-            let response=await httpCommon.post("/addProductCategory",formData);
-            let {data}=response;
+            formData.append("userId", obj?._id);
+            formData.append("categoryName", categoryName);
+            formData.append("categoryImage", categoryImage);
+            let response = await httpCommon.post("/addProductCategory", formData);
+            let { data } = response;
             setIsmodal(false)
-            let x=Math.floor((Math.random() * 10) + 1);
+            let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
             ToastMessage(data);
         } catch (err) {
@@ -216,11 +237,11 @@ function CategoryList() {
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="item1" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item1" name="categoryName" value={categoryName} onChange={(e)=>setCategoryName(e.currentTarget.value)} />
+                                    <input type="text" className="form-control" id="item1" name="categoryName" value={categoryName} onChange={(e) => setCategoryName(e.currentTarget.value)} />
                                 </div>
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="taxtno1" className="form-label">Category Image</label>
-                                    <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => {handleFileUpload(e) }} />
+                                    <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => { handleFileUpload(e) }} />
                                 </div>
                             </div>
                         </form>
@@ -229,11 +250,11 @@ function CategoryList() {
                 </Modal.Body>
                 <div className="modal-footer">
                     <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={()=>editCategory()}>Save</button>
+                    <button type="submit" className="btn btn-primary" onClick={() => editCategory()}>Save</button>
                 </div>
 
             </Modal>
-            <Modal show={ismodal}   style={{ display: 'block' }}>
+            <Modal show={ismodal} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" onClick={() => { setIsmodal(false) }} closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Category</h5>
                 </Modal.Header>

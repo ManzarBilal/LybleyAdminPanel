@@ -41,7 +41,28 @@
                 }   
             ]
         },
-
+        {
+            "name": "Category",
+            "routerLink": [""],
+            "identifier": "Category",
+            "iconClass": "icofont-chart-flow fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                {
+                    "name": "Category List",
+                    "routerLink": ["category-list"],
+                    "identifier": "Category List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                  
+            ]
+        },
         {
             "name": "Products",
             "routerLink": [""],
@@ -71,26 +92,7 @@
                     "isApp": false,
                     "children": []
                 },
-                {
-                    "name": "Product Edit",
-                    "routerLink": ["product-edit"],
-                    "identifier": "Product Edit",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
-                {
-                    "name": "Product Detail",
-                    "routerLink": ["product-detail"],
-                    "identifier": "Product Detail",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
+                
                 {
                     "name": "Product Add",
                     "routerLink": ["product-Add"],
@@ -100,44 +102,24 @@
                     "isCategory": false,
                     "isApp": false,
                     "children": []
-                },
-                {
-                    "name": "Shopping Cart",
-                    "routerLink": ["shopping-cart"],
-                    "identifier": "Shopping Cart",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
-                {
-                    "name": "Checkout",
-                    "routerLink": ["check-out"],
-                    "identifier": "Checkout",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
                 }
+                 
 
             ]
         },
-
         {
-            "name": "Categories",
+            "name": "Spare Parts",
             "routerLink": [""],
-            "identifier": "Categories",
-            "iconClass": "icofont-chart-flow fs-5",
+            "identifier": "Spare Parts",
+            "iconClass": "icofont-repair fs-5",
             "breadcrumbMessage": "",
             "isCategory": false,
-            "isApp": true,
+            "isApp": false,
             "children": [
                 {
-                    "name": "Categories List",
-                    "routerLink": ["categories-list"],
-                    "identifier": "Categories List",
+                    "name": "Spare Parts Add",
+                    "routerLink": ["spareParts-Add"],
+                    "identifier": "Spare Parts Add",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
@@ -145,9 +127,9 @@
                     "children": []
                 },
                 {
-                    "name": "Categories Edit",
-                    "routerLink": ["categories-edit"],
-                    "identifier": "Categories Edit",
+                    "name": "Spare Parts Grid",
+                    "routerLink": ["spareParts-grid"],
+                    "identifier": "Product Grid",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
@@ -155,17 +137,52 @@
                     "children": []
                 },
                 {
-                    "name": "Categories Add",
-                    "routerLink": ["categories-add"],
-                    "identifier": "Categories Add",
+                    "name": "Spare Parts List",
+                    "routerLink": ["spareParts-list"],
+                    "identifier": "Spare Parts List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                
+                {
+                    "name": "Spare Parts Detail",
+                    "routerLink": ["spareParts-detail"],
+                    "identifier": "Spare Parts Detail",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+               
+                {
+                    "name": "Spare Parts Faults",
+                    "routerLink": ["spareParts-fault"],
+                    "identifier": "Spare Parts Faults",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "Spare Parts Videos",
+                    "routerLink": ["spareParts-videos"],
+                    "identifier": "Spare Parts Videos",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
                     "isApp": false,
                     "children": []
                 }
+
             ]
         },
+      
+        
         {
             "name": "Orders",
             "routerLink": [""],

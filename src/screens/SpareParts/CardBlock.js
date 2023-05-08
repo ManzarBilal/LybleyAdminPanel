@@ -42,8 +42,9 @@ function CardBlock(props) {
                                 <div className="product-content p-3">
                                     <span className="rating mb-2 d-block"><i className="* * *"></i>{4.5} </span>
                                     <Link to={props?.url + "/product-detail"} className="fw-bold">{d.partName} </Link>
+                                    {props?.role === "ADMIN" ?  <div className="text-muted">Brand Name : {d.brandName}</div>
+                                    : "" }
                                     <div className="text-muted">{d.productModel}</div>
-                                    {/* <div className="text-muted">{d.description}</div> */}
                                     <div className='d-flex justify-content-between'>
                                         <Link to={props?.url + `/sparePart-edit/${d?._id}`} className="btn btn-primary mt-3">Edit</Link>
                                         <div onClick={() => handlePart(d?._id)} className="btn btn-danger text-white mt-3"><i class="icofont-ui-delete"></i></div>

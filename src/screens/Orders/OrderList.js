@@ -18,7 +18,7 @@ function OrderList() {
             console.log(err);
         }
     }
-
+console.log("orders",orders);
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">
@@ -32,7 +32,7 @@ function OrderList() {
                                         <div className="col-sm-12">
                                             <DataTable
                                                 columns={OrderListData.columns}
-                                                data={OrderListData.rows}
+                                                data={orders}
                                                 defaultSortField="title"
                                                 pagination
                                                 selectableRows={false}

@@ -6,7 +6,7 @@ import PricingBlock from '../../components/Products/ProductList/PricingBlock';
 import RatingBlock from '../../components/Products/ProductList/RatingBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getSpareParts } from '../../Redux/Actions/sparePart';
+import { getAllSpareParts, getSpareParts } from '../../Redux/Actions/sparePart';
 import CardBlockList from './CardBlocList';
 
 function SparePartList(props) {
@@ -15,10 +15,14 @@ function SparePartList(props) {
 
     const dispatch=useDispatch();
     const spareParts=useSelector(state=>state?.spareParts);
+    let user=localStorage.getItem("user");
+    let obj=JSON.parse(user);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getSpareParts(obj?._id));
+         
+        obj?.role==='ADMIN' ? dispatch(getAllSpareParts()) 
+        : dispatch(getSpareParts(obj?._id));
     },[dispatch,randomValue])
  
 
@@ -56,7 +60,7 @@ function SparePartList(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlockList url={props?.url} spareParts={spareParts} setRandomValue={setRandomValue}   />
+                    <CardBlockList url={props?.url} role={obj?.role} spareParts={spareParts} setRandomValue={setRandomValue}   />
                 </div>
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">
