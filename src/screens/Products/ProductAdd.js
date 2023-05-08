@@ -53,6 +53,7 @@ function ProductAdd() {
             formData.append("productCategory",product?.productCategory);
             formData.append("productDescription",product?.productDescription);
             formData.append("userId",category?.userId);
+            formData.append("brandName",category?.brandName);
             formData.append("categoryId",category?._id);
             let response=await httpCommon.post("/addProduct",formData);
             let {data}=response;

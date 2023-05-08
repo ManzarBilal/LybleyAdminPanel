@@ -165,11 +165,12 @@ function CategoryList() {
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
             const formData = new FormData();
-            formData.append("userId", obj?._id);
-            formData.append("categoryName", categoryName);
-            formData.append("categoryImage", categoryImage);
-            let response = await httpCommon.post("/addProductCategory", formData);
-            let { data } = response;
+            formData.append("userId",obj?._id);
+            formData.append("brandName",obj?.brandName);
+            formData.append("categoryName",categoryName);
+            formData.append("categoryImage",categoryImage);
+            let response=await httpCommon.post("/addProductCategory",formData);
+            let {data}=response;
             setIsmodal(false)
             let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
