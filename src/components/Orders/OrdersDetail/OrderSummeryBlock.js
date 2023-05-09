@@ -1,43 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
-import { OrderDetailDataTable } from '../../Data/OrderDetailData';
+ 
+ 
 
-function OrderSummeryBlock() {
-    //eslint-disable-next-line
-    const [table_row, setTable_row] = useState([...OrderDetailDataTable.rows])
+function OrderSummeryBlock(props) {
+    
+    
+    
     const columns = () => {
         return [
             {
                 name: " PRODUCT IMAGE",
-                selector: (row) => row.image,
-                cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /></>,
+                selector: (row) => row.items,
+                cell: row => <>{row?.items?.map((img,i)=>(<img key={i} className="avatar rounded lg border me-1" src={img?.sparePartImage} alt="" />))}</>,
                 sortable: true,
             },
             {
                 name: "PRODUCT NAME",
-                selector: (row) => row.productName,
+                selector: (row) => row.items,
                 sortable: true,
                 cell: row => <>
-                    <div className='row'><h6 className="title ">{row.productName}</h6><span className='d-block fs-6 text-primary'>{row.preOrder}</span></div></>,
+                   {row?.items?.map((d,i)=>( <div key={i} className='row'><h6 className="title ">{d?.sparePartName} </h6></div>) )}</>,
 
             },
             {
                 name: "QUANTITY",
                 selector: (row) => row.quanty,
                 sortable: true,
+                cell: row => <>
+                {row?.items?.map((d,i)=>( <div key={i} className='row'><h6 className="title me-2">{d?.sparePartName} : <span>{d?.quantity}</span></h6></div>) )}</>,
+
             },
             {
                 name: "PRICE",
                 selector: (row) => row.price,
-                sortable: true
+                sortable: true,
+                cell: row => <>
+                {row?.items?.map((d,i)=>( <div key={i} className='row'><h6 className="title me-2">{d?.sparePartName} : <span>{d?.MRP}</span></h6></div>) )}</>,
+
             },
         ]
     }
+
+    
     return (
         <div className="col-sm-12">
             <DataTable
                 columns={columns()}
-                data={table_row}
+                data={props?.orders}
                 defaultSortField="title"
                 pagination
                 selectableRows={false}

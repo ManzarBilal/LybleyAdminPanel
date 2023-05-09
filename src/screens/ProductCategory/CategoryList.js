@@ -23,8 +23,8 @@ function CategoryList() {
     const columns = () => {
         return [
             {
-                name: " ID",
-                selector: (row) => row?._id,
+                name: "SR NO.",
+                selector: (row) => row?.i,
                 sortable: true,
             },
             {
@@ -195,6 +195,7 @@ function CategoryList() {
         setBrandId(id)
         setConfirmBoxView(true);
     }
+    const table_rowindex=table_row?.map((item,i)=>({...item,i:i+1}))
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -212,7 +213,7 @@ function CategoryList() {
                                         <div className="col-sm-12">
                                             <DataTable
                                                 columns={columns()}
-                                                data={table_row}
+                                                data={table_rowindex}
                                                 defaultSortField="title"
                                                 pagination
                                                 selectableRows={false}
