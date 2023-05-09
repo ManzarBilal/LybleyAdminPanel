@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 function BasicInformation(props) {
 // const [category,setCategory]=useState();
 const [fault,setFault]=useState("");
+const [technicianPrice,setTechnicianPrice]=useState(["350","600"]);
  const fault1=(f)=>{
      setFault(f);
      props.onSubmit(f);
@@ -12,7 +13,7 @@ const [fault,setFault]=useState("");
       props.onDelete(i);
       setFault("");
  }
-let {partName,description,faultType,MRP,bestPrice,productModel,category,}=props?.sparePart;
+let {partName,description,faultType,MRP,bestPrice,technician,productModel,category,}=props?.sparePart;
 let {categories}=props;
 
     return (
@@ -72,6 +73,17 @@ let {categories}=props;
                             </select>
                         </div>
                         {faultType?.map((f1,i)=><div className='btn btn-sm bg-dark text-white m-1'>{f1} <i className='ms-2 icofont-close-circled' onClick={(e)=> handleIndex(i)}></i></div>)}
+                    </div>
+                    <div className="col-xl-12 col-lg-12">
+                        <div className="card-body m-0 p-0">
+                            <label className="form-label">Technician Price </label>
+                            <select className="form-select" name='technician' value={technician} onChange={(e)=>props.onChange(e)}  >
+                                <option value="" selected>Select Price</option>
+                                {technicianPrice?.map(t1=>
+                                    <option value={t1} >{t1}</option>
+                                    )}
+                            </select>
+                        </div>
                     </div>
                         
                     </div>
