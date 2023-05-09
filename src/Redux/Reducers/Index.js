@@ -4,6 +4,7 @@ import getCategory from "./categoryReducer";
 import getProducts from "./productReducer";
 import getSpareParts from "./sparePartReducer";
 import userDetail from "./userDetails";
+import getCustomerById from "./customerReducer";
 const {combineReducers} = require("redux");
 
 const rootReducer= combineReducers({
@@ -12,7 +13,8 @@ const rootReducer= combineReducers({
     category:getCategory,
     products:getProducts,
     spareParts:getSpareParts,
-    userDetail:userDetail
+    userDetail:userDetail,
+    customer:getCustomerById,
 })
 
 export default rootReducer;

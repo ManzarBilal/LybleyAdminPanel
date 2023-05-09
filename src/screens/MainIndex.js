@@ -111,8 +111,12 @@ function MainIndex(props) {
           <Route exact path={props?.url + '/categories-list'} render={() => { return <CategoriesList /> }} />
           <Route exact path={props?.url + '/categories-edit'} render={() => { return <CategoriesEdit /> }} />
           <Route exact path={props?.url + '/categories-add'} render={() => { return <CategoriesAdd /> }} />
-          <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList /> }} />
-          <Route exact path={props?.url + '/order-detail'} render={() => { return <OrderDetail /> }} />
+
+
+          <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList  url={props?.url} /> }} />
+          <Route exact path={props?.url + '/order-detail/:id'} render={() => { return <OrderDetail /> }} />
+
+
           <Route exact path={props?.url + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
           <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList /> }} />
           <Route exact path={props?.url + '/customer-detail'} render={() => { return <CustomerDetail /> }} />
