@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Tab, Nav, Row, Col } from 'react-bootstrap';
 import ShoppingStatuschart from '../../components/dashboard/ShoppingStatuschart';
 import TopShellingProductChart from '../../components/dashboard/TopShellingProductChart';
@@ -8,8 +8,27 @@ import ActiveUsersStatus from '../../components/dashboard/ActiveUsersStatus';
 import RecentTransaction from '../../components/dashboard/RecentTransaction';
 import SalesStatus from '../../components/dashboard/SalesStatus';
 import { DashboardStatusData, MonthData, TodayData, WeekData, YearData } from '../../components/Data/Data';
+import httpCommon from "../../http-common"
 
 function Dashboard() {
+const [data ,setData]=useState()
+    const getDashBoardData = async () => {
+        try {
+            let response = await httpCommon.get(`/dashboardDetails`);
+            let { data } = response;
+            setData(data);
+
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        getDashBoardData()
+
+    }, [ ]);
+
+    console.log("data",data);
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">

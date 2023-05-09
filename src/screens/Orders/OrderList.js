@@ -16,7 +16,7 @@ function OrderList(props) {
             {
                 name: "CUSTOMER NAME",
                 selector: (row) => row?.name,
-                cell: (row) => <Link className='text-primary' to={props?.url + `/order-detail/${row?.customerId}`} >{row?.name}</Link>,
+                cell: (row) => <Link className='text-primary' to={props?.url + `/order-detail/${row?._id}`} >{row?.name}</Link>,
                 sortable: true,
             },
             {
