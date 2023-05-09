@@ -28,6 +28,7 @@ function SparePartAdd() {
         MRP:"",
         bestPrice:"",
         category:"",
+        technician:"",
         faultType:[],
         productModel:"",
         images:[]
@@ -84,7 +85,7 @@ function SparePartAdd() {
             formData.append("description",sparePart?.description);
             formData.append("MRP",sparePart?.MRP);
             formData.append("bestPrice",sparePart?.bestPrice);
-            // formData.append("faultType",sparePart?.faultType);
+            formData.append("technician",sparePart?.technician);
             sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
             formData.append("category",sparePart?.category);
             formData.append("productModel",sparePart?.productModel);
@@ -98,7 +99,7 @@ function SparePartAdd() {
             let response=await httpCommon.post("/addSparePart",formData);
             let {data}=response;
             ToastMessage(data);
-            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[]});
+            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:""});
         }catch(err){
             console.log(err);
         }
