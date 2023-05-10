@@ -2,6 +2,7 @@ import React, {useState } from "react";
 import { Link } from "react-router-dom";
 import { menu } from '../Data/Menu/menu.json';
 import {brand} from '../Data/Menu/brand.json';
+import ImageLogo from "../../assets/images/spareLogo.png";
 
 function Sidebar(props) {
 
@@ -74,7 +75,8 @@ function Sidebar(props) {
         <div className="d-flex flex-column h-100">
             <a href="/" className="mb-0 brand-icon" >
                 <span className="logo-icon">
-                    <i className="bi bi-bag-check-fill fs-4"></i>
+                    {/* <i className="bi bi-bag-check-fill fs-4"></i> */}
+                    <img src={ImageLogo} height="50" width="50" />
                 </span>
                 <span className="logo-text"  >SPARE TRADE</span>
             </a>

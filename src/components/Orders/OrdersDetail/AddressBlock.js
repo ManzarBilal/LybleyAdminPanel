@@ -1,5 +1,5 @@
 import React from 'react';
-import { OrderDiv } from '../../Data/OrderDetailData';
+ 
 
 function AddressBlock(finalData) {
  

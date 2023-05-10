@@ -28,17 +28,8 @@
                     "isCategory": false,
                     "isApp": false,
                     "children": []
-                },
-                {
-                    "name": "Brand Detail",
-                    "routerLink": ["brand-detail"],
-                    "identifier": "Brand Detail",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                }   
+                }
+                  
             ]
         },
         {

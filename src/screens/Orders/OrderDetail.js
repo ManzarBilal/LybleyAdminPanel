@@ -52,8 +52,9 @@ function OrderDetail() {
         getAllOrderByCustomer();
         getAllOrderById();
 
-    }, [orderById]);
+    }, [orderById,order,orderByCust]);
 
+    
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">
