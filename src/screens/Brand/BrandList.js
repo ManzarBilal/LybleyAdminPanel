@@ -6,6 +6,7 @@ import httpCommon from "../../http-common";
 import { ConfirmBox } from '../../components/common/ConfirmBox';
 import { ToastMessage } from '../../components/common/ToastMessage';
 import Avatar4 from "../../assets/images/lg/avatar4.svg";
+import { ReactLoader } from '../../components/common/ReactLoader';
 const defaultBanner = "https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
 function BrandList() {
     const [table_row, setTable_row] = useState([]);
@@ -15,6 +16,7 @@ function BrandList() {
     const [randomValue, setRandomValue] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [brandId, setBrandId] = useState("");
+    const [loading, setLoading] = useState(false)
     const columns = () => {
         return [
         
@@ -67,9 +69,11 @@ function BrandList() {
     }, [randomValue])
     const GetAllBrands = async () => {
         try {
+            setLoading(true)
             let response = await httpCommon.get("/getAllBrands")
             let { data } = response
             setTable_row(data)
+            setLoading(false)
         }
         catch (err) {
             console.log(err)
@@ -125,7 +129,8 @@ function BrandList() {
                     }} />
                     <div className="row clearfix g-3">
                         <div className="col-sm-12">
-                            <div className="card mb-3">
+                        {loading ?<div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>  
+                          :    <div className="card mb-3">
                                 <div className="card-body">
                                     <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
                                         <div className="row">
@@ -144,6 +149,7 @@ function BrandList() {
                                     </div>
                                 </div>
                             </div>
+}
                         </div>
                     </div>
                 </div>

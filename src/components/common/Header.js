@@ -1,10 +1,5 @@
 import React from 'react';
 import { Dropdown, Image } from 'react-bootstrap';
-import GB from '../../assets/images/flag/GB.png';
-import DE from '../../assets/images/flag/DE.png';
-import FR from '../../assets/images/flag/FR.png';
-import IT from '../../assets/images/flag/IT.png';
-import RU from '../../assets/images/flag/RU.png';
 import Avatar1 from '../../assets/images/xs/avatar1.svg';
 import Avatar3 from '../../assets/images/xs/avatar3.svg';
 import Avatar5 from '../../assets/images/xs/avatar5.svg';
@@ -14,9 +9,12 @@ import Profile from '../../assets/images/profile_av.svg';
 import { connect } from 'react-redux';
 import { Onopenmodalsetting } from '../../Redux/Actions/Action';
 import { Link, useHistory } from 'react-router-dom';
+import ImageLogo from "../../assets/images/spareLogo.png";
+ 
 
 function Header (props) {
     const data=localStorage.getItem("user");
+    const userType=JSON.parse(data);
     const  headerData=JSON.parse(data)
    const history=useHistory();
     const handleSignout=()=>{
@@ -35,10 +33,11 @@ function Header (props) {
                                 </Link>
                             </div>
                             <Dropdown className="zindex-popover mx-2">
-                                <Dropdown.Toggle as='a' className="nav-Dropdown.Itemnk dropdown-toggle pulse" href="#!" >
-                                    <Image src={GB} alt='' />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu className="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-md-end p-0 m-0 mt-5 ">
+                                
+                                {/* <Dropdown.Toggle as='a' className="nav-Dropdown.Itemnk dropdown-toggle pulse" href="#!" >
+                                    <Image src={userType?.role==="ADMIN" ? ImageLogo : userType?.brandLogo} alt='logo'height="30" width="30" />
+                                </Dropdown.Toggle> */}
+                                {/* <Dropdown.Menu className="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-md-end p-0 m-0 mt-5 ">
                                     <div className="card border-0">
                                         <ul className="list-unstyled list py-2 px-3">
                                             <li>
@@ -58,7 +57,7 @@ function Header (props) {
                                             </li>
                                         </ul>
                                     </div>
-                                </Dropdown.Menu>
+                                </Dropdown.Menu> */}
                             </Dropdown>
                             <Dropdown className="notifications zindex-popover">
                                 <Dropdown.Toggle as="a" className="nav-link dropdown-toggle pulse">
@@ -143,7 +142,7 @@ function Header (props) {
                                     { headerData && headerData?.role==="ADMIN" ? <small> Admin Profile </small>: <small> Brand Profile </small>}
                                 </div>
                                 <Dropdown.Toggle as='a' className="nav-link dropdown-toggle pulse p-0 mb-3" href="#!" role="button">
-                                    <img className="avatar lg rounded-circle img-thumbnail" src={Profile} alt="profile" />
+                                    <img className="avatar lg rounded-circle img-thumbnail " src={userType?.role==="ADMIN" ? ImageLogo : userType?.brandLogo} alt="profile" height="40" width="40"/>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0 mt-5 ">
                                     <div className="card border-0   w280">

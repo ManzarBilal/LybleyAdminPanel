@@ -5,6 +5,7 @@ import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
 import { ToastMessage } from "../../components/common/ToastMessage";
 import { ConfirmBox } from '../../components/common/ConfirmBox';
+import { ReactLoader } from '../../components/common/ReactLoader';
 
 function CategoryList() {
     const [table_row, setTable_row] = useState([]);
@@ -16,10 +17,12 @@ function CategoryList() {
     const [id, setCatId] = useState("");
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
+    const [loading, setLoading] = useState(false)
+
 
     const admin = localStorage.getItem("user");
     const Admindata = JSON.parse(admin);
-    
+
     const columns = () => {
         return [
             {
@@ -66,15 +69,17 @@ function CategoryList() {
 
     useEffect(() => {
         const admin = localStorage.getItem("user");
-    const Admindata = JSON.parse(admin);
+        const Admindata = JSON.parse(admin);
         Admindata?.role === "ADMIN" ? GetAllCategory()
             : GetAllCategoryByBrand()
     }, [randomValue])
     const GetAllCategory = async () => {
         try {
+            setLoading(true)
             let response = await httpCommon.get(`/getAllProductCategories`)
             let { data } = response
             setTable_row(data)
+            setLoading(false)
         }
         catch (err) {
             console.log(err)
@@ -83,12 +88,14 @@ function CategoryList() {
 
     const GetAllCategoryByBrand = async () => {
         try {
+            setLoading(true)
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
             const id = obj?._id;
             let response = await httpCommon.get(`/getProductCategoryBy/${id}`)
             let { data } = response
             setTable_row(data)
+            setLoading(false)
         }
         catch (err) {
             console.log(err)
@@ -165,12 +172,12 @@ function CategoryList() {
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
             const formData = new FormData();
-            formData.append("userId",obj?._id);
-            formData.append("brandName",obj?.brandName);
-            formData.append("categoryName",categoryName);
-            formData.append("categoryImage",categoryImage);
-            let response=await httpCommon.post("/addProductCategory",formData);
-            let {data}=response;
+            formData.append("userId", obj?._id);
+            formData.append("brandName", obj?.brandName);
+            formData.append("categoryName", categoryName);
+            formData.append("categoryImage", categoryImage);
+            let response = await httpCommon.post("/addProductCategory", formData);
+            let { data } = response;
             setIsmodal(false)
             let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x)
@@ -195,7 +202,7 @@ function CategoryList() {
         setBrandId(id)
         setConfirmBoxView(true);
     }
-    const table_rowindex=table_row?.map((item,i)=>({...item,i:i+1}))
+    const table_rowindex = table_row?.map((item, i) => ({ ...item, i: i + 1 }))
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -205,27 +212,30 @@ function CategoryList() {
                     </div>
                 }} />
                 <div className="row clearfix g-3">
-                    <div className="col-sm-12">
-                        <div className="card mb-3">
-                            <div className="card-body">
-                                <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                    <div className="row">
-                                        <div className="col-sm-12">
-                                            <DataTable
-                                                columns={columns()}
-                                                data={table_rowindex}
-                                                defaultSortField="title"
-                                                pagination
-                                                selectableRows={false}
-                                                className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                highlightOnHover={true}
-                                            />
+                    {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
+                        : <div className="col-sm-12">
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                        <div className="row">
+                                            <div className="col-sm-12">
+                                                <DataTable
+                                                    columns={columns()}
+                                                    data={table_rowindex}
+                                                    defaultSortField="title"
+                                                    pagination
+                                                    selectableRows={false}
+                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                    highlightOnHover={true}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
             <Modal show={iseditmodal} onHide={() => { setIseditmodal(false) }} className="" style={{ display: 'block' }}>

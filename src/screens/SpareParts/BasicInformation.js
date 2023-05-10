@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 function BasicInformation(props) {
 // const [category,setCategory]=useState();
 const [fault,setFault]=useState("");
-const [technicianPrice,setTechnicianPrice]=useState(["350","600"]);
+const [technicianPrice]=useState(["350","600"]);
  const fault1=(f)=>{
      setFault(f);
      props.onSubmit(f);

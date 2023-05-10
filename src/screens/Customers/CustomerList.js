@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import DataTable from 'react-data-table-component';
-import { Link } from 'react-router-dom';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { CustomerData } from '../../components/Data/CustomerData';
-import { allCustomers } from '../../Redux/Actions/customer';
-import {useDispatch,useSelector} from "react-redux"
 import httpCommon from "../../http-common"
 
 function CustomerList() {
     const [table_row, setTable_row] = useState([...CustomerData.rows]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
-    const dispatch=useDispatch();
+    
     const [data,setData]=useState([]);
     const [refresh,setRefresh]=useState("");
     
