@@ -72,7 +72,9 @@ const BrandIndex = (props) => {
   const { activekey } = props;
     return (
       <div className='main px-lg-4 px-md-4' >
-      {activekey === "/chat" ? "" : <Header url={props?.url} />}
+      {activekey === "/chat" ? "" : 
+      <Header url={props?.url} />
+      }
       <div className="body d-flex py-3 ">
       <Switch>
             {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}

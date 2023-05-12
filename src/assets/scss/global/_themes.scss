@@ -75,7 +75,12 @@
 		--card-color: 		#101010;
 		--body-color: 		#050505;
 	}
-
+	[class="theme-black"] {
+		--primary-color: 	#050505;
+        --border-color:		#1a1f2d;
+		--card-color: 		#10141f;
+		--body-color: 		#0e1b28;
+	}
 	[class="theme-blue"] {
 		--primary-color: 	#7258db;
         --border-color:		#1a1f2d;
@@ -171,6 +176,18 @@
 [class="theme-indigo"] {
 	--primary-color: 	#484c7f;
 	--secondary-color: 	#d8d419;
+
+	--chart-color1:	 	#484c7f;
+	--chart-color2: 	#d8d419;
+	--chart-color3: 	#7394b9;
+	--chart-color4: 	#79b6bd;
+	--chart-color5: 	#a0c1b8;
+
+	--primary-gradient: linear-gradient(45deg, #5a2ee2, #484c7f);
+}
+[class="theme-black"] {
+	--primary-color: 	#050505;
+	--secondary-color: 	#f5881f;
 
 	--chart-color1:	 	#484c7f;
 	--chart-color2: 	#d8d419;

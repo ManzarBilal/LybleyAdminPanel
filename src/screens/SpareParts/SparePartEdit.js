@@ -28,7 +28,7 @@ function SparePartEdit(props) {
         dispatch(getCategory(obj?._id));
         dispatch(getProduct(obj?._id));
         getFaults();
-        const filterPart = spareParts.find(e1 => e1?._id === id)
+        const filterPart = spareParts?.data?.find(e1 => e1?._id === id)
      
         setSpareParts(filterPart)
     },[ dispatch,id,spareParts])

@@ -170,7 +170,9 @@ function Header (props) {
                         </div>
                         <button className="navbar-toggler p-0 border-0 menu-toggle order-3" type="button" onClick={() => {
                             var sidebar = document.getElementById('mainsidemenu')
+                           
                             if (sidebar) {
+    
                                 if (sidebar.classList.contains('open')) {
                                     sidebar.classList.remove('open')
                                 } else {
