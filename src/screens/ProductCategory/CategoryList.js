@@ -83,6 +83,8 @@ function CategoryList() {
         }
         catch (err) {
             console.log(err)
+            setLoading(false)
+
         }
     }
 
@@ -99,6 +101,8 @@ function CategoryList() {
         }
         catch (err) {
             console.log(err)
+            setLoading(false)
+
         }
     }
 

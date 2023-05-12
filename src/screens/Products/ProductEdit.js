@@ -33,7 +33,7 @@ function ProductEdit(props) {
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getCategory(obj?._id));
-    const filterProduct = products.find(e1 => e1?._id === id)
+    const filterProduct = products?.data?.find(e1 => e1?._id === id)
      setProduct(filterProduct);
     },[id,dispatch,products])
    // console.log("filterProduct", filterProduct);

@@ -38,7 +38,7 @@ function App(props) {
   }
   else if (user && user.role === "BRAND") {
     return (
-      <div id="ebazar-layout" className='theme-blue'>
+      <div id="ebazar-layout" className='theme-black'>
         <Toaster />
         <Sidebar url={"/brand"} user={user} activekey={activekey()} history={props.history} />
         <AddModal />
@@ -50,7 +50,7 @@ function App(props) {
   }
   else if(user && user.role === "ADMIN"){
     return (
-      <div id="ebazar-layout" className='theme-blue'>
+      <div id="ebazar-layout" className='theme-black'>
         <Toaster />
         <Sidebar url={"/admin"} user={user} activekey={activekey()} history={props.history} />
         <AddModal />

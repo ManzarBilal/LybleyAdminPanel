@@ -77,6 +77,8 @@ function BrandList() {
         }
         catch (err) {
             console.log(err)
+            setLoading(false)
+
         }
     }
     const approval = async (_id, body) => {

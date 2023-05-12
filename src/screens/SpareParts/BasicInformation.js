@@ -56,7 +56,7 @@ let {categories}=props;
                             <label className="form-label">Product Model</label>
                             <select className="form-select" name='productModel' value={productModel} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Model</option>
-                                {props?.products?.filter(p1=>p1?.productCategory===category)?.map(c1=>
+                                {props?.products?.data?.filter(p1=>p1?.productCategory===category)?.map(c1=>
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>

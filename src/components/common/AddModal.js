@@ -101,6 +101,7 @@ function AddModal(props) {
                             <li data-theme="tradewind" className={Isactivetheme('tradewind')}><div className="tradewind" onClick={() => { Changetheme('tradewind') }}></div></li>
                             <li data-theme="monalisa" className={Isactivetheme('monalisa')}><div className="monalisa" onClick={() => { Changetheme('monalisa') }}></div></li>
                             <li data-theme="blue" className={Isactivetheme('blue')}><div className="blue" onClick={() => { Changetheme('blue') }}></div></li>
+                            <li data-theme="black" className={Isactivetheme('black')}><div className="black" onClick={() => { Changetheme('black') }}></div></li>
                             <li data-theme="cyan" className={Isactivetheme('cyan')}><div className="cyan" onClick={() => { Changetheme('cyan') }}></div></li>
                             <li data-theme="green" className={Isactivetheme('green')}><div className="green" onClick={() => { Changetheme('green') }}></div></li>
                             <li data-theme="orange" className={Isactivetheme('orange')}><div className="orange" onClick={() => { Changetheme('orange') }}></div></li>

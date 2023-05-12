@@ -7,6 +7,7 @@ import { ToastMessage } from "../../components/common/ToastMessage";
 import { ConfirmBox } from '../../components/common/ConfirmBox';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../../Redux/Actions/product';
+import { ReactLoader } from '../../components/common/ReactLoader';
 
 function FaultList() {
     const [table_row, setTable_row] = useState([]);
@@ -17,7 +18,8 @@ function FaultList() {
     const [id, setCatId] = useState("");
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
-    
+    const [loading, setLoading] = useState(false)
+
 
     let table_row1 = table_row.map((t1, i) => ({ ...t1, i: i + 1 }));
     const columns = () => {
@@ -35,7 +37,7 @@ function FaultList() {
             {
                 name: "PRODUCT NAME",
                 selector: (row) => row?.productModel,
-                sortable: true,  
+                sortable: true,
             },
             {
                 name: "STATUS",
@@ -71,15 +73,20 @@ function FaultList() {
 
     const GetAllFault = async () => {
         try {
+            setLoading(true)
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
             const id = obj?._id;
             let response = await httpCommon.get(`/getFaultBy/${id}`)
             let { data } = response
             setTable_row(data)
+            setLoading(false)
+
         }
         catch (err) {
             console.log(err)
+            setLoading(false)
+
         }
     }
 
@@ -101,7 +108,7 @@ function FaultList() {
         setIseditmodal(true);
         let table_row1 = [...table_row];
         let editData = table_row1.find(c1 => c1._id === id);
-        setFault({faultName:editData?.faultName ,productModel:editData?.productModel});
+        setFault({ faultName: editData?.faultName, productModel: editData?.productModel });
         setCatId(id);
     }
 
@@ -123,8 +130,8 @@ function FaultList() {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         const dataObj = { faultName: fault?.faultName, productModel: product?.productName, productId: product?._id, userId: obj?._id }
-      
-        try {         
+
+        try {
             let response = await httpCommon.post("/addFault", dataObj);
             let { data } = response;
             setIsmodal(false)
@@ -151,7 +158,7 @@ function FaultList() {
         setBrandId(id)
         setConfirmBoxView(true);
     }
-   
+
     const handleChange = (e) => {
         const { currentTarget: input } = e;
         let fault1 = { ...fault };
@@ -168,25 +175,28 @@ function FaultList() {
                 }} />
                 <div className="row clearfix g-3">
                     <div className="col-sm-12">
-                        <div className="card mb-3">
-                            <div className="card-body">
-                                <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                    <div className="row">
-                                        <div className="col-sm-12">
-                                            <DataTable
-                                                columns={columns()}
-                                                data={table_row1}
-                                                defaultSortField="title"
-                                                pagination
-                                                selectableRows={false}
-                                                className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                highlightOnHover={true}
-                                            />
+                        {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
+                            :
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                        <div className="row">
+                                            <div className="col-sm-12">
+                                                <DataTable
+                                                    columns={columns()}
+                                                    data={table_row1}
+                                                    defaultSortField="title"
+                                                    pagination
+                                                    selectableRows={false}
+                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                    highlightOnHover={true}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
@@ -201,7 +211,7 @@ function FaultList() {
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="item1" className="form-label">Category Name</label>
-                                    <input type="text" className="form-control" id="item1" name="faultName" value={fault?.faultName} onChange={(e) => setFault({faultName:e.currentTarget.value})} />
+                                    <input type="text" className="form-control" id="item1" name="faultName" value={fault?.faultName} onChange={(e) => setFault({ faultName: e.currentTarget.value })} />
                                 </div>
                                 <div className="col-xl-12 col-lg-12">
                                     <div className="card-body m-0 p-0">
@@ -235,7 +245,7 @@ function FaultList() {
                             <div className="row g-3 mb-3">
                                 <div className="col-sm-12">
                                     <label htmlFor="item" className="form-label">Fault Name</label>
-                                    <input type="text" className="form-control" id="item" value={fault?.faultName} onChange={(e) => setFault({faultName:e.currentTarget.value})} />
+                                    <input type="text" className="form-control" id="item" value={fault?.faultName} onChange={(e) => setFault({ faultName: e.currentTarget.value })} />
                                 </div>
                                 <div className="col-xl-12 col-lg-12">
                                     <div className="card-body m-0 p-0">

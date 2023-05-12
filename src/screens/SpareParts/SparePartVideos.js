@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProduct } from '../../Redux/Actions/product';
 import ReactPlayer from 'react-player'
 import { useRef } from 'react';
+import { ReactLoader } from '../../components/common/ReactLoader';
 
 
 function SparePartVideos() {
@@ -24,6 +25,7 @@ function SparePartVideos() {
     const [video, setVideo] = useState([])
     const [videoUrl, setVideoUrl] = useState("")
     const [loading, setLoading] = useState(false);
+    const [loadingSp, setLoadingSp] = useState(false);
     let table_row1 = table_row.map((t1, i) => ({ ...t1, i: i + 1 }));
 
     const playerRef = useRef(null);
@@ -38,7 +40,7 @@ function SparePartVideos() {
                 name: " FAULT VIDEO",
                 selector: (row) => row?.video,
                 cell: row => <>
-                    {hasWindow && <ReactPlayer ref={playerRef} url= {row?.video} controls height="60px" />}
+                    {hasWindow && <ReactPlayer ref={playerRef} url={row?.video} controls height="60px" />}
                 </>,
                 sortable: true, width: "200px",
             },
@@ -47,7 +49,7 @@ function SparePartVideos() {
                 selector: (row) => row?.productModel,
                 sortable: true,
             },
-          
+
             {
                 name: "ACTION",
                 selector: (row) => { },
@@ -77,13 +79,17 @@ function SparePartVideos() {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         try {
-             
+            setLoadingSp(true)
             let response = await httpCommon.get(`/getAllVideosBybrand/${obj?._id}`)
             let { data } = response
             setTable_row(data)
+            setLoadingSp(false)
+
         }
         catch (err) {
             console.log(err)
+            setLoadingSp(false)
+
         }
     }
 
@@ -91,16 +97,16 @@ function SparePartVideos() {
         setIseditmodal(true);
         let table_row1 = [...table_row];
         let editData = table_row1.find(c1 => c1._id === id);
-       
+
         setFaultVideo({ video: editData?.video, productModel: editData?.productModel });
         setCatId(id);
     }
- 
+
     const editFaultVideo = async () => {
         const formData = new FormData()
         formData.append("productModel", faultVideo?.productModel);
-        formData.append("video",video);
-       
+        formData.append("video", video);
+
         try {
             setLoading(true);
             let response = await httpCommon.patch(`/editVideo/${v_id}`, formData);
@@ -121,7 +127,7 @@ function SparePartVideos() {
         const formData = new FormData()
         formData.append("productModel", product?.productName);
         formData.append("brandId", obj?._id);
-        formData.append("video",video);
+        formData.append("video", video);
         try {
             setLoading(true);
             let response = await httpCommon.post("/uploadVideo", formData);
@@ -159,7 +165,7 @@ function SparePartVideos() {
         setFaultVideo(fault1);
     }
 
-    
+
     // const handleFileChange = (event) => {
     //     const file = event.target.files[0];
     //     if (!file) return;
@@ -173,12 +179,12 @@ function SparePartVideos() {
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0])
             if (e.target.name === "file") {
-              // setImage(e.target.files[0]);
-               setVideo(e.target.files[0])
+                // setImage(e.target.files[0]);
+                setVideo(e.target.files[0])
             }
         }
     };
- 
+
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -189,25 +195,27 @@ function SparePartVideos() {
                 }} />
                 <div className="row clearfix g-3">
                     <div className="col-sm-12">
-                        <div className="card mb-3">
-                            <div className="card-body">
-                                <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                    <div className="row">
-                                        <div className="col-sm-12">
-                                            <DataTable
-                                                columns={columns()}
-                                                data={table_row1}
-                                                defaultSortField="title"
-                                                pagination
-                                                selectableRows={false}
-                                                className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                highlightOnHover={true}
-                                            />
+                        {loadingSp ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                        <div className="row">
+                                            <div className="col-sm-12">
+                                                <DataTable
+                                                    columns={columns()}
+                                                    data={table_row1}
+                                                    defaultSortField="title"
+                                                    pagination
+                                                    selectableRows={false}
+                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                    highlightOnHover={true}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>

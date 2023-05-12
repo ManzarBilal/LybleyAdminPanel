@@ -25,7 +25,8 @@ function CardBlock(props) {
         }
     }
     return (
-        <div className="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-3">
+      
+       <div className="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-3">
             {
                 props?.sparePart?.map((d, i) => {
                     return <div key={'product' + i} className="col">
@@ -57,6 +58,7 @@ function CardBlock(props) {
             }
             <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteSparePart} />
         </div>
+       
     )
 }
 
