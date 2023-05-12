@@ -1,4 +1,5 @@
 import httpCommon from "../../http-common";
+import { showLoading } from "./sparePart";
 
 export const getAllProduct=()=>{
        return async (dispatch)=>{
@@ -8,8 +9,11 @@ export const getAllProduct=()=>{
                 type:"All_PRODUCT",
                 payload:response.data
             })
+            dispatch(showLoading(false))
        }catch(err){
         console.log(err);
+        dispatch(showLoading(false))
+
        }
     }
 }
@@ -22,8 +26,12 @@ export const getProduct=(id)=>{
              type:"All_PRODUCT",
              payload:response.data
          })
+         dispatch(showLoading(false))
+
     }catch(err){
      console.log(err);
+     dispatch(showLoading(false))
+
     }
  }
 }

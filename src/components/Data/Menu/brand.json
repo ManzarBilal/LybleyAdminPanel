@@ -210,16 +210,7 @@
                     "isApp": false,
                     "children": []
                 },
-                {
-                    "name": "Orders Details",
-                    "routerLink": ["order-detail"],
-                    "identifier": "Orders Details",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                },
+                
                 {
                     "name": "Orders Invoice",
                     "routerLink": ["order-invoice"],

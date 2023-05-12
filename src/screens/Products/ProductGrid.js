@@ -8,26 +8,29 @@ import CardBlock from '../../components/Products/ProductGrid/CardBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProduct, getProduct } from '../../Redux/Actions/product';
+import { showLoading } from '../../Redux/Actions/sparePart';
+import { ReactLoader } from '../../components/common/ReactLoader';
 
 function ProductGrid(props) {
 
-    const [randomValue,setRandomValue]=useState("")
-    const dispatch=useDispatch();
-    const products=useSelector(state=>state?.products);
-  
-    let user=localStorage.getItem("user");
-    let obj=JSON.parse(user);
-    useEffect(()=>{
-        let user=localStorage.getItem("user");
-    let obj=JSON.parse(user);
-       obj?.role==='ADMIN' ? dispatch(getAllProduct()) 
-       : dispatch(getProduct(obj?._id));
-    },[dispatch,randomValue])
+    const [randomValue, setRandomValue] = useState("")
+    const dispatch = useDispatch();
+    const products = useSelector(state => state?.products);
+
+    let user = localStorage.getItem("user");
+    let obj = JSON.parse(user);
+    useEffect(() => {
+        let user = localStorage.getItem("user");
+        let obj = JSON.parse(user);
+        dispatch(showLoading(true))
+        obj?.role === 'ADMIN' ? dispatch(getAllProduct())
+            : dispatch(getProduct(obj?._id));
+    }, [dispatch, randomValue])
 
     return (
 
         <div className="container-xxl">
-            <PageHeader1 pagetitle='Products'  url={props?.url} productgrid={true} />
+            <PageHeader1 pagetitle='Products' url={props?.url} productgrid={true} />
             <div className="row g-3 mb-3">
                 <div className="col-md-12 col-lg-4 col-xl-4 col-xxl-3">
                     <div className="sticky-lg-top">
@@ -59,26 +62,30 @@ function ProductGrid(props) {
                     </div>
                 </div>
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
-                    <CardBlock url={props?.url} role={obj?.role} product={products} setRandomValue={setRandomValue}/>
-                    <div className="row g-3 mb-3">
-                        <div className="col-md-12">
-                            <nav className="justify-content-end d-flex">
-                                <ul className="pagination">
-                                    <li className="page-item disabled">
-                                        <a className="page-link" href="#!" tabIndex="-1">Previous</a>
-                                    </li>
-                                    <li className="page-item"><a className="page-link" href="#!">1</a></li>
-                                    <li className="page-item active" aria-current="page">
-                                        <a className="page-link" href="#!">2</a>
-                                    </li>
-                                    <li className="page-item"><a className="page-link" href="#!">3</a></li>
-                                    <li className="page-item">
-                                        <a className="page-link" href="#!">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
+                    {products?.showLoading === true ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
+                        <>
+                            <CardBlock url={props?.url} role={obj?.role} product={products?.data} setRandomValue={setRandomValue} />
+                            <div className="row g-3 mb-3">
+                                <div className="col-md-12">
+                                    <nav className="justify-content-end d-flex">
+                                        <ul className="pagination">
+                                            <li className="page-item disabled">
+                                                <a className="page-link" href="#!" tabIndex="-1">Previous</a>
+                                            </li>
+                                            <li className="page-item"><a className="page-link" href="#!">1</a></li>
+                                            <li className="page-item active" aria-current="page">
+                                                <a className="page-link" href="#!">2</a>
+                                            </li>
+                                            <li className="page-item"><a className="page-link" href="#!">3</a></li>
+                                            <li className="page-item">
+                                                <a className="page-link" href="#!">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
         </div>

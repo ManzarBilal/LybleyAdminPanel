@@ -3,7 +3,8 @@ import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
 import { Link } from 'react-router-dom';
- 
+import { ReactLoader } from '../../components/common/ReactLoader';
+
 function OrderList(props) {
 
     const columns = () => {
@@ -64,17 +65,24 @@ function OrderList(props) {
     }
 
     const [order, setOrders] = useState([]);
+    const [loading, setLoading] = useState(false)
+
     useEffect(() => {
         getAllOrder();
     }, []);
 
     const getAllOrder = async () => {
         try {
+            setLoading(true)
             let response = await httpCommon.get("/getAllOrder");
             let { data } = response;
             setOrders(data);
+            setLoading(false)
+
         } catch (err) {
             console.log(err);
+            setLoading(false)
+
         }
     }
 
@@ -86,32 +94,34 @@ function OrderList(props) {
     // const orders1=orders
     const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
 
-    
+
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">
                 <PageHeader1 pagetitle='Orders List' />
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">
-                        <div className="card">
-                            <div className="card-body">
-                                <div id="myDataTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                    <div className="row">
-                                        <div className="col-sm-12">
-                                            <DataTable
-                                                columns={columns()}
-                                                data={finalData}
-                                                defaultSortField="title"
-                                                pagination
-                                                selectableRows={false}
-                                                className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                highlightOnHover={true}
-                                            />
+                        {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
+                            <div className="card">
+                                <div className="card-body">
+                                    <div id="myDataTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                        <div className="row">
+                                            <div className="col-sm-12">
+                                                <DataTable
+                                                    columns={columns()}
+                                                    data={finalData}
+                                                    defaultSortField="title"
+                                                    pagination
+                                                    selectableRows={false}
+                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                    highlightOnHover={true}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>

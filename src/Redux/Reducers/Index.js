@@ -15,6 +15,7 @@ const rootReducer= combineReducers({
     spareParts:getSpareParts,
     userDetail:userDetail,
     customer:getCustomerById,
+ 
 })
 
 export default rootReducer;

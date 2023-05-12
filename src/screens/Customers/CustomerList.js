@@ -4,19 +4,22 @@ import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { CustomerData } from '../../components/Data/CustomerData';
 import httpCommon from "../../http-common"
+import { ReactLoader } from '../../components/common/ReactLoader';
 
 function CustomerList() {
     const [table_row, setTable_row] = useState([...CustomerData.rows]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
-    
-    const [data,setData]=useState([]);
-    const [refresh,setRefresh]=useState("");
-    
-    useEffect(()=>{
-       allCustomers();
-    },[refresh])
-   // const data=useSelector(state=>state?.userDetail);
+
+    const [data, setData] = useState([]);
+    const [refresh, setRefresh] = useState("");
+    const [loading, setLoading] = useState(false)
+
+
+    useEffect(() => {
+        allCustomers();
+    }, [refresh])
+    // const data=useSelector(state=>state?.userDetail);
 
     const columns = () => {
         return [
@@ -29,41 +32,41 @@ function CustomerList() {
                 name: "CUSTOMER",
                 selector: (row) => row.name,
                 //cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> <span className="px-2"><Link to={process.env.PUBLIC_URL + '/customer-detail'}>{row.name}</Link></span></>,
-                sortable: true,width:"150px"
+                sortable: true, width: "150px"
             },
             {
                 name: "ROLE",
                 selector: (row) => row.role,
-                sortable: true,width:"100px"
+                sortable: true, width: "100px"
             },
             {
                 name: "REGISTER DATE",
                 selector: (row) => new Date(row?.createdAt)?.toLocaleDateString(),
-                sortable: true,width:"150px"
+                sortable: true, width: "150px"
 
             },
             {
                 name: "MAIL",
                 selector: (row) => row.email,
-                sortable: true,width:"180px"
+                sortable: true, width: "180px"
             },
             {
                 name: "PHONE",
                 selector: (row) => row.contact,
-                sortable: true,width:"110px"
+                sortable: true, width: "110px"
             },
 
             {
                 name: "DOCUMENT",
-                selector: (row) => {},
-                sortable: true,width:"150px",
-                cell:(row)=> <div className='text-primary text-decoration-underline'><a href={row.document} className='text-primary'> {row.document} </a></div>
+                selector: (row) => { },
+                sortable: true, width: "150px",
+                cell: (row) => <div className='text-primary text-decoration-underline'><a href={row.document} className='text-primary'> {row.document} </a></div>
             },
             {
                 name: "DISCOUNT STATUS",
-                selector: (row) => {},
-                sortable: true,width:"180px",
-                cell:(row)=>row.role==="Reseller" &&  <button className={`btn text-white ${row.discount==="NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={()=>{row.discount==="NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id)}}>{row.discount}</button>
+                selector: (row) => { },
+                sortable: true, width: "180px",
+                cell: (row) => row.role === "Reseller" && <button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { row.discount === "NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id) }}>{row.discount}</button>
             },
             // {
             //     name: "COUNTRY",
@@ -87,39 +90,44 @@ function CustomerList() {
         ]
     }
 
-    const allCustomers=async()=>{
-        try{
-            let response= await httpCommon.get("/allUserDetail");
-            let {data}=response;
+    const allCustomers = async () => {
+        try {
+            setLoading(true)
+            let response = await httpCommon.get("/allUserDetail");
+            let { data } = response;
             setData(data);
-        }catch(err){
+            setLoading(false)
+
+        } catch (err) {
+            console.log(err);
+            setLoading(false)
+
+        }
+    }
+
+    const verifyCustomer = async (id) => {
+        try {
+            let response = await httpCommon.patch(`/verifyReseller/${id}`, { discount: "VERIFIED" });
+            let { data } = response;
+            setRefresh(data);
+        } catch (err) {
             console.log(err);
         }
     }
-    
-    const verifyCustomer=async(id)=>{
-          try{
-             let response=await httpCommon.patch(`/verifyReseller/${id}`,{discount:"VERIFIED"});
-             let {data}=response;
-             setRefresh(data);
-          }catch(err){
-           console.log(err);
-          }
-    }
-    const notVerifyCustomer=async(id)=>{
-        try{
-           let response=await httpCommon.patch(`/notVerifyReseller/${id}`,{discount:"NOT_VERIFIED"});
-           let {data}=response;
-           setRefresh(data);
-        }catch(err){
-         console.log(err);
+    const notVerifyCustomer = async (id) => {
+        try {
+            let response = await httpCommon.patch(`/notVerifyReseller/${id}`, { discount: "NOT_VERIFIED" });
+            let { data } = response;
+            setRefresh(data);
+        } catch (err) {
+            console.log(err);
         }
-  }
+    }
 
     async function onDeleteRow(row) {
-       //eslint-disable-next-line
-        var result = await table_row.filter((d) => {  if (d !== row) { return d } });
-        
+        //eslint-disable-next-line
+        var result = await table_row.filter((d) => { if (d !== row) { return d } });
+
         setTable_row([...result])
     }
 
@@ -133,25 +141,27 @@ function CustomerList() {
                 }} />
                 <div className="row clearfix g-3">
                     <div className="col-sm-12">
-                        <div className="card mb-3">
-                            <div className="card-body">
-                                <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                    <div className="row">
-                                        <div className="col-sm-12">
-                                            <DataTable
-                                                columns={columns()}
-                                                data={data}
-                                                defaultSortField="title"
-                                                pagination
-                                                selectableRows={false}
-                                                className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                highlightOnHover={true}
-                                            />
+                        {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                        <div className="row">
+                                            <div className="col-sm-12">
+                                                <DataTable
+                                                    columns={columns()}
+                                                    data={data}
+                                                    defaultSortField="title"
+                                                    pagination
+                                                    selectableRows={false}
+                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                    highlightOnHover={true}
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
                 </div>
             </div>
