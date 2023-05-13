@@ -20,6 +20,7 @@ function ProductAdd() {
 
     const dispatch=useDispatch();
     const categories=useSelector(state=>state?.category);
+    console.log(categories);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
@@ -46,7 +47,7 @@ function ProductAdd() {
     const addProduct=async ()=>{
         try{
             let category=categories.find(c1=>c1?.categoryName===product?.productCategory);
-            console.log(category);
+             console.log("category",category)
             const formData=new FormData();
             formData.append("productName",product?.productName);
             formData.append("productImage",product?.productImage);

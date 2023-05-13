@@ -31,7 +31,7 @@ function SparePartEdit(props) {
         const filterPart = spareParts?.data?.find(e1 => e1?._id === id)
      
         setSpareParts(filterPart)
-    },[ dispatch,id,spareParts])
+    },[ dispatch,id])
 
     
     
