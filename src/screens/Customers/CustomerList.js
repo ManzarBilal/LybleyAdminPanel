@@ -17,7 +17,11 @@ function CustomerList() {
 
 
     useEffect(() => {
-        allCustomers();
+        let user = localStorage.getItem("user");
+        let obj = JSON.parse(user);
+        obj?.role === 'ADMIN' ? allCustomers()
+            :
+            allCustomersByBrand()
     }, [refresh])
     // const data=useSelector(state=>state?.userDetail);
 
@@ -104,7 +108,23 @@ function CustomerList() {
 
         }
     }
+    const allCustomersByBrand = async () => {
+        try {
+            let user = localStorage.getItem("user");
+            let obj = JSON.parse(user);
+            setLoading(true)
+            let response = await httpCommon.get(`/getAllOrder`);
+            let { data } = response;
+            let filterCust = data?.filter((f, i) => f?.items?.find((it => it?.brandId === obj?._id)))
+            setData(filterCust);
+            setLoading(false)
 
+        } catch (err) {
+            console.log(err);
+            setLoading(false)
+
+        }
+    }
     const verifyCustomer = async (id) => {
         try {
             let response = await httpCommon.patch(`/verifyReseller/${id}`, { discount: "VERIFIED" });
@@ -130,6 +150,8 @@ function CustomerList() {
 
         setTable_row([...result])
     }
+
+  
 
     return (
         <div className="body d-flex py-lg-3 py-md-2">

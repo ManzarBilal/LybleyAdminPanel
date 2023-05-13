@@ -66,18 +66,37 @@ function FaultList() {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         dispatch(getProduct(obj?._id));
-        GetAllFault()
+        obj?.role === 'ADMIN' ?  GetAllFault()
+       : GetAllFaultByBrand()
     }, [randomValue, dispatch])
 
     const products = useSelector(state => state?.products)
 
-    const GetAllFault = async () => {
+    const GetAllFaultByBrand = async () => {
         try {
             setLoading(true)
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
             const id = obj?._id;
             let response = await httpCommon.get(`/getFaultBy/${id}`)
+            let { data } = response
+            setTable_row(data)
+            setLoading(false)
+
+        }
+        catch (err) {
+            console.log(err)
+            setLoading(false)
+
+        }
+    }
+    const GetAllFault = async () => {
+        try {
+            setLoading(true)
+            let user = localStorage.getItem("user");
+            let obj = JSON.parse(user);
+            const id = obj?._id;
+            let response = await httpCommon.get(`/getAllFault`)
             let { data } = response
             setTable_row(data)
             setLoading(false)
@@ -125,7 +144,7 @@ function FaultList() {
         }
     }
     const addFault = async () => {
-        let product = products?.find(p1 => p1?.productName === fault?.productModel);
+        let product = products?.data?.find(p1 => p1?.productName === fault?.productModel);
 
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
@@ -218,7 +237,7 @@ function FaultList() {
                                         <label className="form-label">Product Model</label>
                                         <select className="form-select" name='productModel' value={fault?.productModel} onChange={handleChange}  >
                                             <option value="" selected>Choose Model</option>
-                                            {products?.map(c1 =>
+                                            {products?.data?.map(c1 =>
                                                 <option value={c1.productName} >{c1.productName}</option>
                                             )}
                                         </select>
@@ -252,7 +271,7 @@ function FaultList() {
                                         <label className="form-label">Product Model</label>
                                         <select className="form-select" name='productModel' value={fault?.productModel} onChange={handleChange}  >
                                             <option value="" selected>Choose Model</option>
-                                            {products?.map(c1 =>
+                                            {products?.data?.map(c1 =>
                                                 <option value={c1.productName} >{c1.productName}</option>
                                             )}
                                         </select>

@@ -67,7 +67,8 @@ function SparePartVideos() {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         dispatch(getProduct(obj?._id));
-        GetAllFaultVideo()
+        obj?.role === 'ADMIN' ?  GetAllFaultVideo()
+        : GetAllFaultVideoByBrand()
         if (typeof window !== "undefined") {
             setHasWindow(true);
         }
@@ -76,6 +77,23 @@ function SparePartVideos() {
     const products = useSelector(state => state?.products)
 
     const GetAllFaultVideo = async () => {
+        let user = localStorage.getItem("user");
+        let obj = JSON.parse(user);
+        try {
+            setLoadingSp(true)
+            let response = await httpCommon.get(`/getAllVideos`)
+            let { data } = response
+            setTable_row(data)
+            setLoadingSp(false)
+
+        }
+        catch (err) {
+            console.log(err)
+            setLoadingSp(false)
+
+        }
+    }
+    const GetAllFaultVideoByBrand = async () => {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         try {
@@ -92,7 +110,6 @@ function SparePartVideos() {
 
         }
     }
-
     const edit = (id) => {
         setIseditmodal(true);
         let table_row1 = [...table_row];
@@ -121,7 +138,7 @@ function SparePartVideos() {
         }
     }
     const addFaultVideo = async () => {
-        let product = products?.find(p1 => p1?.productName === faultVideo?.productModel);
+        let product = products?.data?.find(p1 => p1?.productName === faultVideo?.productModel);
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         const formData = new FormData()
@@ -244,7 +261,7 @@ function SparePartVideos() {
                                         <label className="form-label">Product Model</label>
                                         <select className="form-select" name='productModel' value={faultVideo?.productModel} onChange={handleChange}  >
                                             <option value="" selected>Choose Model</option>
-                                            {products?.map((c1, i) =>
+                                            {products?.data?.map((c1, i) =>
                                                 <option key={i} value={c1.productName} >{c1.productName}</option>
                                             )}
                                         </select>
@@ -285,7 +302,7 @@ function SparePartVideos() {
                                         <label className="form-label">Product Model</label>
                                         <select className="form-select" name='productModel' value={faultVideo?.productModel} onChange={handleChange}  >
                                             <option value="" selected>Choose Model</option>
-                                            {products?.map((c1, i) =>
+                                            {products?.data?.map((c1, i) =>
                                                 <option key={i} value={c1.productName} >{c1.productName}</option>
                                             )}
                                         </select>

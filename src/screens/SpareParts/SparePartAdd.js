@@ -79,7 +79,7 @@ function SparePartAdd() {
 
     const addSparePart=async ()=>{
         try{
-            let product=products?.find(p1=>p1.productName===sparePart.productModel);
+            let product=products?.data?.find(p1=>p1.productName===sparePart.productModel);
             const formData=new FormData();
             formData.append("partName",sparePart?.partName);
             formData.append("description",sparePart?.description);
