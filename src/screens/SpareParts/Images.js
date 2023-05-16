@@ -36,8 +36,8 @@ function Images(props) {
                                     
                             }
                             <input id='filesize' onChange={(e) => handleFileChange(e)} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
-                            <div className='dz-message '>
-                                        <i className="fa   fa-picture-o" aria-hidden="true"></i>
+                            <div className='dz-message d-flex align-items-center'>
+                                       <h1 className='display-1'>+</h1> {/* <i className="fa   fa-picture-o" aria-hidden="true"></i> */}
                                     </div>
                         </div>
                     </div>

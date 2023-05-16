@@ -128,7 +128,7 @@ function OrderDetail() {
                     </>
                 }
                 <div className="row g-3 mb-3">
-                    <div className="col-xl-12 col-xxl-8">
+                    <div className="col-xl-12 col-xxl-12">
                         <div className="card">
                             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
                                 <h6 className="mb-0 fw-bold ">Order Summary</h6>
@@ -145,7 +145,7 @@ function OrderDetail() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="checkout-coupon-total checkout-coupon-total-2 d-flex flex-wrap justify-content-end">
+                                    {/* <div className="checkout-coupon-total checkout-coupon-total-2 d-flex flex-wrap justify-content-end">
                                         <div className="checkout-total">
                                             <div className="single-total">
                                                 <p className="value">Subotal Price:</p>
@@ -168,14 +168,14 @@ function OrderDetail() {
                                                 <p className="price">$1296.00</p>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div className="col-xl-12 col-xxl-4">
+                    {/* <div className="col-xl-12 col-xxl-4">
                         <StatusOrderBlock />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

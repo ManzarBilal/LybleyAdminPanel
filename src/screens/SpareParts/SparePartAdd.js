@@ -79,13 +79,14 @@ function SparePartAdd() {
 
     const addSparePart=async ()=>{
         try{
+            let technician= +sparePart?.technician;
             let product=products?.data?.find(p1=>p1.productName===sparePart.productModel);
             const formData=new FormData();
             formData.append("partName",sparePart?.partName);
             formData.append("description",sparePart?.description);
             formData.append("MRP",sparePart?.MRP);
             formData.append("bestPrice",sparePart?.bestPrice);
-            formData.append("technician",sparePart?.technician);
+            formData.append("technician",technician);
             sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
             formData.append("category",sparePart?.category);
             formData.append("productModel",sparePart?.productModel);

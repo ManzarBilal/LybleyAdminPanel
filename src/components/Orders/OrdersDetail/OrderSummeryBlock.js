@@ -28,7 +28,7 @@ function OrderSummeryBlock(props) {
                 selector: (row) => row.quanty,
                 sortable: true,
                 cell: row => <>
-                {row?.items?.map((d,i)=>( <div key={i} className='row'><h6 className="title me-2">{d?.sparePartName} : <span>{d?.quantity}</span></h6></div>) )}</>,
+                {row?.items?.map((d,i)=>( <div key={i} className='row'><span>{d?.quantity}</span></div>) )}</>,
 
             },
             {
@@ -36,7 +36,23 @@ function OrderSummeryBlock(props) {
                 selector: (row) => row.price,
                 sortable: true,
                 cell: row => <>
-                {row?.items?.map((d,i)=>( <div key={i} className='row'><h6 className="title me-2">{d?.sparePartName} : <span>{d?.MRP}</span></h6></div>) )}</>,
+                {row?.items?.map((d,i)=>( <div key={i} className='row'> <span>{d?.MRP}</span></div>) )}</>,
+
+            },
+            {
+                name: "TECHNICIAN",
+                selector: (row) => row.technician,
+                sortable: true,
+                cell: row => <>
+                {row?.items?.map((d,i)=>( <div key={i} className='row'> <span>{d?.technician>0 ? `Booked for ${d?.technician}` : "No" }</span></div>) )}</>,
+
+            },
+            {
+                name: "DATE & TIME",
+                selector: (row) => row.date,
+                sortable: true,
+                cell: row => <>
+                {<div className='row'> <span>({new Date(row?.createdAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
 
             },
         ]

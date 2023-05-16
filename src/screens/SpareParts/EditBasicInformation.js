@@ -13,6 +13,7 @@ const [fault,setFault]=useState("");
       setFault("");
  }
 let {partName,description,faultType,MRP,bestPrice,productModel,category}=props?.sparePart;
+console.log("sparepart",props?.sparePart);
 let {categories}=props;
  
     return (
