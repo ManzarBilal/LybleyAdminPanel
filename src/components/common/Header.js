@@ -27,9 +27,9 @@ function Header (props) {
                 <nav className="navbar py-4">
                     <div className="container-xxl">
                         <div className="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">  
-                            <div className="d-flex mx-2 mt-1">
-                                <Link to="help" className="nav-link text-primary collapsed" title="Get Help">
-                                    <i className="icofont-info-square fs-5"></i>
+                            <div className="d-flex mt-1" >
+                                <Link to="help" className="nav-link text-primary collapsed" title="Get Help" >
+                                   <div style={{fontSize:"30px",marginTop:"-20px"}}> <i style={{fontSize:"35px",}} className="icofont-info-square fs-51"></i></div>
                                 </Link>
                             </div>
                             <Dropdown className="zindex-popover mx-2">
@@ -60,8 +60,8 @@ function Header (props) {
                                 </Dropdown.Menu> */}
                             </Dropdown>
                             <Dropdown className="notifications zindex-popover">
-                                <Dropdown.Toggle as="a" className="nav-link dropdown-toggle pulse">
-                                    <i className="icofont-alarm fs-5"></i>
+                                <Dropdown.Toggle as="a" className="nav-link dropdown-toggle pulse" style={{fontSize:"35px",marginTop:"-20px"}}>
+                                    <i className="icofont-alarm fs-51 me-3" ></i>
                                     <span className="pulse-ring"></span>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="rounded-lg shadow border-0 dropdown-animation dropdown-menu-sm-end p-0 m-0">
@@ -137,12 +137,12 @@ function Header (props) {
                                 </Dropdown.Menu>
                             </Dropdown>
                             <Dropdown className="dropdown user-profilem ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
-                                <div className="u-info me-2">
+                                <div className="u-info me-2 d-flex flex-column justify-content-center align-items-center">
                                     <p className="mb-0 text-end line-height-sm "><span className="font-weight-bold">{headerData?.brandName}</span></p>
-                                    { headerData && headerData?.role==="ADMIN" ? <small> Admin Profile </small>: <small> Brand Profile </small>}
+                                   <p> { headerData && headerData?.role==="ADMIN" ? <small> Admin Profile </small>: <small> Brand Profile </small>}</p>
                                 </div>
                                 <Dropdown.Toggle as='a' className="nav-link dropdown-toggle pulse p-0 mb-3" href="#!" role="button">
-                                    <img className="avatar lg rounded-circle img-thumbnail " src={userType?.role==="ADMIN" ? ImageLogo : userType?.brandLogo} alt="profile" height="40" width="40"/>
+                                    <img className="img-thumbnail rounded-circle " src={userType?.role==="ADMIN" ? ImageLogo : userType?.brandLogo} alt="profile" height="45px" width="45px"/>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0 mt-5 ">
                                     <div className="card border-0   w280">
@@ -164,8 +164,8 @@ function Header (props) {
                                     </div>
                                 </Dropdown.Menu>
                             </Dropdown>
-                            <div className="setting ms-2">
-                                <a href='#!' onClick={(val) => {props.Onopenmodalsetting(true) }} ><i className="icofont-gear-alt fs-5"></i></a>
+                            <div className="setting ms-2" style={{marginTop:"-17px"}}>
+                                <a href='#!' onClick={(val) => {props.Onopenmodalsetting(true) }}style={{fontSize:"40px"}} ><i className="icofont-gear-alt fs-51"></i></a>
                             </div>
                         </div>
                         <button className="navbar-toggler p-0 border-0 menu-toggle order-3" type="button" onClick={() => {

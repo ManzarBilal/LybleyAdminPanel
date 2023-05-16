@@ -45,7 +45,7 @@ function CardBlock(props) {
                                     <Link to={props?.url + "/product-detail"} className="fw-bold">{d.productName} </Link>
                                    {props?.role==="ADMIN" ?  <p className="fw-bold">Brand : {d.brandName}</p>
                                    : ""}
-                                    <p className="text-muted">{d.productDescription}</p>
+                                    <p className="text-muted">{d?.productDescription?.substring(0,60)}</p>
                                     <div className='d-flex justify-content-between'>
                                     <Link to={props?.url + `/product-edit/${d?._id}`} className="btn btn-primary mt-3">Edit</Link>
                                     <div onClick={() => handleProduct(d?._id)} className="btn btn-danger text-white mt-3"><i class="icofont-ui-delete"></i></div>
