@@ -18,6 +18,7 @@ function SparePartEdit(props) {
     const products=useSelector(state=>state?.products);
     const categories=useSelector(state=>state?.category);
     const spareParts=useSelector(state=>state?.spareParts);
+    const [randomValue,setRandomValue]=useState("");
 
     const [img,setImage]=useState("");
     const [faults,setFault]=useState([]);
@@ -29,12 +30,11 @@ function SparePartEdit(props) {
         dispatch(getProduct(obj?._id));
         getFaults();
         const filterPart = spareParts?.data?.find(e1 => e1?._id === id)
-     
+        console.log(randomValue,filterPart.images);
         setSpareParts(filterPart)
-    },[ dispatch,id])
+    },[ dispatch,id,randomValue]);
 
-    
-    
+
     const handleChange=(e)=>{
         const {currentTarget:input}=e;
         let sparePart1={...sparePart};
@@ -42,9 +42,7 @@ function SparePartEdit(props) {
         setSpareParts(sparePart1);
     }
     const handleImage=(file)=>{
-         let sparePart1={...sparePart};
-         sparePart1?.images?.push(file);
-         setSpareParts(sparePart1);
+         setImage(file);
        // setSpareParts({...sparePart,images:file});
     }
 
@@ -78,6 +76,11 @@ function SparePartEdit(props) {
         }
     }
 
+    const changeRandom=()=>{
+        let x = Math.floor((Math.random() * 10) + 1);
+        setRandomValue(x)
+    }
+
     //  console.log("sparePart",sparePart);
     const editProduct = async () => {
         let obj={partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
@@ -108,7 +111,7 @@ function SparePartEdit(props) {
                     </div>
                     
                     <div className="card mb-3">
-                        <EditImage id={id} img={img} setImage={setImage} sparePart={sparePart} onImage={handleImage} />
+                        <EditImage url={props?.url} id={id} img={img} setImage={setImage} sparePart={sparePart} onImage={handleImage} changeRandom={changeRandom} />
                     </div>
                     <div className="card mb-3">
                         <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5"onClick={editProduct} >Save</button>

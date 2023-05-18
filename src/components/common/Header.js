@@ -2,6 +2,7 @@ import React from 'react';
 import { Dropdown, Image } from 'react-bootstrap';
 import Avatar1 from '../../assets/images/xs/avatar1.svg';
 import Avatar3 from '../../assets/images/xs/avatar3.svg';
+import Avatar4 from '../../assets/images/lg/avatar4.svg'
 import Avatar5 from '../../assets/images/xs/avatar5.svg';
 import Avatar6 from '../../assets/images/xs/avatar6.svg';
 import Avatar7 from '../../assets/images/xs/avatar7.svg';
@@ -142,7 +143,7 @@ function Header (props) {
                                    <p> { headerData && headerData?.role==="ADMIN" ? <small> Admin Profile </small>: <small> Brand Profile </small>}</p>
                                 </div>
                                 <Dropdown.Toggle as='a' className="nav-link dropdown-toggle pulse p-0 mb-3" href="#!" role="button">
-                                    <img className="img-thumbnail rounded-circle " src={userType?.role==="ADMIN" ? ImageLogo : userType?.brandLogo} alt="profile" height="45px" width="45px"/>
+                                    <img className="img-thumbnail rounded-circle " src={userType?.role==="ADMIN" ? ImageLogo ? ImageLogo : Avatar4 : userType?.brandLogo ? userType?.brandLogo : Avatar4 } alt="profile" height="45px" width="45px"/>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0 mt-5 ">
                                     <div className="card border-0   w280">

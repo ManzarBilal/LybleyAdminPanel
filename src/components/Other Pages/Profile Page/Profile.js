@@ -72,8 +72,8 @@ function Profile(props) {
                         </div>
                         <div className="col-12 mt-3">
                             <div className='pb-2 fw-bold' > Brand Logo</div>
-                            <div className="d-flex align-items-center">
-                                <img height="70" width="100%" alt='brandImage' src= {props?.user?.brandLogo?props?.user?.brandLogo: Avatar4} />
+                            <div className="d-flex align-items-center justify-content-center profile-block  w220 mx-auto">
+                                <img  alt='brandImage' className='className="avatar xl rounded img-thumbnail shadow-sm"' src= {props?.user?.brandLogo?props?.user?.brandLogo: Avatar4} />
                             </div>
                         </div>
                         <div className="col-12 mt-3">
