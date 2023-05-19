@@ -67,6 +67,8 @@ import SparePartAdd from './SpareParts/SparePartAdd';
 import SparePartVideos from './SpareParts/SparePartVideos';
 import FaultList from './SpareParts/FaultList';
 import CategoryList from './ProductCategory/CategoryList';
+import BookingList from './Bookings/BookingsList';
+import BookingDetail from './Bookings/BookingDetails';
 
 function MainIndex(props) {
 
@@ -113,7 +115,8 @@ function MainIndex(props) {
 
           <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList  url={props?.url} /> }} />
           <Route exact path={props?.url + '/order-detail/:id'} render={() => { return <OrderDetail /> }} />
-
+          <Route exact path={props?.url + '/booking-list'} render={() => { return <BookingList  url={props?.url} /> }} />
+          <Route exact path={props?.url + '/booking-detail/:id'} render={() => { return <BookingDetail /> }} />
 
           <Route exact path={props?.url + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
           <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList /> }} />

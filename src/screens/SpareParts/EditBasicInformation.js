@@ -12,8 +12,8 @@ const [fault,setFault]=useState("");
       props.onDelete(i);
       setFault("");
  }
-let {partName,description,faultType,MRP,bestPrice,productModel,category}=props?.sparePart;
-console.log("sparepart",props?.sparePart);
+let {partName,description,faultType,MRP,bestPrice,productModel,category,partNo}=props?.sparePart;
+ 
 let {categories}=props;
  
     return (
@@ -27,6 +27,10 @@ let {categories}=props;
                         <div className="col-md-12">
                             <label className="form-label"> Spare Part Name</label>
                             <input type="text" className="form-control" name='partName' value={partName} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-12">
+                            <label className="form-label"> Spare Part No.</label>
+                            <input type="text" className="form-control" name='partNo' value={partNo} onChange={(e) => {props.onChange(e) }} />
                         </div>
                         <div className="col-md-12">
                             <label className="form-label">Description</label>

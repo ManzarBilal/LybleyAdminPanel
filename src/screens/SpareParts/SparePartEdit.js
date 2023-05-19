@@ -84,7 +84,7 @@ function SparePartEdit(props) {
     //  console.log("sparePart",sparePart);
     const editProduct = async () => {
         let obj={partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
-            MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType};
+            MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType,partNo:sparePart?.partNo};
         try {
            
             let response = await httpCommon.patch(`/updateSparePart/${id}`,obj);
@@ -99,7 +99,7 @@ function SparePartEdit(props) {
     return (
         <div className="container-xxl">
             <PageHeader1
-                pagetitle='Products Edit'
+                pagetitle='Spare Part Edit'
             //  button={true} 
 
             />

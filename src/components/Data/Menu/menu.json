@@ -193,7 +193,17 @@
                     "isApp": false,
                     "children": []
                 }
-                
+                ,
+                {
+                    "name": "Booking List",
+                    "routerLink": ["booking-list"],
+                    "identifier": "Booking List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
                 
             ]
         },
