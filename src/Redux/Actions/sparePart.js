@@ -3,7 +3,7 @@ import httpCommon from "../../http-common";
 export const getAllSpareParts = () => {
     return async (dispatch) => {
         try {
-            let response = await httpCommon.get(`/allSparePart`)
+            let response = await httpCommon.get(`/allSparePartForAdmin`)
             dispatch({
                 type: "All_SPAREPART",
                 payload: response.data

@@ -27,7 +27,7 @@ function SparePartGrid(props) {
 
     }, [dispatch, randomValue])
 
-
+  console.log(spareParts);
     return (
 
         <div className="container-xxl">
