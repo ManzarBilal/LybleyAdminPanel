@@ -7,6 +7,13 @@ import { ConfirmBox } from '../../components/common/ConfirmBox';
 import { ToastMessage } from '../../components/common/ToastMessage';
 import Avatar4 from "../../assets/images/lg/avatar4.svg";
 import { ReactLoader } from '../../components/common/ReactLoader';
+import { Link, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { userEmail } from '../../Redux/Actions/userEmail';
+
 const defaultBanner = "https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
 function BrandList() {
     const [table_row, setTable_row] = useState([]);
@@ -17,6 +24,10 @@ function BrandList() {
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [brandId, setBrandId] = useState("");
     const [loading, setLoading] = useState(false)
+
+    const [gstView, setGstView] = useState(false)
+    const [gstDocument, setGstDocument] = useState("")
+
     const columns = () => {
         return [
         
@@ -47,8 +58,8 @@ function BrandList() {
                 selector: (row) => row?.status,
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {row?.approval === "DISAPPROVED" ? <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "APPROVED")}>Approve</button>
-                        : <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "DISAPPROVED")} >Disapprove</button>}
+                    {row?.approval === "DISAPPROVED" ? <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "APPROVED")}>DisApprove</button>
+                        : <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "DISAPPROVED")} >Approve</button>}
 
                 </div>
             },
@@ -118,8 +129,91 @@ function BrandList() {
         setIseditmodal(true);
 
     }
-    // console.log(table_row)
-    // console.log("viewDetail",viewDetail)
+    
+    const validationSchema = Yup.object().shape({
+        name: Yup.string().required(' Brand Name is required')
+            .min(4, "Brand Name must be at least 4 characters"),
+        contact: Yup.string()
+            .required('Contact No. is required')
+            .min(10, 'Contact No. must be at least 10 characters')
+            .max(10, 'Contact No. must not exceed 10 characters'),
+        gstNo: Yup.string()
+            .required('GST No. is required')
+            .min(10, 'GST No. must be at least 10 characters'),
+        address: Yup.string()
+            .required('address is required')
+            .min(10, 'address must be at least 10 characters'),
+        email: Yup.string()
+            .required('Email is required')
+            .email('Email is invalid'),
+        // gstDocument: Yup.mixed().test("file", "You need to provide a file", (value) => {
+        //     if (value.length > 0) {
+        //         return true;
+        //     }
+        //     return false;
+        // }),
+        password: Yup.string()
+            .required('Password is required')
+            .min(8, 'Password must be at least 8 characters')
+            .max(40, 'Password must not exceed 40 characters'),
+        confirmPassword: Yup.string()
+            .required('Confirm Password is required')
+            .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
+        chooseCb: Yup.bool().oneOf([true], 'Please fill the box')
+    });
+
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        resolver: yupResolver(validationSchema)
+    });
+    const handleFileChange = (e) => {
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0])
+            if (e.target.name === "gstDocument") {
+                // console.log(e.target.files[0]);
+                setGstDocument(e.target.files[0]);
+            }
+        }
+    };
+
+    const signUp = async (obj) => {
+        try {
+            const formData = new FormData()
+            formData.append("gstDocument", gstDocument);
+            formData.append("gstNo", obj.gstNo);
+            formData.append("brandName", obj.name,)
+            formData.append("address", obj.address,)
+            formData.append("email", obj.email,)
+            formData.append("contact", +obj.contact,)
+            formData.append("password", obj.password,)
+            console.log(gstDocument, "gstDocument");
+
+            // const fullData={...body ,gstDocument:gstDocument}
+            // console.log(fullData,"fullData");
+            let response = await httpCommon.post("/brandRegistration", formData);
+            let { data } = response;
+            ToastMessage(data)
+            if (data.status === true) {
+                history.push(`${  "/user/verification"}`)
+            }
+            else return null;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+const dispatch=useDispatch()
+const history=useHistory()
+    const onRegister = data => {
+        // console.log("data", gstDocument);
+        setGstView(true)
+        signUp(data);
+        dispatch(userEmail(data?.email))
+    }
     return (
         <>
             <div className="body d-flex py-lg-3 py-md-2">
@@ -235,50 +329,129 @@ function BrandList() {
                     </Modal.Header>
                     <Modal.Body className="modal-body">
                         <div className="deadline-form">
-                            <form>
-                                <div className="row g-3 mb-3">
-                                    <div className="col-sm-12">
-                                        <label htmlFor="item" className="form-label">Customers Name</label>
-                                        <input type="text" className="form-control" id="item" />
-                                    </div>
-                                    <div className="col-sm-12">
-                                        <label htmlFor="taxtno" className="form-label">Customers Profile</label>
-                                        <input type="File" className="form-control" id="taxtno" />
-                                    </div>
-                                </div>
-                                <div className="row g-3 mb-3">
-                                    <div className="col-sm-6">
-                                        <label htmlFor="depone" className="form-label">Country</label>
-                                        <input type="text" className="form-control" id="depone" />
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <label htmlFor="abc" className="form-label">Customers Register date</label>
-                                        <input type="date" className="form-control w-100" id="abc" />
-                                    </div>
-                                </div>
-                                <div className="row g-3 mb-3">
-                                    <div className="col-sm-6">
-                                        <label htmlFor="abc11" className="form-label">Mail</label>
-                                        <input type="text" className="form-control" id="abc11" />
-                                    </div>
-                                    <div className="col-sm-6">
-                                        <label htmlFor="abc111" className="form-label">Phone</label>
-                                        <input type="text" className="form-control" id="abc111" />
-                                    </div>
-                                </div>
-                                <div className="row g-3 mb-3">
-                                    <div className="col-sm-12">
-                                        <label className="form-label">Total Order</label>
-                                        <input type="text" className="form-control" />
-                                    </div>
-                                </div>
-                            </form>
+                        <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Brand name</label>
+                            <input type="email" className={(errors && errors.name) ? "form-control   border-danger " : "form-control  "} placeholder="Brand name"
+                                {...register('name')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.name?.message}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Email address</label>
+                            <input type="email" className={(errors && errors.email) ? "form-control  border-danger " : "form-control"} placeholder="name@example.com"
+                                {...register('email')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.email?.message}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Contact No.</label>
+                            <input type="number" className={(errors && errors.contact) ? "form-control border-danger " : "form-control "} placeholder="Contact No."
+                                {...register('contact')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.contact?.message}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">GST No.</label>
+                            <input type="text" className={(errors && errors.gstNo) ? "form-control   border-danger " : "form-control "} placeholder="GST No."
+                                {...register('gstNo')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.gstNo?.message}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Upload GST Document</label>
+                            <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            // {...register('gstDocument')}
+
+                            />
+                         {gstView ?  <> {  gstDocument==="" ?  <div className='text-danger'>
+                                Gst Document is required.
+                            </div> :""}
+                            </>:""}
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Address</label>
+                            <input type="text" className={(errors && errors.address) ? "form-control   border-danger " : "form-control "} placeholder="address"
+                                {...register('address')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.address?.message}
+                            </div>
+                        </div>
+
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Password</label>
+                            <input type="email" className={(errors && errors.password) ? "form-control  border-danger " : "form-control  "} placeholder="8+ characters required"
+                                {...register('password')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.password?.message}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="mb-1">
+                            <label className="form-label">Confirm password</label>
+                            <input type="email" className={(errors && errors.confirmPassword) ? "form-control  border-danger " : "form-control "} placeholder="8+ characters required"
+                                {...register('confirmPassword')}
+
+                            />
+                            <div className='text-danger'>
+                                {errors.confirmPassword?.message}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-12">
+                        <div className="form-check">
+                            <input type="checkbox" value="" id="flexCheckDefault"
+                                {...register('chooseCb')}
+                                className={`form-check-input ${errors.chooseCb ? 'is-invalid' : ''
+                                    }`}
+                            />
+
+                            <label className="form-check-label" htmlFor="flexCheckDefault">
+                                I accept the <Link to="#!" title="Terms and Conditions" className="text-secondary">Terms and Conditions</Link>
+                            </label>
+                            {/* <div className='text-danger'>
+                                 {errors.chooseCb?.message}
+                             </div> */}
+                        </div>
+                    </div>
                         </div>
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
                         <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Done</button>
-                        <button type="submit" className="btn btn-primary">Add</button>
+                        <button onClick={handleSubmit(onRegister)} className="btn btn-primary">Add Brand</button>
                     </Modal.Footer>
 
                 </Modal>
