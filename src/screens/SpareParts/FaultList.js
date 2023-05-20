@@ -78,11 +78,10 @@ function FaultList() {
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
             const id = obj?._id;
-            let response = await httpCommon.get(`/getFaultBy/${id}`)
+            let response = await httpCommon.get(`/getFaultBy/${id}`);
             let { data } = response
             setTable_row(data)
             setLoading(false)
-
         }
         catch (err) {
             console.log(err)

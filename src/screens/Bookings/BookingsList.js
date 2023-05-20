@@ -3,21 +3,22 @@ import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
 import { Link } from 'react-router-dom';
+import Switch from '@material-ui/core/Switch';
 import { ReactLoader } from '../../components/common/ReactLoader';
 
 function BookingList(props) {
-
+    const [checkedB,setCheckDb]=useState(false)
     const columns = () => {
         return [
-            {
-                name: "SR NO.",
-                selector: (row) => row?.i,
-                sortable: true,
-            },
+            // {
+            //     name: "SR NO.",
+            //     selector: (row) => row?.i,
+            //     sortable: true,
+            // },
             {
                 name: "CUSTOMER NAME",
                 selector: (row) => row?.name,
-                cell: (row) => <Link className='text-primary' to={props?.url + `/order-detail/${row?._id}`} >{row?.name}</Link>,
+                cell: (row) => <Link className='text-primary' to={props?.url + `/booking-detail/${row?._id}`} >{row?.name}</Link>,
                 sortable: true,
             },
             {
@@ -39,28 +40,31 @@ function BookingList(props) {
             {
                 name: "ITEMS",
                 cell: row => row?.items?.length,
+                sortable: true,maxWidth:"50px",
+            },
+            {
+                name: "TOTAL MRP",
+                cell: row => row?.items?.reduce((acc,curr)=> acc+curr?.MRP ,0) + " (18% GST included)",
                 sortable: true,
             },
-            // {
-            //     name: "STATUS",
-            //     selector: (row) => row?.status,
-            //     cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-            //         {row?.status === "INACTIVE" ? <button type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "ACTIVE")}>INACTIVE</button>
-            //             : <button type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "INACTIVE")} >ACTIVE</button>}
-
-            //     </div>,
-            //     sortable: true,
-            // },
-            // {
-            //     name: "ACTION",
-            //     selector: (row) => { },
-            //     sortable: true,
-            //     cell: (row) => 
-            //     <div className="btn-group" role="group" aria-label="Basic outlined example">
-            //         <button onClick={() => { edit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
-            //         <button onClick={() => { handleBrand(row?._id) }} type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
-            //     </div>
-            // }
+            {
+                name: "TETCHNICIAN",
+                cell: row => "Booked for " + row?.items?.find(f1=> f1?.technician)?.technician,
+                sortable: true,
+            }, 
+            {
+                name: "ACTION",
+                selector: (row) => { },
+                sortable: true,
+                cell: (row)=>  <Switch
+                checked={checkedB}
+                onChange={()=>setCheckDb(!checkedB)}
+                color="primary"
+                name="checkedB"
+                inputProps={{ 'aria-label': 'primary checkbox' }}
+              />
+            },
+           
         ]
     }
 
@@ -92,8 +96,8 @@ function BookingList(props) {
 
     const orders = user?.role === "ADMIN" ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
-    const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
-
+    const finalData = orders?.filter((item, i) => item?.items.find(it=>it?.technician>0))
+    console.log(finalData);
 
     return (
         <div className="body d-flex py-3">

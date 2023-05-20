@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import PageHeader1 from '../../components/common/PageHeader1';
-import AddressBlock from '../../components/Orders/OrdersDetail/AddressBlock';
-import CardBlock from '../../components/Orders/OrdersDetail/CardBlock';
-import OrderSummeryBlock from '../../components/Orders/OrdersDetail/OrderSummeryBlock';
-import StatusOrderBlock from '../../components/Orders/OrdersDetail/StatusOrderBlock';
+import PageHeader1 from '../../components/common/PageHeader1'; 
 import httpCommon from "../../http-common"
 import { useParams } from 'react-router-dom';
 import { ReactLoader } from '../../components/common/ReactLoader';
+import BookingSummeryBlock from './BookingSummaryDetail';
+import CardBlock from './CardBlock';
+import AddressBlock from './AddressBlock';
 
 function BookingDetail() {
     const param = useParams()
@@ -14,12 +13,21 @@ function BookingDetail() {
     const [loading, setLoading] = useState(false)
     const [loadingCard, setLoadingCard] = useState(false)
     const [loadingCust, setLoadingCust] = useState(false)
+    const [faults,setFaults]=useState([]);
 
 
+   const getFaults=async()=>{
+    try{
+        let response=await httpCommon.get("/getAllFault");
+        let {data}=response;
+        setFaults(data);
+    }catch(err){
+        console.log(err);
+    }
+   }
 
     const getAllOrder = async () => {
         try {
-
             let response = await httpCommon.get("/getAllOrder");
             let { data } = response;
             setOrders(data);
@@ -48,7 +56,7 @@ function BookingDetail() {
 
         }
     }
-
+    console.log(orderById);
     const getAllOrderById = async () => {
         try {
             setLoading(true)
@@ -69,11 +77,11 @@ function BookingDetail() {
         getAllOrder();
         getAllOrderByCustomer();
         getAllOrderById();
-
+        getFaults();
     }, [orderByCust]);
 
     
-
+   
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">
@@ -116,6 +124,10 @@ function BookingDetail() {
                                                 <label className="form-label col-6 col-sm-5">Quantity :</label>
                                                 <span><strong>{item?.quantity}</strong></span>
                                             </div>
+                                            <div className="col-12">
+                                                <label className="form-label col-6 col-sm-5">Fault Type :</label>
+                                                <span><strong>{faults?.find(f1=>f1?.productModel===item?.sparePartModel)?.faultName}</strong></span>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -140,7 +152,7 @@ function BookingDetail() {
                                             <div className="row">
                                                 {loadingCust ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
                                                     :
-                                                    <OrderSummeryBlock orders={finalData} />
+                                                    <BookingSummeryBlock orders={finalData} />
                                                 }
                                             </div>
                                         </div>
