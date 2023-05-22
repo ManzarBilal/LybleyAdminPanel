@@ -30,14 +30,14 @@ function BrandList() {
 
     const columns = () => {
         return [
-        
+
             {
                 name: "BRAND",
                 selector: (row) => row?.brandName,
                 cell: row => <div className='text-primary' style={{ cursor: "pointer" }} onClick={() => { handleViewDetail(row?._id) }}><img className="avatar rounded lg border" src={row?.brandLogo} alt="" /> <span className="px-2"><span   >{row.brandName}</span></span></div>,
                 sortable: true, minWidth: "200px"
             },
-        
+
             {
                 name: "EMAIL",
                 selector: (row) => row?.email,
@@ -68,7 +68,7 @@ function BrandList() {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {/* <button onClick={() => { setIseditmodal(true) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button> */}
+                    <button onClick={() => { handleBrandEdit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
                     <button type="button" onClick={() => { handleBrand(row?._id) }} className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
             }
@@ -96,7 +96,7 @@ function BrandList() {
         try {
             let response = await httpCommon.patch(`/brandApproval/${_id}`, { approval: body });
             let { data } = response;
-            let x=Math.floor((Math.random() * 10) + 1);
+            let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x);
             ToastMessage(data);
         } catch (err) {
@@ -109,7 +109,7 @@ function BrandList() {
             let response = await httpCommon.deleteData(`/deleteBrandBy/${brandId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x=Math.floor((Math.random() * 10) + 1);
+            let x = Math.floor((Math.random() * 10) + 1);
             setRandomValue(x);
             ToastMessage(data);
         } catch (err) {
@@ -120,6 +120,15 @@ function BrandList() {
         setBrandId(id)
         setConfirmBoxView(true);
     }
+    const handleBrandEdit = (id) => {
+        const findData = table_row.find(obj => {
+            return obj._id === id
+        })
+        setBrandId(id)
+        setBrandImage(findData?.brandLogo)
+        setIseditmodal(true)
+        
+    }
 
     const handleViewDetail = (id) => {
         const findData = table_row.find(obj => {
@@ -129,7 +138,7 @@ function BrandList() {
         setIseditmodal(true);
 
     }
-    
+
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(' Brand Name is required')
             .min(4, "Brand Name must be at least 4 characters"),
@@ -199,20 +208,51 @@ function BrandList() {
             let { data } = response;
             ToastMessage(data)
             if (data.status === true) {
-                history.push(`${  "/user/verification"}`)
+                history.push(`${"/user/verification"}`)
             }
             else return null;
         } catch (err) {
             console.log(err);
         }
     }
-const dispatch=useDispatch()
-const history=useHistory()
+    const dispatch = useDispatch()
+    const history = useHistory()
     const onRegister = data => {
         // console.log("data", gstDocument);
         setGstView(true)
         signUp(data);
         dispatch(userEmail(data?.email))
+    }
+
+    const [file, setFile] = useState("")
+    const [brandImage, setBrandImage] = useState("")
+  
+
+    const handleFileChangeImage = (e) => {
+        const reader = new FileReader();
+        if (e.target.files[0]) {
+            reader.readAsDataURL(e.target.files[0])
+            if (e.target.name === "file") {
+                // console.log(e.target.files[0]);
+                setFile(e.target.files[0]);
+            }
+        }
+    };
+    const uploadBrandLogo=async()=>{
+         
+        const formData=new FormData();
+        formData.append("file",file);
+       try{
+        let response= await httpCommon.patch(`/updateBrandLogoBy/${brandId}`,formData);
+        let { data } = response;
+        setFile("")
+        let x = Math.floor((Math.random() * 10) + 1);
+       setRandomValue(x);
+        ToastMessage(data);
+        setIseditmodal(false)
+       }catch(err){
+        console.log(err);
+       }
     }
     return (
         <>
@@ -225,27 +265,27 @@ const history=useHistory()
                     }} />
                     <div className="row clearfix g-3">
                         <div className="col-sm-12">
-                        {loading ?<div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>  
-                          :    <div className="card mb-3">
-                                <div className="card-body">
-                                    <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                        <div className="row">
-                                            <div className="col-sm-12">
-                                                <DataTable
-                                                    columns={columns()}
-                                                    data={table_row}
-                                                    defaultSortField="title"
-                                                    pagination
-                                                    selectableRows={false}
-                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                    highlightOnHover={true}
-                                                />
+                            {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
+                                : <div className="card mb-3">
+                                    <div className="card-body">
+                                        <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                            <div className="row">
+                                                <div className="col-sm-12">
+                                                    <DataTable
+                                                        columns={columns()}
+                                                        data={table_row}
+                                                        defaultSortField="title"
+                                                        pagination
+                                                        selectableRows={false}
+                                                        className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                        highlightOnHover={true}
+                                                    />
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-}
+                            }
                         </div>
                     </div>
                 </div>
@@ -258,68 +298,32 @@ const history=useHistory()
                         <div className="card-body d-flex profile-fulldeatil flex-column">
                             <div className="profile-block text-center w220 mx-auto">
                                 <a href="#!">
-                                    <img src={viewDetail?.brandLogo ? viewDetail?.brandLogo : Avatar4} alt="brandLogo" className="avatar xl rounded img-thumbnail shadow-sm" />
+                                    <img src={brandImage  ? brandImage  : Avatar4} alt="brandLogo" className="avatar xl rounded img-thumbnail shadow-sm" />
                                 </a>
                             </div>
                             <div className="profile-info w-100">
                                 <h6 className="mb-0 mt-2 fw-bold d-block fs-6 text-center"> {viewDetail?.brandName}</h6>
                                 <div className="row g-2 pt-2">
 
-                                    <div className="col-xl-12">
-                                        <div className="d-flex align-items-center">
-                                            <i className="icofont-id text-primary"></i>
-                                            <span className="ms-2">{viewDetail?._id}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-12">
-                                        <div className="d-flex align-items-center">
-                                            <i className="icofont-ui-touch-phone text-primary"></i>
-                                            <span className="ms-2">{viewDetail?.contact}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-12">
-                                        <div className="d-flex align-items-center">
-                                            <i className="icofont-email text-primary"></i>
-                                            <span className="ms-2">{viewDetail?.email}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-12">
-                                        <div className="d-flex align-items-center">
-                                            <i className="icofont-address-book text-primary"></i>
-                                            <span className="ms-2">{viewDetail?.address}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-12">
-                                        <div className="d-flex align-items-center">
-                                            <i className="icofont-license text-primary"></i>
-                                            <span className="ms-2">{viewDetail?.gstNo}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-12">
-                                        <div className="d-flex align-items-center">
-                                            <i className="icofont-calendar text-primary"></i>
-                                            <span className="ms-2">{new Date(viewDetail?.createdAt).toDateString()}</span>
-                                        </div>
-                                    </div>
-                                    <div className="col-xl-12 mt-1">
-                                        <div className="d-flex align-items-center mt-2 fw-bold">GST Document :
-                                        </div>
-                                        <div className='border' ><a className='text-primary ' rel="noopener noreferrer" href={viewDetail?.gstDocument} target='_blank'><u>{viewDetail?.gstDocument}</u></a></div>
-                                    </div>
+                                    <div className="col-md-6 col-sm-12">
+                                        <div className="mt-2 mb-1">
+                                            <label className="form-label">Upload Brand Logo</label>
+                                            <input type="file" name="file" onChange={(e) => handleFileChangeImage(e)} id="myfile" className="form-control"
+                                            
 
-                                    <div className="col-12 mt-1">
-                                        <div className='pb-2 fw-bold'> Brand Banner</div>
-                                        <div className="d-flex align-items-center">
-                                            <img height="70" width="100%" alt='brandImage' src={viewDetail?.brandBanner ? viewDetail?.brandBanner : defaultBanner} />
+                                            />
+
                                         </div>
                                     </div>
+                                    
+                                     
                                 </div>
                             </div>
                         </div>
                     </Modal.Body>
                     <div className="modal-footer">
-                        {/* <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button> */}
-                        {/* <button type="submit" className="btn btn-primary">Save</button> */}
+                        <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" className="btn btn-primary"  onClick={uploadBrandLogo}>Save</button>
                     </div>
 
                 </Modal>
@@ -329,123 +333,123 @@ const history=useHistory()
                     </Modal.Header>
                     <Modal.Body className="modal-body">
                         <div className="deadline-form">
-                        <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Brand name</label>
-                            <input type="email" className={(errors && errors.name) ? "form-control   border-danger " : "form-control  "} placeholder="Brand name"
-                                {...register('name')}
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Brand name</label>
+                                    <input type="email" className={(errors && errors.name) ? "form-control   border-danger " : "form-control  "} placeholder="Brand name"
+                                        {...register('name')}
 
-                            />
-                            <div className='text-danger'>
-                                {errors.name?.message}
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.name?.message}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Email address</label>
-                            <input type="email" className={(errors && errors.email) ? "form-control  border-danger " : "form-control"} placeholder="name@example.com"
-                                {...register('email')}
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Email address</label>
+                                    <input type="email" className={(errors && errors.email) ? "form-control  border-danger " : "form-control"} placeholder="name@example.com"
+                                        {...register('email')}
 
-                            />
-                            <div className='text-danger'>
-                                {errors.email?.message}
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.email?.message}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Contact No.</label>
-                            <input type="number" className={(errors && errors.contact) ? "form-control border-danger " : "form-control "} placeholder="Contact No."
-                                {...register('contact')}
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Contact No.</label>
+                                    <input type="number" className={(errors && errors.contact) ? "form-control border-danger " : "form-control "} placeholder="Contact No."
+                                        {...register('contact')}
 
-                            />
-                            <div className='text-danger'>
-                                {errors.contact?.message}
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.contact?.message}
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">GST No.</label>
+                                    <input type="text" className={(errors && errors.gstNo) ? "form-control   border-danger " : "form-control "} placeholder="GST No."
+                                        {...register('gstNo')}
 
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">GST No.</label>
-                            <input type="text" className={(errors && errors.gstNo) ? "form-control   border-danger " : "form-control "} placeholder="GST No."
-                                {...register('gstNo')}
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.gstNo?.message}
+                                    </div>
+                                </div>
 
-                            />
-                            <div className='text-danger'>
-                                {errors.gstNo?.message}
                             </div>
-                        </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Upload GST Document</label>
+                                    <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                                    // {...register('gstDocument')}
 
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Upload GST Document</label>
-                            <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
-                            // {...register('gstDocument')}
-
-                            />
-                         {gstView ?  <> {  gstDocument==="" ?  <div className='text-danger'>
-                                Gst Document is required.
-                            </div> :""}
-                            </>:""}
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Address</label>
-                            <input type="text" className={(errors && errors.address) ? "form-control   border-danger " : "form-control "} placeholder="address"
-                                {...register('address')}
-
-                            />
-                            <div className='text-danger'>
-                                {errors.address?.message}
+                                    />
+                                    {gstView ? <> {gstDocument === "" ? <div className='text-danger'>
+                                        Gst Document is required.
+                                    </div> : ""}
+                                    </> : ""}
+                                </div>
                             </div>
-                        </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Address</label>
+                                    <input type="text" className={(errors && errors.address) ? "form-control   border-danger " : "form-control "} placeholder="address"
+                                        {...register('address')}
 
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Password</label>
-                            <input type="email" className={(errors && errors.password) ? "form-control  border-danger " : "form-control  "} placeholder="8+ characters required"
-                                {...register('password')}
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.address?.message}
+                                    </div>
+                                </div>
 
-                            />
-                            <div className='text-danger'>
-                                {errors.password?.message}
                             </div>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="mb-1">
-                            <label className="form-label">Confirm password</label>
-                            <input type="email" className={(errors && errors.confirmPassword) ? "form-control  border-danger " : "form-control "} placeholder="8+ characters required"
-                                {...register('confirmPassword')}
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Password</label>
+                                    <input type="email" className={(errors && errors.password) ? "form-control  border-danger " : "form-control  "} placeholder="8+ characters required"
+                                        {...register('password')}
 
-                            />
-                            <div className='text-danger'>
-                                {errors.confirmPassword?.message}
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.password?.message}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="col-12">
-                        <div className="form-check">
-                            <input type="checkbox" value="" id="flexCheckDefault"
-                                {...register('chooseCb')}
-                                className={`form-check-input ${errors.chooseCb ? 'is-invalid' : ''
-                                    }`}
-                            />
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Confirm password</label>
+                                    <input type="email" className={(errors && errors.confirmPassword) ? "form-control  border-danger " : "form-control "} placeholder="8+ characters required"
+                                        {...register('confirmPassword')}
 
-                            <label className="form-check-label" htmlFor="flexCheckDefault">
-                                I accept the <Link to="#!" title="Terms and Conditions" className="text-secondary">Terms and Conditions</Link>
-                            </label>
-                            {/* <div className='text-danger'>
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.confirmPassword?.message}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="form-check">
+                                    <input type="checkbox" value="" id="flexCheckDefault"
+                                        {...register('chooseCb')}
+                                        className={`form-check-input ${errors.chooseCb ? 'is-invalid' : ''
+                                            }`}
+                                    />
+
+                                    <label className="form-check-label" htmlFor="flexCheckDefault">
+                                        I accept the <Link to="#!" title="Terms and Conditions" className="text-secondary">Terms and Conditions</Link>
+                                    </label>
+                                    {/* <div className='text-danger'>
                                  {errors.chooseCb?.message}
                              </div> */}
-                        </div>
-                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </Modal.Body>
