@@ -39,7 +39,7 @@ function BrandList() {
             },
         
             {
-                name: "MAIL",
+                name: "EMAIL",
                 selector: (row) => row?.email,
                 sortable: true
             },

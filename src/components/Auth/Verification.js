@@ -19,11 +19,15 @@ function Verification(props) {
         try {
             let response = await httpCommon.patch("/brandOtpVerification", body);
             let { data } = response;
+            let user=localStorage.getItem("user");
+            let user1=JSON.parse(user);
             ToastMessage(data)
-            if (data?.status === true) {
+            if (data?.status === true && user1?.role!=="ADMIN") {
                 history.push(`${props?.url + "/sign-in"}`)
             }
-            else {
+            else if(data?.status === true && user1?.role==="ADMIN") {
+                history.push(`${props?.url + "/brand-list"}`);
+            }else{
                 return null;
             }
         } catch (err) {
