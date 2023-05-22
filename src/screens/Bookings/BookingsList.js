@@ -5,16 +5,25 @@ import httpCommon from "../../http-common";
 import { Link } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 import { ReactLoader } from '../../components/common/ReactLoader';
+import { ToastMessage } from '../../components/common/ToastMessage';
+
 
 function BookingList(props) {
-    const [checkedB,setCheckDb]=useState(false)
+    const [checkedB,setCheckDb]=useState([])
+    const [rand,setRand]=useState("");
+
+    useEffect(() => {
+        getAllOrder();
+        getStatus();
+    }, [rand,]);
+
     const columns = () => {
         return [
-            // {
-            //     name: "SR NO.",
-            //     selector: (row) => row?.i,
-            //     sortable: true,
-            // },
+            {
+                name: "SR NO.",
+                selector: (row) => row?.i,
+                sortable: true,
+            },
             {
                 name: "CUSTOMER NAME",
                 selector: (row) => row?.name,
@@ -57,10 +66,11 @@ function BookingList(props) {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row)=>  <Switch
-                checked={checkedB}
-                onChange={()=>setCheckDb(!checkedB)}
+                checked={checkedB?.find(f1=>f1?.orderId===row?._id)?.closed}
+                onChange={()=>updateClosed(row?._id,!checkedB?.find(f1=>f1?.orderId===row?._id)?.closed)}
                 color="primary"
                 name="checkedB"
+                value={checkedB?.find(f1=>f1.orderId===row?._id)?.closed}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
             },
@@ -71,9 +81,31 @@ function BookingList(props) {
     const [order, setOrders] = useState([]);
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        getAllOrder();
-    }, []);
+
+
+    const getStatus=async()=>{
+        try{
+         let response=await httpCommon.get("/getAllTechnicianStatus");
+         let {data}=response;
+        setCheckDb(data);
+        }catch(err){
+          console.log(err);
+        }
+    }
+
+    console.log(checkedB);
+
+    const updateClosed=async(id,val)=>{
+        try{
+           let response=await httpCommon.patch(`/updateClosed/${id}`,{closed:val});
+           let {data}=response;
+           const x = Math.floor((Math.random() * 10) + 1);
+           setRand(x);
+           ToastMessage(data);
+        }catch(err){
+            console.log(err);
+        }
+    }
 
     const getAllOrder = async () => {
         try {
@@ -97,6 +129,7 @@ function BookingList(props) {
     const orders = user?.role === "ADMIN" ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
     const finalData = orders?.filter((item, i) => item?.items.find(it=>it?.technician>0))
+    const FinalData2=finalData?.map((item,i)=>({...item ,i:i+1}));
     console.log(finalData);
 
     return (
@@ -113,7 +146,7 @@ function BookingList(props) {
                                             <div className="col-sm-12">
                                                 <DataTable
                                                     columns={columns()}
-                                                    data={finalData}
+                                                    data={FinalData2}
                                                     defaultSortField="title"
                                                     pagination
                                                     selectableRows={false}
