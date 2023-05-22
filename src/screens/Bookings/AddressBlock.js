@@ -23,7 +23,7 @@ function AddressBlock(finalData) {
         try{
          let response=await httpCommon.get(`/getTechnicianStatus/${id}`);
          let {data}=response;
-         setStatus(data?.status);
+         setStatus(data);
         }catch(err){
           console.log(err);
         }
@@ -70,15 +70,15 @@ function AddressBlock(finalData) {
                             </div> 
                             <hr/>
                             <div className="col-12 mt-2">
-                               <div class="d-flex align-items-center"> <h2 className="form-label col-6 col-sm-5 ">Status:</h2> <h5 className='bg-secondary border-2 rounded fw-bold p-2'>{status ? status : "Pending"}</h5> </div>
-                                <div className="row">
+                               <div class="d-flex align-items-center"> <h2 className="form-label col-6 col-sm-5 ">Status:</h2> <h5 className='bg-secondary border-2 rounded fw-bold p-2'>{status?.status ? status?.status : "Pending"}</h5> </div>
+                               {status?.closed ? "" : <div className="row">
                                
-                               <div className="form-group col-9"> <input type="text" className='form-control' name="status" value={status} onChange={(e)=>setStatus(e.currentTarget.value)}/></div>
+                               <div className="form-group col-9"> <input type="text" className='form-control' name="status" value={status?.status} onChange={(e)=>setStatus(e.currentTarget.value)}/></div>
                                <div className='col-3'>
                                 <button className='btn btn-primary' onClick={()=>updateStatus()}>Update</button>
                                </div>
 
-                               </div>
+                               </div>}
                             </div>
                         </div>
                     </div>
