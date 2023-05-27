@@ -13,7 +13,7 @@ const [technicianPrice]=useState(["350","600"]);
       props.onDelete(i);
       setFault("");
  }
-let {partName,description,partNo,faultType,MRP,bestPrice,technician,productModel,category,}=props?.sparePart;
+let {partName,description,partNo,skuNo,length,breadth,height,weight,faultType,MRP,bestPrice,technician,productModel,category,}=props?.sparePart;
 let {categories}=props;
 
     return (
@@ -28,9 +28,29 @@ let {categories}=props;
                             <label className="form-label"> Spare Part Name</label>
                             <input type="text" className="form-control" name='partName' value={partName} onChange={(e) => {props.onChange(e) }} />
                         </div>
-                        <div className="col-md-12">
+                        <div className="col-md-6">
                             <label className="form-label"> Spare Part No.</label>
                             <input type="text" className="form-control" name='partNo' value={partNo} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label"> SKU No.</label>
+                            <input type="text" className="form-control" name='skuNo' value={skuNo} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label"> Length</label>
+                            <input type="text" className="form-control" name='length' value={length} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label"> Breadth</label>
+                            <input type="text" className="form-control" name='breadth' value={breadth} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label"> Height</label>
+                            <input type="text" className="form-control" name='height' value={height} onChange={(e) => {props.onChange(e) }} />
+                        </div>
+                        <div className="col-md-3">
+                            <label className="form-label"> Weight</label>
+                            <input type="text" className="form-control" name='weight' value={weight} onChange={(e) => {props.onChange(e) }} />
                         </div>
                         <div className="col-md-12">
                             <label className="form-label">Description</label>
