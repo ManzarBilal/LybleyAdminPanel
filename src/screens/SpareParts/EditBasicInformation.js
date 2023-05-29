@@ -16,6 +16,8 @@ let {partName,description,faultType,MRP,bestPrice,productModel,category,partNo,s
  
 let {categories}=props;
  
+const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.categoryId===p1?._id))
+ 
     return (
         <>
             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
@@ -80,7 +82,7 @@ let {categories}=props;
                             <label className="form-label">Product Model</label>
                             <select className="form-select" name='productModel' value={productModel} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Model</option>
-                                {props?.products?.data?.filter(p1=>p1?.productCategory===category)?.map(c1=>
+                               { category && props?.products?.data?.filter(p1=>categoryById?.find(c1=>c1?._id===p1?.categoryId))?.map(c1=>
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>
