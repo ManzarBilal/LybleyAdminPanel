@@ -84,7 +84,7 @@ function SparePartEdit(props) {
     //  console.log("sparePart",sparePart);
     const editProduct = async () => {
         let obj={partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
-            MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType,partNo:sparePart?.partNo};
+            MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType,partNo:sparePart?.partNo,skuNo:sparePart?.skuNo,length:sparePart?.length,breadth:sparePart?.breadth,height:sparePart?.height,weight:sparePart?.weight};
         try {
            
             let response = await httpCommon.patch(`/updateSparePart/${id}`,obj);

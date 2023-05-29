@@ -88,7 +88,12 @@ function SparePartAdd() {
             formData.append("MRP",sparePart?.MRP);
             formData.append("bestPrice",sparePart?.bestPrice);
             formData.append("technician",technician);
+            formData.append("skuNo",sparePart?.skuNo);
             formData.append("partNo",sparePart?.partNo);
+            formData.append("length",sparePart?.length);
+            formData.append("weight",sparePart?.weight);
+            formData.append("height",sparePart?.height);
+            formData.append("breadth",sparePart?.breadth);
             sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
             formData.append("category",sparePart?.category);
             formData.append("productModel",sparePart?.productModel);
