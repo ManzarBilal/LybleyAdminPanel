@@ -7,12 +7,18 @@ import { ConfirmBox } from '../../common/ConfirmBox';
 function CardBlock(props) {
 
     const [productId, setProductId] = useState("");
+    const [showDesc,setShowDesc]=useState(null);
     const [confirmBoxView, setConfirmBoxView] = useState(false);
 
     const handleProduct = (id) => {
         setProductId(id)
         setConfirmBoxView(true);
     }
+
+    const handleShowDesc=(bool)=>{
+        setShowDesc(bool);
+    } 
+
     const deleteProduct = async () => {
         try {
             let response = await httpCommon.deleteData(`/deleteProduct/${productId}`);
@@ -37,10 +43,12 @@ function CardBlock(props) {
                         </div>
                         <div className="card-body d-flex align-items-center flex-column flex-md-row">
                             <Link to={props?.url + "/product-detail"}>
-                                <img className="w120 rounded img-fluid" src={d.productImage} alt="" style={{ height: "100px" }} />
+                                <img className=" rounded img-fluid" src={d.productImage} alt="" style={{ height: "150px",width:"150px" }} />
                             </Link>
                             <div className="ms-md-4 m-0 mt-4 mt-md-0 text-md-start text-center w-100">
-                                <Link to={props?.url + "/product-detail"}><h6 className="mb-3 fw-bold">{d?.productName}  {props?.role === "ADMIN" ? <span className="fw-bold   d-block">Brand : {d?.brandName}</span> : ""} <span className="text-muted small fw-light d-block">{d?.productDescription}</span></h6></Link>
+                                {/* <Link to={props?.url + "/product-detail"}> */}
+                                    <h6 className="mb-3 fw-bold">{d?.productName}  {props?.role === "ADMIN" ? <span className="fw-bold   d-block">Brand : {d?.brandName}</span> : ""}{showDesc===i ? <span className="text-muted small fw-light d-block">{d?.productDescription} <span style={{color:"blue",cursor: "pointer"}} onClick={()=>handleShowDesc(null)}>Hide</span></span> : <span className="text-muted small fw-light d-block">{d?.productDescription.substring(0,300)}... <span style={{color:"blue",cursor: "pointer"}} onClick={()=>handleShowDesc(i)}>Read more</span></span> }</h6>
+                                    {/* </Link> */}
                                 <div className="d-flex flex-row flex-wrap align-items-center justify-content-center justify-content-md-start">
                                     <div className="pe-xl-5 pe-md-4 ps-md-0 px-3 mb-2">
                                         <div className="text-muted small">Special priceends</div>
