@@ -184,6 +184,29 @@
             ]
         },
         {
+            "name": "Payments",
+            "routerLink": [""],
+            "identifier": " Payments",
+            "iconClass": "icofont-rupee fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                {
+                    "name": " Brand Payments",
+                    "routerLink": ["brandPayments"],
+                    "identifier": "Brand Payments",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                
+               
+            ]
+        },
+        {
             "name": "Customers",
             "routerLink": [""],
             "identifier": "Customers",

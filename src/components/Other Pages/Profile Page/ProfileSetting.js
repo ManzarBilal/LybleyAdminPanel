@@ -20,11 +20,7 @@ function ProfileSetting(props) {
         }
     };
     
-    // useEffect(()=>{
-    //    // setUserDetail(props?.user);
-    // },[props?.user])
-
-   
+    
 
     const updateProfile = async (userDetail) => {
         const user=localStorage.getItem("user")
