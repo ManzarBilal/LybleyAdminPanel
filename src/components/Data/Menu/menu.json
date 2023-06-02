@@ -220,7 +220,7 @@
             "children": [
                 {
                     "name": "All Brand Payments",
-                    "routerLink": ["allBrandPayments"],
+                    "routerLink": ["allBrandsPayments"],
                     "identifier": "Brand Payments",
                     "iconClass": "",
                     "breadcrumbMessage": "",
