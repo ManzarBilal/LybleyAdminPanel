@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { ReactLoader } from '../../components/common/ReactLoader'
 import httpCommon from "../../http-common"
+import {Link}  from "react-router-dom";
 
-const AllBrandsPayments = () => {
+const AllBrandsPayments = (props) => {
 
     const [data, setData] = useState([])
     const [orders, setOrders] = useState([])
@@ -35,8 +36,7 @@ const AllBrandsPayments = () => {
         getDashBoardData()
 
     }, []);
-    console.log("dayta", data);
-    console.log("orders", orders);
+
     return (
         <div className='container'>
             {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
@@ -48,12 +48,13 @@ const AllBrandsPayments = () => {
                             let order = orders?.filter(f1 => f1?.items?.find(f2 => f2?.brandId === brand?._id))
 
                             let revenue = order?.map(it => ({ rev: it?.items?.reduce((acc, curr) => acc + curr?.MRP, 0) }))
-                            console.log("revenue",revenue);
+                          
                             let tRev = revenue?.reduce((acc, curr) => acc + curr?.rev, 0);
                            let duePay=tRev-brand?.totalPay
-                            console.log("duePay",duePay);
+                           
 
                             return <div key={i} className="col-md-4 col-lg-4 col-12" >
+                                <Link to={props?.url + `/brandPayments/${brand?._id}`} >
                                 <div className={`alert-success alert mb-4`} style={{ cursor: "pointer" }}>
                                     <div className="d-flex align-items-center mb-2">
                                         <img src={brand?.brandLogo} alt="brandLogo" className="avatar md rounded img-thumbnail shadow-sm" />
@@ -64,18 +65,20 @@ const AllBrandsPayments = () => {
                                         </div>
                                     </div>
                                     <div className='d-flex justify-content-between'>
-                                        <div className='fw-bold'>Revenue </div>
-                                        <div className='text-dark fs-5 fw-bold'> {revenue?.reduce((acc, curr) => acc + curr?.rev, 0)} INR</div>
+                                        <div className='fw-bold text-uppercase'>Revenue </div>
+                                        {/* <div className='text-dark fs-5 fw-bold'> {revenue?.reduce((acc, curr) => acc + curr?.rev, 0)} INR</div> */}
+                                        <div className='text-dark fs-5 fw-bold'> {brand?.revenue} INR</div>
                                     </div>
                                     <div className='d-flex justify-content-between'>
-                                        <div className='fw-bold'>Total Pay </div>
+                                        <div className='text-success fw-bold text-uppercase'>Total Pay </div>
                                         <div className='text-success fw-bold'>{brand?.totalPay} INR </div>
                                     </div>
                                     <div className='d-flex justify-content-between'>
-                                        <div className='fw-bold'>Total Due </div>
-                                        <div className='text-danger fw-bold'>{duePay} INR </div>
+                                        <div className='text-danger fw-bold text-uppercase'>Total Due </div>
+                                        <div className='text-danger fw-bold'>{brand?.totalDue} INR </div>
                                     </div>
                                 </div>
+                                </Link>
                             </div>
                         })}
                     </div>

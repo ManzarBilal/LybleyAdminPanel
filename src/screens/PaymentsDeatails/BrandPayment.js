@@ -7,7 +7,9 @@ import { Modal } from 'react-bootstrap'
 import { ToastMessage } from '../../components/common/ToastMessage'
 import DataTable from 'react-data-table-component'
 
-const BrandPayments = () => {
+const BrandPayment = () => {
+
+    const param = useParams()
 
     const [brand, setBrand] = useState()
     const [table_row, setTable_row] = useState([]);
@@ -17,13 +19,10 @@ const BrandPayments = () => {
     const [loading, setLoading] = useState(false)
     const [ismodal, setIsmodal] = useState(false);
 
-   const brandData=JSON.parse(localStorage.getItem("user"))
-   const brandId=brandData?._id
- 
     const getDashBoardData = async () => {
         try {
             setLoading(true)
-            let response = await httpCommon.get(`/getBrandBy/${brandId}`);
+            let response = await httpCommon.get(`/getBrandBy/${param?.id}`);
             let { data } = response;
             setBrand(data);
             setLoading(false)
@@ -36,7 +35,7 @@ const BrandPayments = () => {
     const getTransactionData = async () => {
         try {
             setLoading(true)
-            let response = await httpCommon.get(`/getTransactionBy/${brandId}`);
+            let response = await httpCommon.get(`/getTransactionBy/${param?.id}`);
             let { data } = response;
             setTable_row(data);
             setLoading(false)
@@ -131,7 +130,7 @@ const BrandPayments = () => {
                         </div>
                         <PageHeader1 pagetitle='All Payments' modalbutton={() => {
                             return <div className="col-auto d-flex w-sm-100">
-                                {/* <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Payment</button> */}
+                                <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Payment</button>
                             </div>
                         }} />
                     </div>
@@ -164,9 +163,35 @@ const BrandPayments = () => {
                         </div>
                     }
                 </div>
-            
+            <Modal show={ismodal} style={{ display: 'block' }}>
+                <Modal.Header className="modal-header" onClick={() => { setIsmodal(false) }} closeButton>
+                    <h5 className="modal-title  fw-bold" id="expaddLabel">Add Payment</h5>
+                </Modal.Header>
+                <Modal.Body className="modal-body">
+                    <div className="deadline-form">
+                        <form>
+                            <div className="row g-3 mb-3">
+                                <div className="col-sm-12">
+                                    <label htmlFor="item" className="form-label">Payment </label>
+                                    <input type="number" className="form-control" id="item" onChange={(e)=>setTotalPay(e.target.value)} />
+                                </div>
+                                {/* <div className="col-sm-12">
+                             <label htmlFor="taxtno" className="form-label">Transaction  Image</label>
+                             <input type="File" className="form-control" id="taxtno" name='file'  />
+                         </div> */}
+                            </div>
+                        </form>
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer className="modal-footer">
+                    <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" className="btn btn-primary" onClick={() => handleDuePayment(brand?._id)} >Pay</button>
+                </Modal.Footer>
+
+            </Modal>
         </>
     )
 }
 
-export default BrandPayments
+export default BrandPayment

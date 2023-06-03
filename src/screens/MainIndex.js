@@ -70,6 +70,7 @@ import CategoryList from './ProductCategory/CategoryList';
 import BookingList from './Bookings/BookingsList';
 import BookingDetail from './Bookings/BookingDetails';
 import AllBrandsPayments from './PaymentsDeatails/AllBrandsPayments';
+import BrandPayment from './PaymentsDeatails/BrandPayment';
 
 function MainIndex(props) {
 
@@ -120,6 +121,7 @@ function MainIndex(props) {
           <Route exact path={props?.url + '/booking-detail/:id'} render={() => { return <BookingDetail /> }} />
 
           <Route exact path={props?.url + '/allBrandsPayments'} render={() => { return <AllBrandsPayments url={props?.url}/> }} />
+          <Route exact path={props?.url + '/brandPayments/:id'} render={() => { return <BrandPayment url={props?.url}/> }} />
 
 
           <Route exact path={props?.url + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
