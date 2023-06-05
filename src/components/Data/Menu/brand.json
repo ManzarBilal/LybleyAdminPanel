@@ -193,7 +193,7 @@
             "isApp": true,
             "children": [
                 {
-                    "name": " Brand Payments",
+                    "name": "Payments",
                     "routerLink": ["brandPayments"],
                     "identifier": "Brand Payments",
                     "iconClass": "",

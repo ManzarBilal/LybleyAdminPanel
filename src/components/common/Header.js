@@ -30,7 +30,7 @@ function Header (props) {
                         <div className="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">  
                             <div className="d-flex mt-1" >
                                 <Link to="help" className="nav-link text-primary collapsed" title="Get Help" >
-                                   <div style={{fontSize:"30px",marginTop:"-20px"}}> <i style={{fontSize:"35px",}} className="icofont-info-square fs-51"></i></div>
+                                   <div style={{fontSize:"30px",marginTop:"-20px"}}> <i style={{fontSize:"33px",}} className="icofont-info-square fs-51"></i></div>
                                 </Link>
                             </div>
                             <Dropdown className="zindex-popover mx-2">
@@ -61,7 +61,7 @@ function Header (props) {
                                 </Dropdown.Menu> */}
                             </Dropdown>
                             <Dropdown className="notifications zindex-popover">
-                                <Dropdown.Toggle as="a" className="nav-link dropdown-toggle pulse" style={{fontSize:"35px",marginTop:"-20px"}}>
+                                <Dropdown.Toggle as="a" className="nav-link dropdown-toggle pulse" style={{fontSize:"33px",marginTop:"-17px"}}>
                                     <i className="icofont-alarm fs-51 me-3" ></i>
                                     <span className="pulse-ring"></span>
                                 </Dropdown.Toggle>
@@ -140,16 +140,16 @@ function Header (props) {
                             <Dropdown className="dropdown user-profilem ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
                                 <div className="u-info me-2 d-flex flex-column justify-content-center align-items-center">
                                     <p className="mb-0 text-end line-height-sm "><span className="font-weight-bold">{headerData?.brandName}</span></p>
-                                   <p> { headerData && headerData?.role==="ADMIN" ? <small> Admin Profile </small>: <small> Brand Profile </small>}</p>
+                                   <p> { headerData && headerData?.role==="ADMIN" ? <span className="font-weight-bold"> ADMIN   </span>: <span className="font-weight-bold" > BRAND   </span>}</p>
                                 </div>
                                 <Dropdown.Toggle as='a' className="nav-link dropdown-toggle pulse p-0 mb-3" href="#!" role="button">
-                                    <img className="img-thumbnail rounded-circle " src={userType?.role==="ADMIN" ? ImageLogo ? ImageLogo : Avatar4 : userType?.brandLogo ? userType?.brandLogo : Avatar4 } alt="profile" height="45px" width="45px"/>
+                                    <img className="img-thumbnail avatar rounded-circle " src={userType?.role==="ADMIN" ? ImageLogo ? ImageLogo : Avatar4 : userType?.brandLogo ? userType?.brandLogo : Avatar4 } alt="profile" height="50px" width="50px"/>
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu className="dropdown-menu rounded-lg shadow border-0 dropdown-animation dropdown-menu-end p-0 m-0 mt-5 ">
                                     <div className="card border-0   w280">
                                         <div className="card-body pb-0 ">
                                             <div className="d-flex py-1">
-                                                <img className="avatar rounded-circle" src={Profile} alt="" />
+                                                <img className="avatar rounded-circle" src={userType?.role==="ADMIN" ? ImageLogo ? ImageLogo : Avatar4 : userType?.brandLogo ? userType?.brandLogo : Avatar4 } alt="" />
                                                 <div className="flex-fill ms-3">
                                                     <p className="mb-0"><span className="font-weight-bold"> {headerData?.brandName}</span></p>
                                                     <small> {headerData?.email}</small>
