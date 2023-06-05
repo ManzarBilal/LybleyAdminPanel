@@ -87,7 +87,7 @@ const BrandPayment = () => {
                 sortable: true,  
             },
             {
-                name: "Transaction Date",
+                name: "Payment Release Date",
                 selector: (row) => new Date(row?.createdAt).toLocaleString(),
                 sortable: true,  
             },
