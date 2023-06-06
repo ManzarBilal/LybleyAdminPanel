@@ -11,15 +11,19 @@ const BrandPayments = () => {
 
     const [brand, setBrand] = useState()
     const [table_row, setTable_row] = useState([]);
+    const [filterData, setFilterData] = useState([]);
 
+    const [toDateFormat, setToDateFormat] = useState("");
+    const [fromDateFormat, setFromDateFormat] = useState("");
+    const [filter, setFilter] = useState(false)
     const [totalPay, setTotalPay] = useState("")
     const [randomValue, setRandomValue] = useState("")
     const [loading, setLoading] = useState(false)
     const [ismodal, setIsmodal] = useState(false);
 
-   const brandData=JSON.parse(localStorage.getItem("user"))
-   const brandId=brandData?._id
- 
+    const brandData = JSON.parse(localStorage.getItem("user"))
+    const brandId = brandData?._id
+
     const getDashBoardData = async () => {
         try {
             setLoading(true)
@@ -54,21 +58,21 @@ const BrandPayments = () => {
     }, [randomValue]);
 
     const handleDuePayment = async (id) => {
-        try{
-        let response = await httpCommon.patch(`/updateTotalPay/${id}`,{totalPay: +totalPay})
-        let { data } = response
-       
-        setIsmodal(false)
-        let x = Math.floor((Math.random() * 10) + 1);
-        setRandomValue(x)
-        ToastMessage(data);
+        try {
+            let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay: +totalPay })
+            let { data } = response
+
+            setIsmodal(false)
+            let x = Math.floor((Math.random() * 10) + 1);
+            setRandomValue(x)
+            ToastMessage(data);
         }
-        catch(err){
+        catch (err) {
             console.log(err)
         }
     }
     const table_rowindex = table_row?.map((item, i) => ({ ...item, i: i + 1 }))
- 
+    const filterindex = filterData?.map((item, i) => ({ ...item, i: i + 1 }))
 
     const columns = () => {
         return [
@@ -80,22 +84,53 @@ const BrandPayments = () => {
             {
                 name: "Pay Amount",
                 selector: (row) => row?.totalPay,
-                sortable: true,  
+                sortable: true,
             },
             {
                 name: "Due Amount",
                 selector: (row) => row?.totalDue,
-                sortable: true,  
+                sortable: true,
             },
             {
                 name: "Payment Release Date",
                 selector: (row) => new Date(row?.createdAt).toLocaleString(),
-                sortable: true,  
+                sortable: true,
             },
-             
-            
+
+
         ]
     }
+    const handleToDate = (e) => {
+        const getToDateValue = e.target.value;
+        const date = new Date(getToDateValue)
+
+        // const setFormat=getToDateValue.split("-")
+        // const setToYear=setFormat[0]
+        // const setToMonth=setFormat[1]
+        // const setToDate=setFormat[2]
+        // const dateFill=setToYear+""+setToMonth+""+setToDate
+        setToDateFormat(date)
+
+    }
+    const handleFromDate = (e) => {
+        const getFromDateValue = e.target.value;
+        const date = new Date(getFromDateValue)
+        setFromDateFormat(date)
+
+    }
+    const getFilteredData = () => {
+        let data = table_row.filter(item => {
+            let date = new Date(item.createdAt).getTime();
+
+            return date >= toDateFormat && date <= fromDateFormat;
+        })
+        setFilter(true)
+        setFilterData(data)
+
+
+    }
+
+    const data = filter === true ? filterindex : table_rowindex;
 
     return (
         <>
@@ -138,33 +173,44 @@ const BrandPayments = () => {
 
                 }
             </div>
+            <div className='row mb-4'>
+                <div className='col-12 col-md-3 col-lg-3'>
+                    <input type='date' className='form-control' placeholder='dd-mm-yyyy' onChange={(e) => handleToDate(e)} />
+                </div>
+                <div className='col-12 col-md-3 col-lg-3'>
+                    <input type='date' className='form-control' placeholder='dd-mm-yyyy' onChange={(e) => handleFromDate(e)} />
+                </div>
+                <div className='col-12 col-md-3 col-lg-3'>
+                    <button className='btn btn-primary' onClick={(e) => getFilteredData()}>Filter</button>
+                </div>
+            </div>
             <div className="row clearfix g-3">
-                    {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
-                        : <div className="col-sm-12">
-                            <div className="card mb-3">
-                                <div className="card-body">
-                                    <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
-                                        <div className="row">
-                                            <div className="col-sm-12">
-                                                <DataTable
-                                                    columns={columns()}
-                                                    data={table_rowindex}
-                                                    defaultSortField="title"
-                                                    pagination
-                                                    selectableRows={false}
-                                                    className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
-                                                    highlightOnHover={true}
-                                                />
-                                            </div>
+                {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
+                    : <div className="col-sm-12">
+                        <div className="card mb-3">
+                            <div className="card-body">
+                                <div id="myProjectTable_wrapper" className="dataTables_wrapper dt-bootstrap5 no-footer">
+                                    <div className="row">
+                                        <div className="col-sm-12">
+                                            <DataTable
+                                                columns={columns()}
+                                                data={data}
+                                                defaultSortField="title"
+                                                pagination
+                                                selectableRows={false}
+                                                className="table myDataTable table-hover align-middle mb-0 d-row nowrap dataTable no-footer dtr-inline"
+                                                highlightOnHover={true}
+                                            />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-                    }
-                </div>
-            
+
+                    </div>
+                }
+            </div>
+
         </>
     )
 }
