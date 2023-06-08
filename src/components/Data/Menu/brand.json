@@ -193,6 +193,16 @@
             "isApp": true,
             "children": [
                 {
+                    "name": "Bank Account",
+                    "routerLink": ["bankAccount"],
+                    "identifier": "Bank Account",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "Payments",
                     "routerLink": ["brandPayments"],
                     "identifier": "Brand Payments",

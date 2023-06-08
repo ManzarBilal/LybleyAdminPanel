@@ -454,7 +454,7 @@ function BrandList() {
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
-                        <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Done</button>
+                        <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button onClick={handleSubmit(onRegister)} className="btn btn-primary">Add Brand</button>
                     </Modal.Footer>
 

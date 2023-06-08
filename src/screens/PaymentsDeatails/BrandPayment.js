@@ -12,6 +12,8 @@ const BrandPayment = () => {
     const param = useParams()
 
     const [brand, setBrand] = useState()
+    const [adminBankDtl, setAdminBankDtl] = useState()
+    const [brandBankDtl, setBrandBankDtl] = useState()
     const [table_row, setTable_row] = useState([]);
     const [filterData, setFilterData] = useState([]);
 
@@ -51,12 +53,44 @@ const BrandPayment = () => {
 
         }
     }
-    useEffect(() => {
+    const GetBrandBankDetails = async () => {
+        try {
+            setLoading(true)
+            let response = await httpCommon.get(`/bankDetailByBrand/${param?.id}`)
+            let { data } = response
+            setBrandBankDtl(data)
+            setLoading(false)
+        }
+        catch (err) {
+            console.log(err)
+            setLoading(false)
 
+        }
+    }
+    const GetAdminBankDetails = async () => {
+        let user = localStorage.getItem("user");
+        let brandObj = JSON.parse(user);
+        try {
+            setLoading(true)
+            let response = await httpCommon.get(`/bankDetailByBrand/${brandObj?._id}`)
+            let { data } = response
+            setAdminBankDtl(data)
+            setLoading(false)
+        }
+        catch (err) {
+            console.log(err)
+            setLoading(false)
+
+        }
+    }
+    useEffect(() => {
         getDashBoardData()
         getTransactionData()
-
+        GetBrandBankDetails()
+        GetAdminBankDetails()
     }, [randomValue]);
+
+   
 
     const handleOpen = () => {
         if (brand?.totalDue === 0) {
@@ -73,23 +107,57 @@ const BrandPayment = () => {
 
             const brandPayInfo = {
 
-                "account_number": brandInfo?.adminAccNo ,
-                "amount": 10,
+                "account_number": adminBankDtl?.accountNumber,
+                "amount": +totalPay,
                 "currency": "INR",
                 "mode": "NEFT",
                 "purpose": "refund",
                 "fund_account": {
                     "account_type": "bank_account",
                     "bank_account": {
-                        "name": brandInfo?.brandName ,
-                        "ifsc": brandInfo?.ifsc,
-                        "account_number": brandInfo?.account_number
+                        "name": brandBankDtl?.accountHolderName,
+                        "ifsc": brandBankDtl?.IFSC,
+                        "account_number": brandBankDtl?.accountNumber
                     },
                     "contact": {
-                        "name": brandInfo?.accName,
-                        "email": brandInfo?.email,
-                        "contact":brandInfo?.contact,
-                        "type": brandInfo?.vender,
+                        "name": brand?.brandName,
+                        "email": brand?.email,
+                        "contact": brand?.contact,
+                        "type": "Brand",
+                        "reference_id": "Acme Contact ID 12345",
+                        "notes": {
+                            "notes_key_1": "Tea, Earl Grey, Hot",
+                            "notes_key_2": "Tea, Earl Grey… decaf."
+                        }
+                    }
+                },
+                "queue_if_low_balance": true,
+                "reference_id": "Brand Due Payment",
+                "narration": "Brand Due Fund Transfer",
+                "notes": {
+                    "notes_key_1": "Beam me up Scotty",
+                    "notes_key_2": "Engage"
+                }
+            }
+
+            const testData = {
+                "account_number": "7878780080316316",
+                "amount": +totalPay,
+                "currency": "INR",
+                "mode": "NEFT",
+                "purpose": "refund",
+                "fund_account": {
+                    "account_type": "bank_account",
+                    "bank_account": {
+                        "name": "Gaurav Kumar",
+                        "ifsc": "HDFC0001234",
+                        "account_number": "1121431121541121"
+                    },
+                    "contact": {
+                        "name": "Gaurav Kumar",
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9876543210",
+                        "type": "vendor",
                         "reference_id": "Acme Contact ID 12345",
                         "notes": {
                             "notes_key_1": "Tea, Earl Grey, Hot",
@@ -105,8 +173,9 @@ const BrandPayment = () => {
                     "notes_key_2": "Engage"
                 }
             }
-            let payResponse = await httpCommon.post(`https://api.razorpay.com/v1/payouts`, brandPayInfo)
+            let payResponse = await httpCommon.post(`/brandDuePayment`, brandPayInfo)
             let { payData } = payResponse
+            console.log("payData", payData);
             if (payData?.entity === "payout") {
                 let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay: +totalPay })
                 let { data } = response

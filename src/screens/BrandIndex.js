@@ -69,6 +69,7 @@ import SparePartEdit from './SpareParts/SparePartEdit';
 import FaultList from './SpareParts/FaultList';
 import SparePartVideos from './SpareParts/SparePartVideos';
 import BrandPayments from './PaymentsDeatails/BrandPayments';
+import BankAccount from './PaymentsDeatails/BankAccount';
 const BrandIndex = (props) => {
   const { activekey } = props;
     return (
@@ -109,6 +110,7 @@ const BrandIndex = (props) => {
             <Route exact path={props?.url + '/order-detail/:id'} render={() => { return <OrderDetail /> }} />
 
             <Route exact path={props?.url + '/brandPayments'} render={() => { return <BrandPayments url={props?.url}/> }} />
+            <Route exact path={props?.url + '/bankAccount'} render={() => { return <BankAccount url={props?.url}/> }} />
           
 
 
