@@ -14,7 +14,7 @@ const BrandPayment = () => {
     const [brand, setBrand] = useState()
     const [table_row, setTable_row] = useState([]);
     const [filterData, setFilterData] = useState([]);
-  
+
     const [toDateFormat, setToDateFormat] = useState("");
     const [fromDateFormat, setFromDateFormat] = useState("");
     const [filter, setFilter] = useState(false)
@@ -37,7 +37,7 @@ const BrandPayment = () => {
 
         }
     }
- 
+
     const getTransactionData = async () => {
         try {
             setLoading(true)
@@ -58,23 +58,65 @@ const BrandPayment = () => {
 
     }, [randomValue]);
 
-    const handleOpen=()=>{
-        if (brand?.totalDue===0){
-           setNotDue(true)
+    const handleOpen = () => {
+        if (brand?.totalDue === 0) {
+            setNotDue(true)
         }
-        else{
+        else {
             setIsmodal(true)
         }
     }
     const handleDuePayment = async (id) => {
         try {
-            let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay: +totalPay })
-            let { data } = response
+            let userData = localStorage.getItem("user")
+            let brandInfo = JSON.parse(userData)
 
-            setIsmodal(false)
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x)
-            ToastMessage(data);
+            const brandPayInfo = {
+
+                "account_number": brandInfo?.adminAccNo ,
+                "amount": 10,
+                "currency": "INR",
+                "mode": "NEFT",
+                "purpose": "refund",
+                "fund_account": {
+                    "account_type": "bank_account",
+                    "bank_account": {
+                        "name": brandInfo?.brandName ,
+                        "ifsc": brandInfo?.ifsc,
+                        "account_number": brandInfo?.account_number
+                    },
+                    "contact": {
+                        "name": brandInfo?.accName,
+                        "email": brandInfo?.email,
+                        "contact":brandInfo?.contact,
+                        "type": brandInfo?.vender,
+                        "reference_id": "Acme Contact ID 12345",
+                        "notes": {
+                            "notes_key_1": "Tea, Earl Grey, Hot",
+                            "notes_key_2": "Tea, Earl Grey… decaf."
+                        }
+                    }
+                },
+                "queue_if_low_balance": true,
+                "reference_id": "Acme Transaction ID 12345",
+                "narration": "Acme Corp Fund Transfer",
+                "notes": {
+                    "notes_key_1": "Beam me up Scotty",
+                    "notes_key_2": "Engage"
+                }
+            }
+            let payResponse = await httpCommon.post(`https://api.razorpay.com/v1/payouts`, brandPayInfo)
+            let { payData } = payResponse
+            if (payData?.entity === "payout") {
+                let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay: +totalPay })
+                let { data } = response
+
+                setIsmodal(false)
+                let x = Math.floor((Math.random() * 10) + 1);
+                setRandomValue(x)
+                ToastMessage(data);
+            }
+
         }
         catch (err) {
             console.log(err)
@@ -175,7 +217,7 @@ const BrandPayment = () => {
                         </div>
                         <PageHeader1 pagetitle='All Payments' modalbutton={() => {
                             return <div className="col-auto d-flex w-sm-100">
-                                <button type="button" onClick={() =>  handleOpen() } className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Payment</button>
+                                <button type="button" onClick={() => handleOpen()} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Payment</button>
                             </div>
                         }} />
                     </div>
@@ -246,7 +288,7 @@ const BrandPayment = () => {
                 </Modal.Footer>
 
             </Modal>
-            <Modal show={notDue}  style={{ display: 'block' }}>
+            <Modal show={notDue} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" onClick={() => { setNotDue(false) }} closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">  Due Payment</h5>
                 </Modal.Header>
@@ -258,7 +300,7 @@ const BrandPayment = () => {
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setNotDue(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
- 
+
                 </Modal.Footer>
 
             </Modal>
