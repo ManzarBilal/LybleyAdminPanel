@@ -10,7 +10,7 @@ function CardBlock(props) {
                     <div className="d-flex align-items-center">
                         <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className= "fa fa-shopping-cart fa-lg"></i></div>
                         <div className="flex-fill ms-3 text-truncate">
-                            <div className="h6 mb-0">Order Created at</div>
+                            <div className="h6 mb-0">{props?.finalData?.status ==="RETURN" ?"Return Created at" :"Order Created at"}</div>
                             {/* <span className="small"> {new Date( props?.finalData?.createdAt).toLocaleDateString()} </span> */}
                             <span className="small"> {new Date( props?.finalData?.createdAt).toLocaleString()}</span>
                         </div>

@@ -170,7 +170,16 @@
                     "isApp": false,
                     "children": []
                 },
-                
+                {
+                    "name": "Return List",
+                    "routerLink": ["return-list"],
+                    "identifier": "Return List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
                 {
                     "name": "Orders Invoice",
                     "routerLink": ["order-invoice"],

@@ -13,7 +13,13 @@ import { ReactLoader } from '../../components/common/ReactLoader';
 
 function Dashboard() {
     const [data, setData] = useState()
+    const [brandData, setBrandData] = useState([])
     const [loading, setLoading] = useState(false)
+    useEffect(() => {
+        getDashBoardData()
+        getBrandData()
+    }, []);
+
     const getDashBoardData = async () => {
         try {
             setLoading(true)
@@ -27,37 +33,85 @@ function Dashboard() {
 
         }
     }
+    const getBrandData = async () => {
+        try {
+            setLoading(true)
+            let response = await httpCommon.get(`/getAllBrands`);
+            let { data } = response;
+            setBrandData(data);
+            setLoading(false)
+        } catch (err) {
+            console.log(err);
+            setLoading(false)
 
-    useEffect(() => {
-        getDashBoardData()
+        }
+    }
 
-    }, []);
+    
     let userData = localStorage?.getItem("user")
     let user = JSON.parse(userData)
+    let brandId = user?._id
+    // const revenue = user?.role === "ADMIN" ? brandData : brandData?.filter((item, i) => item?._id === brandId);
 
     const spareParts = user?.role === "ADMIN" ? data : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
     const orders = user?.role === "ADMIN" ? data : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
- 
+     const revenue =  brandData?.mane
+    console.log("data", data);
+    console.log("branData", orders);
+    console.log("revenue", revenue);
+    console.log("brandId", brandId);
+
     return (
         <div className="body d-flex py-3">
-            {loading ?<div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>:
+            {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
                 <div className="container-xxl">
                     <div className="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
-                        {
-                            DashboardStatusData.map((d, i) => {
-                                return <div key={'statuscard' + i} className="col">
-                                    <div className={`${d.bgClass} alert mb-0`}>
-                                        <div className="d-flex align-items-center">
-                                            <div className={`avatar rounded no-thumbnail ${d.iconBgClass} text-light`}><i className={d.iconClass}></i></div>
-                                            <div className="flex-fill ms-3 text-truncate">
-                                                <div className="h6 mb-0">{d.title}</div>
-                                                <span className="small">{d.value}</span>
-                                            </div>
-                                        </div>
+
+                        <div className="col">
+                            <div className={`alert-success alert mb-0`}>
+                                <div className="d-flex align-items-center">
+                                    <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='fa fa-dollar fa-lg'></i></div>
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0">Revenue</div>
+                                        <span className="small">{revenue === 0 ? 0 : revenue}</span>
                                     </div>
                                 </div>
-                            })
-                        }
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className={`alert-danger alert mb-0`}>
+                                <div className="d-flex align-items-center">
+                                    <div className={`avatar rounded no-thumbnail bg-danger text-light`}><i className='fa fa-credit-card fa-lg'></i></div>
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0">Expense</div>
+                                        <span className="small">1000</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className={`alert-warning alert mb-0`}>
+                                <div className="d-flex align-items-center">
+                                    <div className={`avatar rounded no-thumbnail bg-warning text-light`}><i className='fa fa-smile-o fa-lg'></i></div>
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0">Happy Clients</div>
+                                        <span className="small">5456454</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className={`alert-info alert mb-0`}>
+                                <div className="d-flex align-items-center">
+                                    <div className={`avatar rounded no-thumbnail bg-info text-light`}><i className='fa fa-shopping-bag'></i></div>
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0">New StoreOpen</div>
+                                        <span className="small">4656</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     <div className="mt-1">
                         <Tab.Container id="left-tabs-example" defaultActiveKey="first" className="col-lg-12 col-md-12">
