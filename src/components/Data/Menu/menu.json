@@ -219,6 +219,16 @@
             "isApp": true,
             "children": [
                 {
+                    "name": "Bank Account",
+                    "routerLink": ["bankAccount"],
+                    "identifier": "Bank Account",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "All Brand Payments",
                     "routerLink": ["allBrandsPayments"],
                     "identifier": "Brand Payments",
