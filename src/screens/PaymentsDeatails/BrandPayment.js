@@ -140,39 +140,7 @@ const BrandPayment = () => {
                 }
             }
 
-            const testData = {
-                "account_number": "7878780080316316",
-                "amount": +totalPay,
-                "currency": "INR",
-                "mode": "NEFT",
-                "purpose": "refund",
-                "fund_account": {
-                    "account_type": "bank_account",
-                    "bank_account": {
-                        "name": "Gaurav Kumar",
-                        "ifsc": "HDFC0001234",
-                        "account_number": "1121431121541121"
-                    },
-                    "contact": {
-                        "name": "Gaurav Kumar",
-                        "email": "gaurav.kumar@example.com",
-                        "contact": "9876543210",
-                        "type": "vendor",
-                        "reference_id": "Acme Contact ID 12345",
-                        "notes": {
-                            "notes_key_1": "Tea, Earl Grey, Hot",
-                            "notes_key_2": "Tea, Earl Grey… decaf."
-                        }
-                    }
-                },
-                "queue_if_low_balance": true,
-                "reference_id": "Acme Transaction ID 12345",
-                "narration": "Acme Corp Fund Transfer",
-                "notes": {
-                    "notes_key_1": "Beam me up Scotty",
-                    "notes_key_2": "Engage"
-                }
-            }
+           
             let payResponse = await httpCommon.post(`/brandDuePayment`, brandPayInfo)
             let { payData } = payResponse
             console.log("payData", payData);

@@ -5,31 +5,31 @@ import httpCommon from "../../http-common";
 import { Link } from 'react-router-dom';
 import { ReactLoader } from '../../components/common/ReactLoader';
 
-function OrderList(props) {
+function ReturnList(props) {
 
     const columns = () => {
         return [
             {
                 name: "SR NO.",
                 selector: (row) => row?.i,
-                sortable: true,
+                sortable: true, 
             },
             {
                 name: "CUSTOMER NAME",
                 selector: (row) => row?.name,
-                cell: (row) => <div style={{backgroundColor:"#b4ebed",cursor:"pointer"}}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/order-detail/${row?._id}`} >{row?.name}</Link></div>,
+                cell: (row) => <div style={{backgroundColor:"#b4ebed",cursor:"pointer"}}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/return-detail/${row?.orderId}`} >{row?.name}</Link></div>,
                 sortable: true,
             },
             {
                 name: "ADDRESS",
                 cell: row => row?.address,
-                sortable: true, minWidth: "200px"
+                sortable: true,  
             },
 
             {
                 name: "EMAIL",
                 cell: row => row?.email,
-                sortable: true, minWidth: "220px"
+                sortable: true, 
             },
             {
                 name: "CONTACT NO.",
@@ -39,6 +39,11 @@ function OrderList(props) {
             {
                 name: "ITEMS",
                 cell: row => row?.items?.length,
+                sortable: true,
+            },
+            {
+                name: "RETURN CREATE DATE",
+                cell: row => new Date(row?.createdAt).toLocaleString(),
                 sortable: true,
             },
             // {
@@ -68,13 +73,13 @@ function OrderList(props) {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        getAllOrder();
+        getAllReturnOrder();
     }, []);
 
-    const getAllOrder = async () => {
+    const getAllReturnOrder = async () => {
         try {
             setLoading(true)
-            let response = await httpCommon.get("/getAllOrder");
+            let response = await httpCommon.get("/getAllReturnOrder");
             let { data } = response;
             setOrders(data);
             setLoading(false)
@@ -98,7 +103,7 @@ function OrderList(props) {
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">
-                <PageHeader1 pagetitle='Orders List' />
+                <PageHeader1 pagetitle='Return Orders List' />
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">
                         {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
@@ -129,4 +134,4 @@ function OrderList(props) {
 
     )
 }
-export default OrderList;
+export default ReturnList;
