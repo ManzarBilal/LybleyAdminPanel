@@ -23,6 +23,7 @@ const BrandPayment = () => {
     const [totalPay, setTotalPay] = useState("")
     const [randomValue, setRandomValue] = useState("")
     const [loading, setLoading] = useState(false)
+    const [disable, setDisable] = useState(false)
     const [ismodal, setIsmodal] = useState(false);
     const [notDue, setNotDue] = useState(false);
 
@@ -90,7 +91,7 @@ const BrandPayment = () => {
         GetAdminBankDetails()
     }, [randomValue]);
 
-   
+
 
     const handleOpen = () => {
         if (brand?.totalDue === 0) {
@@ -104,50 +105,49 @@ const BrandPayment = () => {
         try {
             let userData = localStorage.getItem("user")
             let brandInfo = JSON.parse(userData)
-
-            const brandPayInfo = {
-
-                "account_number": adminBankDtl?.accountNumber,
-                "amount": +totalPay,
-                "currency": "INR",
-                "mode": "NEFT",
-                "purpose": "refund",
-                "fund_account": {
-                    "account_type": "bank_account",
-                    "bank_account": {
-                        "name": brandBankDtl?.accountHolderName,
-                        "ifsc": brandBankDtl?.IFSC,
+            setDisable(true)
+            const brandPayInfo=
+            {
+                "account_number":adminBankDtl?.accountNumber,
+                "amount":(+totalPay) * 100,
+                "currency":"INR",
+                "mode":"NEFT",
+                "purpose":"payout",
+                "fund_account":{
+                    "account_type":"bank_account",
+                    "bank_account":{
+                        "name":brandBankDtl?.accountHolderName,
+                        "ifsc":brandBankDtl?.IFSC,
                         "account_number": brandBankDtl?.accountNumber
                     },
-                    "contact": {
-                        "name": brand?.brandName,
-                        "email": brand?.email,
-                        "contact": brand?.contact,
-                        "type": "Brand",
-                        "reference_id": "Acme Contact ID 12345",
-                        "notes": {
-                            "notes_key_1": "Tea, Earl Grey, Hot",
-                            "notes_key_2": "Tea, Earl Grey… decaf."
+                    "contact":{
+                        "name":brand?.brandName,
+                        "email":brand?.email,
+                        "contact":brand?.contact,
+                        "type":"employee",
+                        "reference_id":"12345",
+                        "notes":{
+                            "notes_key_1":"Tea, Earl Grey, Hot",
+                            "notes_key_2":"Tea, Earl Grey… decaf."
                         }
                     }
                 },
-                "queue_if_low_balance": true,
-                "reference_id": "Brand Due Payment",
-                "narration": "Brand Due Fund Transfer",
-                "notes": {
-                    "notes_key_1": "Beam me up Scotty",
-                    "notes_key_2": "Engage"
+                "queue_if_low_balance":true,
+                "reference_id":"Acme Transaction ID 12345",
+                "narration":"Acme Corp Fund Transfer",
+                "notes":{
+                    "notes_key_1":"Beam me up Scotty",
+                    "notes_key_2":"Engage"
                 }
             }
 
-           
-            let payResponse = await httpCommon.post(`/brandDuePayment`, brandPayInfo)
-            let { payData } = payResponse
-            console.log("payData", payData);
-            if (payData?.entity === "payout") {
+            let response = await httpCommon.post(`/brandDuePayment`, brandPayInfo)
+            let { data } = response
+
+            if (data?.entity === "payout") {
                 let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay: +totalPay })
                 let { data } = response
-
+                setDisable(false)
                 setIsmodal(false)
                 let x = Math.floor((Math.random() * 10) + 1);
                 setRandomValue(x)
@@ -321,7 +321,7 @@ const BrandPayment = () => {
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={() => handleDuePayment(brand?._id)} >Pay</button>
+                    <button type="submit" className="btn btn-primary" disabled={disable} onClick={() => handleDuePayment(brand?._id)} >Pay</button>
                 </Modal.Footer>
 
             </Modal>
