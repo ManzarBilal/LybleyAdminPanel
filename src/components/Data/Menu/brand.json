@@ -181,6 +181,16 @@
                     "children": []
                 },
                 {
+                    "name": "Return Request List",
+                    "routerLink": ["return-request-list"],
+                    "identifier": "Return Request List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "Orders Invoice",
                     "routerLink": ["order-invoice"],
                     "identifier": "Orders Invoice",
