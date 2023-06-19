@@ -72,6 +72,7 @@ import BrandPayments from './PaymentsDeatails/BrandPayments';
 import BankAccount from './PaymentsDeatails/BankAccount';
 import ReturnList from './Orders/ReturnList';
 import ReturnDetails from './Orders/ReturnDetails';
+import ReturnRequest from './Orders/ReturnRequest';
 const BrandIndex = (props) => {
   const { activekey } = props;
   return (
@@ -111,6 +112,7 @@ const BrandIndex = (props) => {
           <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList url={props?.url} /> }} />
           <Route exact path={props?.url + '/order-detail/:id'} render={() => { return <OrderDetail /> }} />
           <Route exact path={props?.url + '/return-list'} render={() => { return <ReturnList url={props?.url} /> }} />
+          <Route exact path={props?.url + '/return-request-list'} render={() => { return <ReturnRequest url={props?.url} /> }} />
           <Route exact path={props?.url + '/return-detail/:id'} render={() => { return <ReturnDetails /> }} />
 
 
