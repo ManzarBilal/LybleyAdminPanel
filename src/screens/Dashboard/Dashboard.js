@@ -47,7 +47,7 @@ function Dashboard() {
         }
     }
 
-    
+
     let userData = localStorage?.getItem("user")
     let user = JSON.parse(userData)
     let brandId = user?._id
@@ -55,7 +55,7 @@ function Dashboard() {
 
     const spareParts = user?.role === "ADMIN" ? data : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
     const orders = user?.role === "ADMIN" ? data : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-     const revenue =  brandData?.mane
+    const revenue = brandData?.mane
     console.log("data", data);
     console.log("branData", orders);
     console.log("revenue", revenue);
@@ -67,6 +67,18 @@ function Dashboard() {
                 <div className="container-xxl">
                     <div className="row g-3 mb-3 row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 row-cols-xl-4">
 
+                        {user?.role === "ADMIN" ? <div className="col">
+                            <div className={`alert-success alert mb-0`}>
+                                <div className="d-flex align-items-center">
+                                    <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='fa fa-dollar fa-lg'></i></div>
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0"> All Revenue</div>
+                                        <span className="small">{revenue === 0 ? 0 : revenue}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            : ""}
                         <div className="col">
                             <div className={`alert-success alert mb-0`}>
                                 <div className="d-flex align-items-center">

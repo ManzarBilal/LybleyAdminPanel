@@ -11,6 +11,28 @@
             "children": []
         },
         {
+            "name": "Blog",
+            "routerLink": [""],
+            "identifier": "Blog",
+            "iconClass": "icofont-blogger fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                {
+                    "name": "Blog List",
+                    "routerLink": ["blog-list"],
+                    "identifier": "Blog List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                  
+            ]
+        },
+        {
             "name": "Brand",
             "routerLink": [""],
             "identifier": "Brand",
