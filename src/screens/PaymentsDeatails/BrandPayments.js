@@ -114,7 +114,10 @@ const BrandPayments = () => {
     }
     const handleFromDate = (e) => {
         const getFromDateValue = e.target.value;
-        const date = new Date(getFromDateValue)
+        var someDate = new Date(getFromDateValue);
+        someDate.setDate(someDate.getDate() + 1); //number  of days to add, e.x. 15 days
+        var dateFormated = someDate.toISOString().substr(0, 10);
+        const date = new Date(dateFormated)
         setFromDateFormat(date)
 
     }
