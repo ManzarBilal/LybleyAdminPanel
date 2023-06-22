@@ -74,6 +74,7 @@ import BrandPayment from './PaymentsDeatails/BrandPayment';
 import BankAccount from './PaymentsDeatails/BankAccount';
 import ReturnList from './Orders/ReturnList';
 import ReturnDetails from './Orders/ReturnDetails';
+import BlogList from './Blog/BlogList';
 
 function MainIndex(props) {
 
@@ -86,6 +87,8 @@ function MainIndex(props) {
         <Switch>
           {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
           <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
+          <Route exact path={props?.url + '/blog-list'} render={() => { return <BlogList /> }} />
+
           <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList /> }} />
 
           <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
