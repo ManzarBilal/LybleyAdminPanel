@@ -16,11 +16,24 @@ function Dashboard() {
     const [brandData, setBrandData] = useState([])
     const [brandByIdData, setBrandBYIdData] = useState([])
     const [loading, setLoading] = useState(false)
+    const [transaction,setTransaction]=useState([]);
+
     useEffect(() => {
         getDashBoardData()
         getBrandData()
         getBrandDataById()
+        getTransaction();
     }, []);
+
+     const getTransaction=async()=>{
+        try{
+           let response=await httpCommon.get("/getAllTransaction");
+           let {data}=response;
+           setTransaction(data);
+        }catch(err){
+           console.log(err);
+        }
+     }
 
     const getDashBoardData = async () => {
         try {
@@ -35,6 +48,7 @@ function Dashboard() {
 
         }
     }
+
     const getBrandData = async () => {
         try {
             setLoading(true)
@@ -87,10 +101,10 @@ function Dashboard() {
                         {user?.role === "ADMIN" ? <div className="col">
                             <div className={`alert-success alert mb-0`}>
                                 <div className="d-flex align-items-center">
-                                    <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='fa fa-dollar fa-lg'></i></div>
+                                    <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='icofont-rupee fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
-                                        <div className="h6 mb-0"> All Revenue</div>
-                                        <span className="small">{revenue === 0 ? 0 : revenue}</span>
+                                        <div className="h6 mb-0"> Total Revenue</div>
+                                        <span className="small">{brandData?.reduce((acc,curr)=> acc+curr?.revenue ,0)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -99,7 +113,7 @@ function Dashboard() {
                         <div className="col">
                             <div className={`alert-success alert mb-0`}>
                                 <div className="d-flex align-items-center">
-                                    <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='fa fa-dollar fa-lg'></i></div>
+                                    <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='icofont-rupee fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Revenue</div>
                                         <span className="small fw-bold">{brandByIdData?.revenue}</span>
@@ -110,10 +124,21 @@ function Dashboard() {
                         <div className="col">
                             <div className={`alert-danger alert mb-0`}>
                                 <div className="d-flex align-items-center">
-                                    <div className={`avatar rounded no-thumbnail bg-danger text-light`}><i className='fa fa-credit-card fa-lg'></i></div>
+                                    <div className={`avatar rounded no-thumbnail bg-danger text-light`}><i className='icofont-rupee fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
-                                        <div className="h6 mb-0">Expense</div>
-                                        <span className="small">1000</span>
+                                        <div className="h6 mb-0">Total Pay</div>
+                                        <span className="small">{user?.role==="ADMIN" ? brandData?.reduce((acc,curr)=> acc+curr?.totalPay ,0) : brandByIdData?.totalPay}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div className={`alert-danger alert mb-0`}>
+                                <div className="d-flex align-items-center">
+                                    <div className={`avatar rounded no-thumbnail bg-danger text-light`}><i className='icofont-rupee fa-lg'></i></div>
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0">Total Due</div>
+                                        <span className="small">{user?.role==="ADMIN" ? brandData?.reduce((acc,curr)=> acc+curr?.totalDue ,0) : brandByIdData?.totalDue}</span>
                                     </div>
                                 </div>
                             </div>
@@ -124,12 +149,12 @@ function Dashboard() {
                                     <div className={`avatar rounded no-thumbnail bg-warning text-light`}><i className='fa fa-smile-o fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Happy Clients</div>
-                                        <span className="small">5456454</span>
+                                        <span className="small">{data?.totalCustomers}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col">
+                        {/* <div className="col">
                             <div className={`alert-info alert mb-0`}>
                                 <div className="d-flex align-items-center">
                                     <div className={`avatar rounded no-thumbnail bg-info text-light`}><i className='fa fa-shopping-bag'></i></div>
@@ -139,7 +164,7 @@ function Dashboard() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
 
                     </div>
                     <div className="mt-1">
@@ -392,7 +417,7 @@ function Dashboard() {
                     </div>
                     <div className="row g-3 mb-3">
                         <div className="col-md-12">
-                            <RecentTransaction />
+                            <RecentTransaction transaction={transaction}/>
                         </div>
                     </div>
                 </div>
