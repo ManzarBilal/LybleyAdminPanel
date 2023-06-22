@@ -56,10 +56,10 @@ function Dashboard() {
     const spareParts = user?.role === "ADMIN" ? data : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
     const orders = user?.role === "ADMIN" ? data : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     const revenue = brandData?.mane
-    console.log("data", data);
-    console.log("branData", orders);
-    console.log("revenue", revenue);
-    console.log("brandId", brandId);
+    // console.log("data", data);
+    // console.log("branData", orders);
+    // console.log("revenue", revenue);
+    // console.log("brandId", brandId);
 
     return (
         <div className="body d-flex py-3">
