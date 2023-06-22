@@ -14,10 +14,12 @@ import { ReactLoader } from '../../components/common/ReactLoader';
 function Dashboard() {
     const [data, setData] = useState()
     const [brandData, setBrandData] = useState([])
+    const [brandByIdData, setBrandBYIdData] = useState([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
         getDashBoardData()
         getBrandData()
+        getBrandDataById()
     }, []);
 
     const getDashBoardData = async () => {
@@ -46,6 +48,21 @@ function Dashboard() {
 
         }
     }
+    const getBrandDataById = async () => {
+        try {
+            let user = JSON.parse(userData)
+            let brandId = user?._id
+            setLoading(true)
+            let response = await httpCommon.get(`/getBrandBy/${brandId}`);
+            let { data } = response;
+            setBrandBYIdData(data);
+            setLoading(false)
+        } catch (err) {
+            console.log(err);
+            setLoading(false)
+
+        }
+    }
 
 
     let userData = localStorage?.getItem("user")
@@ -55,11 +72,11 @@ function Dashboard() {
 
     const spareParts = user?.role === "ADMIN" ? data : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
     const orders = user?.role === "ADMIN" ? data : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-    const revenue = brandData?.mane
+    const revenue = "55";
     // console.log("data", data);
-    // console.log("branData", orders);
-    // console.log("revenue", revenue);
-    // console.log("brandId", brandId);
+    console.log("branData", brandData);
+    console.log("revenue", revenue);
+    console.log("brandByIdData", brandByIdData);
 
     return (
         <div className="body d-flex py-3">
@@ -85,7 +102,7 @@ function Dashboard() {
                                     <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='fa fa-dollar fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Revenue</div>
-                                        <span className="small">{revenue === 0 ? 0 : revenue}</span>
+                                        <span className="small fw-bold">{brandByIdData?.revenue}</span>
                                     </div>
                                 </div>
                             </div>
