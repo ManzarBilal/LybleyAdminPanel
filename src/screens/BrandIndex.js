@@ -83,7 +83,7 @@ const BrandIndex = (props) => {
       <div className="body d-flex py-3 ">
         <Switch>
           {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
-          <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
+          <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url}/> }} />
           <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
 
           <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid url={props?.url} /> }} />

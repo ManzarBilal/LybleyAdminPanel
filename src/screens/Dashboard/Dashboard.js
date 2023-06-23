@@ -10,8 +10,9 @@ import SalesStatus from '../../components/dashboard/SalesStatus';
 import { DashboardStatusData, MonthData, WeekData, YearData } from '../../components/Data/Data';
 import httpCommon from "../../http-common"
 import { ReactLoader } from '../../components/common/ReactLoader';
+import OrderList from '../Orders/OrderList';
 
-function Dashboard() {
+function Dashboard(props) {
     const [data, setData] = useState([])
     const [adminOrder,setAdminOrder]=useState([])
     const [adminCustomer,setAdminCustomer]=useState([])
@@ -92,9 +93,9 @@ function Dashboard() {
     let brandId = user?._id
     // const revenue = user?.role === "ADMIN" ? brandData : brandData?.filter((item, i) => item?._id === brandId);
 
-    const spareParts = user?.role === "ADMIN" ? data : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
-    const orders = user?.role === "ADMIN" ? data : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-
+    const spareParts = user?.role === "ADMIN" ? data?.sparParts : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
+    const orders = user?.role === "ADMIN" ? data?.orders : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
+       
     const [toDateFormat, setToDateFormat] = useState("");
     const [fromDateFormat, setFromDateFormat] = useState("");
     const [filter, setFilter] = useState("All")
@@ -116,40 +117,10 @@ function Dashboard() {
         setFromDateFormat(date)
 
     }
+
     const getFilteredData1=(val,color)=>{
        setFilter(color);
        setVal(val);
-    }
-    const getFilteredData = (val,color) => {
-        setFilter(color)
-        const todayDate = new Date()
-        const todayDate1 = new Date(todayDate)?.toISOString()?.substr(0, 10);
-        const todayDate2 = new Date(todayDate)?.toISOString();
-
-        const someDate = new Date(todayDate1);
-        someDate?.setDate(someDate?.getDate() -val); //number  of days to add, e.x. 15 days
-        const dateFormDated1 = someDate?.toISOString()
-        let sd=new Date(dateFormDated1).getTime()
-        let ds=new Date(todayDate2).getTime();
-    
-        let adminOrder1 = adminOrder.filter(item => {
-            let date = new Date(item?.createdAt).getTime();
-            return date >= sd && date <= ds;
-        })
-        let adminCustomer1 = adminCustomer.filter(item => {
-            let date = new Date(item?.createdAt).getTime();
-            return date >= sd && date <= ds;
-        })
-        let adminSpareParts1 = adminSpareParts.filter(item => {
-            let date = new Date(item?.createdAt).getTime();
-            return date >= sd && date <= ds;
-        })
-        // let dataD = data1.filter(item => {
-        //     let date = new Date(item?.createdAt).getTime();
-        //     return date >= sd && date <= ds;
-        // })
-        
-      //  setFilterData(dataD)
     }
 
     const todayDate = new Date()
@@ -162,7 +133,7 @@ function Dashboard() {
     let sd=new Date(dateFormDated1).getTime()
     let ds=new Date(todayDate2).getTime();
 
-    let adminOrder1 = adminOrder.filter(item => {
+    let adminOrder1 = orders?.filter(item => {
         let date = new Date(item?.createdAt).getTime();
         return val ? date >= sd && date <= ds : adminOrder;
     })
@@ -170,7 +141,7 @@ function Dashboard() {
         let date = new Date(item?.createdAt).getTime();
         return val ? date >= sd && date <= ds : adminCustomer;
     })
-    let adminSpareParts1 = adminSpareParts.filter(item => {
+    let adminSpareParts1 = spareParts?.filter(item => {
         let date = new Date(item?.createdAt).getTime();
         return val ? date >= sd && date <= ds : adminSpareParts;
     })
@@ -178,8 +149,20 @@ function Dashboard() {
         let date = new Date(item?.createdAt).getTime();
         return val ? date >= sd && date <= ds : adminBrands;
     })
-   console.log(adminBrands1);
+    let orders1 = orders?.filter(item => {
+        let date = new Date(item?.createdAt).getTime();
+        return val ? date >= sd && date <= ds : adminBrands;
+    })
+     
+    let avgSalePrice=adminOrder1?.map(it=>({items:it?.items}));
+    let map=new Map([avgSalePrice.map(it=> ({tot:it?.items}))]);
+    let avgSalePrice1=avgSalePrice?.filter(it=>(it.items?.find(it1=>({tot:it1?.MRP}))));
 
+    //let avgSalePrice1=avgSalePrice?.items?.map(it=>({tot:it?.MRP*it?.quantity}));
+    let avgSalePrice2=avgSalePrice1?.reduce((acc,curr)=> acc+curr?.tot);
+    let avgSalePrice3=+avgSalePrice2/(+adminOrder1?.length);
+   console.log(map);
+     
     return (
         <div className="body d-flex py-3">
             {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
@@ -296,7 +279,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Customers</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminCustomer1?.length : orders?.length}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminCustomer1?.length : orders1?.length}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-student-alt fs-3 color-light-orange`}></i>
@@ -309,7 +292,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Order</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminOrder1?.length : orders?.length}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{adminOrder1?.length}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-shopping-cart fs-3 color-lavender-purple`}></i>
@@ -322,7 +305,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Total Products</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminSpareParts1?.length : spareParts?.length}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{adminSpareParts1?.length}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-bag fs-3 color-light-orange`}></i>
@@ -335,7 +318,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Avg Sale</span>
-                                                                <div><span className="fs-6 fw-bold me-2">14,208</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{avgSalePrice3}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-sale-discount fs-3 color-santa-fe`}></i>
@@ -436,6 +419,11 @@ function Dashboard() {
                         </div>
                         <div className='col-lg-8 col-md-12'>
                             <AvgexpenceChart />
+                        </div>
+                    </div>
+                    <div className="row g-3 mb-3">
+                        <div className="col-md-12">
+                            <OrderList url={props?.url} />
                         </div>
                     </div>
                     <div className="row g-3 mb-3">
