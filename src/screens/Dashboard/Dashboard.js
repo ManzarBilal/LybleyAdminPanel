@@ -12,11 +12,15 @@ import httpCommon from "../../http-common"
 import { ReactLoader } from '../../components/common/ReactLoader';
 
 function Dashboard() {
-    const [data, setData] = useState()
+    const [data, setData] = useState([])
+    const [adminOrder,setAdminOrder]=useState([])
+    const [adminCustomer,setAdminCustomer]=useState([])
+    const [adminSpareParts,setAdminSpareParts]=useState([])
+    const [adminBrands,setAdminBrands]=useState([])
     const [brandData, setBrandData] = useState([])
     const [brandByIdData, setBrandBYIdData] = useState([])
     const [loading, setLoading] = useState(false)
-    const [transaction,setTransaction]=useState([]);
+    const [transaction, setTransaction] = useState([]);
 
     useEffect(() => {
         getDashBoardData()
@@ -25,15 +29,15 @@ function Dashboard() {
         getTransaction();
     }, []);
 
-     const getTransaction=async()=>{
-        try{
-           let response=await httpCommon.get("/getAllTransaction");
-           let {data}=response;
-           setTransaction(data);
-        }catch(err){
-           console.log(err);
+    const getTransaction = async () => {
+        try {
+            let response = await httpCommon.get("/getAllTransaction");
+            let { data } = response;
+            setTransaction(data);
+        } catch (err) {
+            console.log(err);
         }
-     }
+    }
 
     const getDashBoardData = async () => {
         try {
@@ -41,6 +45,10 @@ function Dashboard() {
             let response = await httpCommon.get(`/dashboardDetails`);
             let { data } = response;
             setData(data);
+            setAdminCustomer(data?.totalCustomers);
+            setAdminOrder(data?.orders);
+            setAdminBrands(data?.totalBrands);
+            setAdminSpareParts(data?.sparParts);
             setLoading(false)
         } catch (err) {
             console.log(err);
@@ -86,11 +94,91 @@ function Dashboard() {
 
     const spareParts = user?.role === "ADMIN" ? data : data?.sparParts?.filter((item, i) => item?.userId === user?._id);
     const orders = user?.role === "ADMIN" ? data : data?.orders?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-    const revenue = "55";
-    // console.log("data", data);
-    console.log("branData", brandData);
-    console.log("revenue", revenue);
-    console.log("brandByIdData", brandByIdData);
+
+    const [toDateFormat, setToDateFormat] = useState("");
+    const [fromDateFormat, setFromDateFormat] = useState("");
+    const [filter, setFilter] = useState("All")
+    const [filterData, setFilterData] = useState([]);
+    const [val,setVal]=useState("");
+
+    const handleToDate = (e) => {
+        const date = new Date()
+        console.log(date);
+        setToDateFormat(date)
+
+    }
+    const handleFromDate = (e) => {
+        const getFromDateValue = e.target.value;
+        var someDate = new Date(getFromDateValue);
+        someDate.setDate(someDate.getDate() + 1); //number  of days to add, e.x. 15 days
+        var dateFormated = someDate.toISOString().substr(0, 10);
+        const date = new Date(dateFormated)
+        setFromDateFormat(date)
+
+    }
+    const getFilteredData1=(val,color)=>{
+       setFilter(color);
+       setVal(val);
+    }
+    const getFilteredData = (val,color) => {
+        setFilter(color)
+        const todayDate = new Date()
+        const todayDate1 = new Date(todayDate)?.toISOString()?.substr(0, 10);
+        const todayDate2 = new Date(todayDate)?.toISOString();
+
+        const someDate = new Date(todayDate1);
+        someDate?.setDate(someDate?.getDate() -val); //number  of days to add, e.x. 15 days
+        const dateFormDated1 = someDate?.toISOString()
+        let sd=new Date(dateFormDated1).getTime()
+        let ds=new Date(todayDate2).getTime();
+    
+        let adminOrder1 = adminOrder.filter(item => {
+            let date = new Date(item?.createdAt).getTime();
+            return date >= sd && date <= ds;
+        })
+        let adminCustomer1 = adminCustomer.filter(item => {
+            let date = new Date(item?.createdAt).getTime();
+            return date >= sd && date <= ds;
+        })
+        let adminSpareParts1 = adminSpareParts.filter(item => {
+            let date = new Date(item?.createdAt).getTime();
+            return date >= sd && date <= ds;
+        })
+        // let dataD = data1.filter(item => {
+        //     let date = new Date(item?.createdAt).getTime();
+        //     return date >= sd && date <= ds;
+        // })
+        
+      //  setFilterData(dataD)
+    }
+
+    const todayDate = new Date()
+    const todayDate1 = new Date(todayDate)?.toISOString()?.substr(0, 10);
+    const todayDate2 = new Date(todayDate)?.toISOString();
+
+    const someDate = new Date(todayDate1);
+    someDate?.setDate(someDate?.getDate() -val); //number  of days to add, e.x. 15 days
+    const dateFormDated1 = someDate?.toISOString()
+    let sd=new Date(dateFormDated1).getTime()
+    let ds=new Date(todayDate2).getTime();
+
+    let adminOrder1 = adminOrder.filter(item => {
+        let date = new Date(item?.createdAt).getTime();
+        return val ? date >= sd && date <= ds : adminOrder;
+    })
+    let adminCustomer1 = adminCustomer.filter(item => {
+        let date = new Date(item?.createdAt).getTime();
+        return val ? date >= sd && date <= ds : adminCustomer;
+    })
+    let adminSpareParts1 = adminSpareParts.filter(item => {
+        let date = new Date(item?.createdAt).getTime();
+        return val ? date >= sd && date <= ds : adminSpareParts;
+    })
+    let adminBrands1 = adminBrands.filter(item => {
+        let date = new Date(item?.createdAt).getTime();
+        return val ? date >= sd && date <= ds : adminBrands;
+    })
+   console.log(adminBrands1);
 
     return (
         <div className="body d-flex py-3">
@@ -104,7 +192,7 @@ function Dashboard() {
                                     <div className={`avatar rounded no-thumbnail bg-success text-light`}><i className='icofont-rupee fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0"> Total Revenue</div>
-                                        <span className="small">{brandData?.reduce((acc,curr)=> acc+curr?.revenue ,0)}</span>
+                                        <span className="small">{brandData?.reduce((acc, curr) => acc + curr?.revenue, 0)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -127,7 +215,7 @@ function Dashboard() {
                                     <div className={`avatar rounded no-thumbnail bg-danger text-light`}><i className='icofont-rupee fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Total Pay</div>
-                                        <span className="small">{user?.role==="ADMIN" ? brandData?.reduce((acc,curr)=> acc+curr?.totalPay ,0) : brandByIdData?.totalPay}</span>
+                                        <span className="small">{user?.role === "ADMIN" ? brandData?.reduce((acc, curr) => acc + curr?.totalPay, 0) : brandByIdData?.totalPay}</span>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +226,7 @@ function Dashboard() {
                                     <div className={`avatar rounded no-thumbnail bg-danger text-light`}><i className='icofont-rupee fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Total Due</div>
-                                        <span className="small">{user?.role==="ADMIN" ? brandData?.reduce((acc,curr)=> acc+curr?.totalDue ,0) : brandByIdData?.totalDue}</span>
+                                        <span className="small">{user?.role === "ADMIN" ? brandData?.reduce((acc, curr) => acc + curr?.totalDue, 0) : brandByIdData?.totalDue}</span>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +237,7 @@ function Dashboard() {
                                     <div className={`avatar rounded no-thumbnail bg-warning text-light`}><i className='fa fa-smile-o fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Happy Clients</div>
-                                        <span className="small">{data?.totalCustomers}</span>
+                                        <span className="small">{data?.totalCustomers?.length}</span>
                                     </div>
                                 </div>
                             </div>
@@ -168,15 +256,16 @@ function Dashboard() {
 
                     </div>
                     <div className="mt-1">
-                        <Tab.Container id="left-tabs-example" defaultActiveKey="first" className="col-lg-12 col-md-12">
+                        <Tab.Container   className="col-lg-12 col-md-12">
                             <Row>
                                 <Col sm={12}>
                                     <div className="tab-filter d-flex align-items-center justify-content-between mb-3 flex-wrap">
                                         <Nav variant="pills" className="nav nav-tabs tab-card tab-body-header rounded  d-inline-flex w-sm-100">
-                                            <Nav.Item className="nav-item"><Nav.Link className="nav-link " eventKey="first" href="#summery-today">Today</Nav.Link></Nav.Item>
-                                            <Nav.Item className="nav-item"><Nav.Link className="nav-link" eventKey="second" href="#summery-week">Week</Nav.Link></Nav.Item>
-                                            <Nav.Item className="nav-item"><Nav.Link className="nav-link" eventKey="third" href="#summery-month">Month</Nav.Link></Nav.Item>
-                                            <Nav.Item className="nav-item"><Nav.Link className="nav-link" eventKey="fourth" href="#summery-year">Year</Nav.Link></Nav.Item>
+                                        <Nav.Item className="nav-item"><Nav.Link className={`${filter==="All" ?  "bg-primary text-white" : ""} nav-link`} onClick={(e) => getFilteredData1(0,"All")}>All</Nav.Link></Nav.Item>
+                                            <Nav.Item className="nav-item"><Nav.Link className={`${filter==="Today" ?  "bg-primary text-white" : ""} nav-link`} onClick={(e) => getFilteredData1(1,"Today")} >Today</Nav.Link></Nav.Item>
+                                            <Nav.Item className="nav-item"><Nav.Link className={`${filter==="Week" ?  "bg-primary text-white" : ""} nav-link`} onClick={(e) => getFilteredData1(7,"Week")} >Week</Nav.Link></Nav.Item>
+                                            <Nav.Item className="nav-item"><Nav.Link className={`${filter==="Month" ?  "bg-primary text-white" : ""} nav-link`} onClick={(e) => getFilteredData1(30,"Month")} >Month</Nav.Link></Nav.Item>
+                                            <Nav.Item className="nav-item"><Nav.Link className={`${filter==="Year" ?  "bg-primary text-white" : ""} nav-link`} onClick={(e) => getFilteredData1(365,"Year")} >Year</Nav.Link></Nav.Item>
                                         </Nav>
                                         <div className="date-filter d-flex align-items-center mt-2 mt-sm-0 w-sm-100">
                                             <div className="input-group">
@@ -187,15 +276,14 @@ function Dashboard() {
                                     </div>
                                 </Col>
                                 <Col sm={12}>
-                                    <Tab.Content className="tab-content mt-1">
-                                        <Tab.Pane eventKey="first" className="tab-pane fade show" id="summery-today">
+                                    
                                             <div className="row g-1 g-sm-3 mb-3 row-deck">
                                                 {user?.role === "ADMIN" ? <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                     <div className="card">
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Brand</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{data?.totalBrands}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{adminBrands1.length===0 ? 0 : adminBrands1?.length-1}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-student-alt fs-3 color-light-orange`}></i>
@@ -208,7 +296,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Customers</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? data?.totalCustomers : orders?.length}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminCustomer1?.length : orders?.length}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-student-alt fs-3 color-light-orange`}></i>
@@ -221,7 +309,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Order</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? data?.totalOrders : orders?.length}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminOrder1?.length : orders?.length}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-shopping-cart fs-3 color-lavender-purple`}></i>
@@ -234,7 +322,7 @@ function Dashboard() {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Total Products</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? data?.sparePart : spareParts?.length}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{user?.role === "ADMIN" ? adminSpareParts1?.length : spareParts?.length}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-bag fs-3 color-light-orange`}></i>
@@ -323,72 +411,7 @@ function Dashboard() {
                                                 </div>
 
                                             </div>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="second" className="tab-pane fade show" id="summery-week">
-                                            <div className="row g-3 mb-4 row-deck">
-                                                {
-                                                    WeekData.map((d, i) => {
-                                                        return <div key={'weekdata' + i} className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
-                                                            <div className="card">
-                                                                <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
-                                                                    <div className="left-info">
-                                                                        <span className="text-muted">{d.title}</span>
-                                                                        <div><span className="fs-6 fw-bold me-2">{d.value}</span></div>
-                                                                    </div>
-                                                                    <div className="right-icon">
-                                                                        <i className={`${d.iconClass}`}></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    })
-                                                }
-
-                                            </div>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="third" className="tab-pane fade show" id="summery-month">
-                                            <div className="row g-3 mb-4 row-deck">
-                                                {
-                                                    MonthData.map((d, i) => {
-                                                        return <div key={'monthdata' + i} className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
-                                                            <div className="card">
-                                                                <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
-                                                                    <div className="left-info">
-                                                                        <span className="text-muted">{d.title}</span>
-                                                                        <div><span className="fs-6 fw-bold me-2">{d.value}</span></div>
-                                                                    </div>
-                                                                    <div className="right-icon">
-                                                                        <i className={`${d.iconClass}`}></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    })
-                                                }
-                                            </div>
-                                        </Tab.Pane>
-                                        <Tab.Pane eventKey="fourth" className="tab-pane fade show" id="summery-year">
-                                            <div className="row g-3 mb-4 row-deck">
-                                                {
-                                                    YearData.map((d, i) => {
-                                                        return <div key={'yeardata' + i} className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
-                                                            <div className="card">
-                                                                <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
-                                                                    <div className="left-info">
-                                                                        <span className="text-muted">{d.title}</span>
-                                                                        <div><span className="fs-6 fw-bold me-2">{d.value}</span></div>
-                                                                    </div>
-                                                                    <div className="right-icon">
-                                                                        <i className={`${d.iconClass}`}></i>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    })
-                                                }
-                                            </div>
-                                        </Tab.Pane>
-                                    </Tab.Content>
+                                        
                                 </Col>
                             </Row>
                         </Tab.Container>
@@ -417,7 +440,7 @@ function Dashboard() {
                     </div>
                     <div className="row g-3 mb-3">
                         <div className="col-md-12">
-                            <RecentTransaction transaction={transaction}/>
+                            <RecentTransaction transaction={transaction} />
                         </div>
                     </div>
                 </div>
