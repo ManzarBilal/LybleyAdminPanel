@@ -154,15 +154,6 @@ function Dashboard(props) {
         return val ? date >= sd && date <= ds : adminBrands;
     })
      
-    let avgSalePrice=adminOrder1?.map(it=>({items:it?.items}));
-    let map=new Map([avgSalePrice.map(it=> ({tot:it?.items}))]);
-    let avgSalePrice1=avgSalePrice?.filter(it=>(it.items?.find(it1=>({tot:it1?.MRP}))));
-
-    //let avgSalePrice1=avgSalePrice?.items?.map(it=>({tot:it?.MRP*it?.quantity}));
-    let avgSalePrice2=avgSalePrice1?.reduce((acc,curr)=> acc+curr?.tot);
-    let avgSalePrice3=+avgSalePrice2/(+adminOrder1?.length);
-   console.log(map);
-     
     return (
         <div className="body d-flex py-3">
             {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
@@ -318,7 +309,7 @@ function Dashboard(props) {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Avg Sale</span>
-                                                                <div><span className="fs-6 fw-bold me-2">{avgSalePrice3}</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">5679</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-sale-discount fs-3 color-santa-fe`}></i>
