@@ -75,6 +75,13 @@ import BankAccount from './PaymentsDeatails/BankAccount';
 import ReturnList from './Orders/ReturnList';
 import ReturnDetails from './Orders/ReturnDetails';
 import BlogList from './Blog/BlogList';
+import ReturnRequest from './Orders/ReturnRequest';
+import MyCategoryList from './ProductCategory/MyCategoryList';
+import MyProductGrid from './Products/MyProductGrid';
+import MyProductList from './Products/MyProductList';
+import MySparePartGrid from './SpareParts/MySparePartGrid';
+import MySparePartList from './SpareParts/MySparePartList';
+import MyOrderList from './Orders/MyOrderList';
 
 function MainIndex(props) {
 
@@ -92,14 +99,19 @@ function MainIndex(props) {
           <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList /> }} />
 
           <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
+          <Route exact path={props?.url + '/myCategory-list'} render={() => { return <MyCategoryList /> }} />
 
           <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid url={props?.url} /> }} />
+          <Route exact path={props?.url + '/myproduct-grid'} render={() => { return <MyProductGrid url={props?.url} /> }} />
+          <Route exact path={props?.url + '/myproduct-list'} render={() => { return <MyProductList url={props?.url} /> }} />
           <Route exact path={props?.url + '/product-list'} render={() => { return <ProductList url={props?.url} /> }} />
           <Route exact path={props?.url + '/product-edit/:id'} render={() => { return <ProductEdit url={props?.url} /> }} />
           <Route exact path={props?.url + '/product-detail'} render={() => { return <ProductDetail /> }} />
           <Route exact path={props?.url + '/product-Add'} render={() => { return <ProductAdd /> }} />
 
           <Route exact path={props?.url + '/spareParts-grid'} render={() => { return <SparePartGrid url={props?.url} /> }} />
+          <Route exact path={props?.url + '/myspareParts-grid'} render={() => { return <MySparePartGrid url={props?.url} /> }} />
+          <Route exact path={props?.url + '/myspareParts-list'} render={() => { return <MySparePartList url={props?.url} /> }} />
           <Route exact path={props?.url + '/spareParts-list'} render={() => { return <SparePartList url={props?.url} /> }} />
           <Route exact path={props?.url + '/sparePart-edit/:id'} render={() => { return <SparePartEdit url={props?.url} /> }} />
           <Route exact path={props?.url + '/spareParts-detail'} render={() => { return <ProductDetail /> }} />
@@ -122,10 +134,13 @@ function MainIndex(props) {
 
 
           <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList  url={props?.url} /> }} />
+          <Route exact path={props?.url + '/myorder-list'} render={() => { return <MyOrderList  url={props?.url} /> }} />
           <Route exact path={props?.url + '/order-detail/:id'} render={() => { return <OrderDetail /> }} />
           <Route exact path={props?.url + '/booking-list'} render={() => { return <BookingList  url={props?.url} /> }} />
           <Route exact path={props?.url + '/booking-detail/:id'} render={() => { return <BookingDetail /> }} />
           <Route exact path={props?.url + '/return-list'} render={() => { return <ReturnList  url={props?.url} /> }} />
+          <Route exact path={props?.url + '/return-request-list'} render={() => { return <ReturnRequest url={props?.url} /> }} />
+
           <Route exact path={props?.url + '/return-detail/:id'} render={() => { return <ReturnDetails /> }} />
 
 
