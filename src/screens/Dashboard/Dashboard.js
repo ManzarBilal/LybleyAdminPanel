@@ -153,7 +153,29 @@ function Dashboard(props) {
         let date = new Date(item?.createdAt).getTime();
         return val ? date >= sd && date <= ds : adminBrands;
     })
-     
+
+    let totalOrder=adminOrder1?.reduce((acc,curr)=> acc.concat(curr?.items),[]);
+
+
+    var frequencyCount = {};
+    var mostOccurringValue;
+    var maxCount = 0;
+    
+    totalOrder?.map(obj => {
+      var value = obj?.sparePartName;
+      frequencyCount[value] = (frequencyCount[value] || 0) + 1;
+    
+      if (frequencyCount[value] > maxCount) {
+        maxCount = frequencyCount[value];
+        mostOccurringValue = value;
+      }
+    });
+
+     let tot=totalOrder?.map(m1=>({tot:m1?.MRP*m1?.quantity}));
+     let qty=totalOrder?.reduce((acc,curr)=> acc+curr?.quantity,0);
+     let totalSale=tot?.reduce((acc,curr)=> acc+curr?.tot,0)
+     let avgSale=totalSale/adminOrder1?.length;
+     let avgSaleItem=tot?.reduce((acc,curr)=> acc+curr?.tot,0)/qty;
     return (
         <div className="body d-flex py-3">
             {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
@@ -309,7 +331,7 @@ function Dashboard(props) {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Avg Sale</span>
-                                                                <div><span className="fs-6 fw-bold me-2">5679</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{avgSale?.toFixed(2)}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-sale-discount fs-3 color-santa-fe`}></i>
@@ -322,7 +344,7 @@ function Dashboard(props) {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Avg Item Sale</span>
-                                                                <div><span className="fs-6 fw-bold me-2">14,208</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{avgSaleItem?.toFixed(2)}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-calculator-alt-2 fs-3 color-danger`}></i>
@@ -335,7 +357,7 @@ function Dashboard(props) {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Total Sale</span>
-                                                                <div><span className="fs-6 fw-bold me-2">14,208</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{totalSale}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-users-social fs-3 color-light-success`}></i>
@@ -349,7 +371,7 @@ function Dashboard(props) {
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
                                                                 <span className="text-muted">Top Selling Item</span>
-                                                                <div><span className="fs-6 fw-bold me-2">14,208</span></div>
+                                                                <div><span className="fs-6 fw-bold me-2">{mostOccurringValue}</span></div>
                                                             </div>
                                                             <div className="right-icon">
                                                                 <i className={`icofont-star fs-3 color-lightyellow`}></i>
@@ -357,7 +379,7 @@ function Dashboard(props) {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                                {/* <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                     <div className="card">
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                             <div className="left-info">
@@ -369,7 +391,7 @@ function Dashboard(props) {
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> */}
                                                 <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6">
                                                     <div className="card">
                                                         <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
