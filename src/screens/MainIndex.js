@@ -86,7 +86,7 @@ function MainIndex(props) {
       <div className="body d-flex py-3 ">
         <Switch>
           {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
-          <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard /> }} />
+          <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url} /> }} />
           <Route exact path={props?.url + '/blog-list'} render={() => { return <BlogList /> }} />
 
           <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList /> }} />
