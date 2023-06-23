@@ -64,6 +64,16 @@
             "isApp": true,
             "children": [
                 {
+                    "name": "My Category List",
+                    "routerLink": ["mycategory-list"],
+                    "identifier": "My Category List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "Category List",
                     "routerLink": ["category-list"],
                     "identifier": "Category List",
@@ -85,6 +95,26 @@
             "isCategory": false,
             "isApp": false,
             "children": [
+                {
+                    "name": "My Product Grid",
+                    "routerLink": ["myproduct-grid"],
+                    "identifier": "My Product Grid",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "My Product List",
+                    "routerLink": ["myproduct-list"],
+                    "identifier": "My Product List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
                 {
                     "name": "Product Grid",
                     "routerLink": ["product-grid"],
@@ -140,9 +170,29 @@
                     "children": []
                 },
                 {
+                    "name": "My Spare Parts Grid",
+                    "routerLink": ["myspareParts-grid"],
+                    "identifier": "My Spare Part Grid",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "My Spare Parts List",
+                    "routerLink": ["myspareParts-list"],
+                    "identifier": "My Spare Parts List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "Spare Parts Grid",
                     "routerLink": ["spareParts-grid"],
-                    "identifier": "Product Grid",
+                    "identifier": "Spare Parts Grid",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
@@ -205,6 +255,16 @@
             "isCategory": false,
             "isApp": true,
             "children": [
+                {
+                    "name": "My Orders List",
+                    "routerLink": ["myorder-list"],
+                    "identifier": "My Orders List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
                 {
                     "name": "Orders List",
                     "routerLink": ["order-list"],
