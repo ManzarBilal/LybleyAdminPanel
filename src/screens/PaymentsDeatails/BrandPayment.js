@@ -290,7 +290,7 @@ const updateBankDetail = async (obj) => {
                                 </div>
                                 <div className='d-flex justify-content-between'>
                                     <div className='fw-bold text-uppercase'>Commission </div>
-                                    <div className='text-dark fs-5 fw-bold'> {brandBankDtl?.commission} %</div>
+                                    <div className='text-dark fs-5 fw-bold'> {brandBankDtl?.commission ?  brandBankDtl?.commission :0  } %</div>
                                 </div>
                                 <div className='d-flex justify-content-between mt-1'>
                                 <input type="number" min={0} max={100} maxlength="3" onChange={(e)=>setCommission(e.target.value)} className={"form-control"} placeholder=" commission %"
