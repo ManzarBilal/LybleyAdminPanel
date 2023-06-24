@@ -26,6 +26,7 @@ const BrandPayment = () => {
     const [disable, setDisable] = useState(false)
     const [ismodal, setIsmodal] = useState(false);
     const [notDue, setNotDue] = useState(false);
+    const [commission, setCommission] = useState("");
 
     const getDashBoardData = async () => {
         try {
@@ -91,8 +92,19 @@ const BrandPayment = () => {
         GetAdminBankDetails()
     }, [randomValue]);
 
-
-
+ 
+const updateBankDetail = async (obj) => {
+     
+    try {
+        let response = await httpCommon.patch(`/updateBankDetails/${brandBankDtl?._id}`,{commission:commission} );
+        let { data } = response;
+        ToastMessage(data)
+        let x = Math.floor((Math.random() * 10) + 1);
+        setRandomValue(x)
+    } catch (err) {
+        console.log(err);
+    }
+}
     const handleOpen = () => {
         if (brand?.totalDue === 0) {
             setNotDue(true)
@@ -106,10 +118,13 @@ const BrandPayment = () => {
             let userData = localStorage.getItem("user")
             let brandInfo = JSON.parse(userData)
             setDisable(true)
+            const payableAmmount=totalPay - (+brandBankDtl?.commission/100 )*totalPay
+            const commisionPay=(+brandBankDtl?.commission/100 )*totalPay;
+            
             const brandPayInfo=
             {
                 "account_number":adminBankDtl?.accountNumber,
-                "amount":(+totalPay) * 100,
+                "amount":(+payableAmmount) * 100,
                 "currency":"INR",
                 "mode":"NEFT",
                 "purpose":"payout",
@@ -145,7 +160,7 @@ const BrandPayment = () => {
             let { data } = response
 
             if (data?.entity === "payout") {
-                let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay: +totalPay })
+                let response = await httpCommon.patch(`/updateTotalPay/${id}`, { totalPay:+totalPay,paidAmount: +payableAmmount ,commission:commisionPay })
                 let { data } = response
                 setDisable(false)
                 setIsmodal(false)
@@ -172,6 +187,16 @@ const BrandPayment = () => {
             },
             {
                 name: "Pay Amount",
+                selector: (row) => row?.paidAmount,
+                sortable: true,
+            },
+            {
+                name: "Commision",
+                selector: (row) => row?.commission,
+                sortable: true,
+            },
+            {
+                name: "Total Payments",
                 selector: (row) => row?.totalPay,
                 sortable: true,
             },
@@ -248,6 +273,29 @@ const BrandPayment = () => {
                                 <div className='d-flex justify-content-between'>
                                     <div className='text-danger fw-bold text-uppercase'>Total Due </div>
                                     <div className='text-danger fw-bold'>{brand?.totalDue} INR </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div className="col-md-4 col-lg-4 col-12" >
+
+                            <div className={`alert-success alert mb-4`} style={{ cursor: "pointer" }}>
+                                <div className="d-flex align-items-center mb-2">
+                                    <img src={brand?.brandLogo} alt="brandLogo" className="avatar md rounded img-thumbnail shadow-sm" />
+
+                                    <div className="flex-fill ms-3 text-truncate">
+                                        <div className="h6 mb-0 fw-bold text-uppercase">{brand?.brandName}</div>
+                                        <span className="small">{brand?.value}</span>
+                                    </div>
+                                </div>
+                                <div className='d-flex justify-content-between'>
+                                    <div className='fw-bold text-uppercase'>Commission </div>
+                                    <div className='text-dark fs-5 fw-bold'> {brandBankDtl?.commission} %</div>
+                                </div>
+                                <div className='d-flex justify-content-between mt-1'>
+                                <input type="number" min={0} max={100} maxlength="3" onChange={(e)=>setCommission(e.target.value)} className={"form-control"} placeholder=" commission %"
+                                    />
+                                    <button type="button"className='btn btn-primary btn-sm ms-5' onClick={()=>updateBankDetail()}>Edit</button>
                                 </div>
                             </div>
 
