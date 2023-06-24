@@ -1,10 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProgressBar } from 'react-bootstrap';
+import httpCommon from "../../http-common";
 
 function BranchLocation() {
+    const [orders,setOrders]=useState([]);
+    useEffect(()=>{
+        getAllOrder();
+    },[]);
+    const getAllOrder = async () => {
+        try {
+            let response = await  httpCommon.get("/getAllOrder");
+            let { data } = response;
+             setOrders(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    const userData=localStorage.getItem("user")
+    const user=JSON.parse(userData);
+
+    const orderData= user?.role==="ADMIN"? orders : orders?.filter(f1=>f1?.items?.find(f2=>f2?.brandId===user?._id));
+    
+
+    let count={};
+    let obj= orderData?.map(o1=> {
+       if(count[o1?.state]){
+        count[o1?.state].order++;
+       }else{
+        count[o1?.state]={state:o1?.state,order:1};
+       }
+    })
+    let branch=Object?.values(count);
     return (
         <div className="card">
-            <div style={{ width: '100%', height: '100%' }}>
+            {/* <div style={{ width: '100%', height: '100%' }}>
                 <div className="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
                     <h6 className="m-0 fw-bold">Our Branch Location &amp; Revenue</h6>
                 </div>
@@ -19,20 +49,15 @@ function BranchLocation() {
                         allowFullScreen
                     ></iframe>
                 </div>
-            </div>
+            </div> */}
 
             <div className="card-body">
                 <div className="location-revenue  row g-3">
-                    <span style={{ fontWeight: 'bold' }}>India</span>
-                    <ProgressBar striped now={30} style={{ height: '9px' }} />
-                    <span style={{ fontWeight: 'bold' }}>Mauritius</span>
-                    <ProgressBar striped now={45} variant="success" style={{ height: '9px' }} />
-                    <span style={{ fontWeight: 'bold' }}>Colombia</span>
-                    <ProgressBar striped now={60} variant="info" style={{ height: '9px' }} />
-                    <span style={{ fontWeight: 'bold' }}>Russia</span>
-                    <ProgressBar striped now={75} variant="warning" style={{ height: '9px' }} />
-                    <span style={{ fontWeight: 'bold' }}>France</span>
-                    <ProgressBar striped now={98} variant="danger" style={{ height: '9px' }} />
+                    {branch?.map((b1,index)=> <>
+                         <span style={{ fontWeight: 'bold' }}>{b1?.state}</span>
+                         <ProgressBar striped now={b1?.order} variant="success" style={{ height: '9px' }} />
+                         </>
+                        )}
                 </div>
             </div>
         </div>
