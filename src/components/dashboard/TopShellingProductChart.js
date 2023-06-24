@@ -1,8 +1,36 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chart from 'react-apexcharts';
 
-function TopShellingProductChart() {
-    //eslint-disable-next-line
+function TopShellingProductChart(props) {
+
+    const [series, setSeries] = useState([      
+   ])
+ 
+  useEffect(()=>{
+        let count={};
+        let obj=props?.orders?.map(o1=> {
+           let date=new Date(o1?.createdAt);
+           let date1=(date.getMonth()+1);
+           if(count[date1]){
+            count[date1].order++;
+           }else{
+            count[date1]={month:date1,order:1};
+           }
+        })
+    
+     let branch=Object?.values(count);
+        
+      let data1=[];
+     let obj1=[1,2,3,4,5,6,7,8,9,10,11,12].map((o1,i)=>{
+          let mon=branch?.find(f1=>f1?.month===o1); 
+          if(mon){
+            data1?.splice(o1,0,mon?.order);
+          }else{
+            data1?.splice(o1,0,0);
+          }
+      })
+       setSeries([{name:"Orders",data:data1}]);
+     },[props?.orders])
     const [options, setOptions] = useState({
         chart: {
             type: 'bar',
@@ -15,9 +43,9 @@ function TopShellingProductChart() {
                 enabled: true
             }
         },
-
+   
         xaxis: {
-            categories: ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+            categories: ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         },
         legend: {
             position: 'top', // top, bottom
@@ -29,23 +57,12 @@ function TopShellingProductChart() {
         colors: ['var(--chart-color1)', 'var(--chart-color2)', 'var(--chart-color3)', 'var(--chart-color4)'],
     })
 //eslint-disable-next-line
-    const [series, setSeries] = useState([{
-        name: 'Ui/Ux Designer',
-        data: [45, 25, 44, 23, 25, 41, 32, 25, 22, 65, 22, 29]
-    }, {
-        name: 'App Development',
-        data: [45, 12, 25, 22, 19, 22, 29, 23, 23, 25, 41, 32]
-    }, {
-        name: 'Quality Assurance',
-        data: [45, 25, 32, 25, 22, 65, 44, 23, 25, 41, 22, 29]
-    }, {
-        name: 'Web Developer',
-        data: [32, 25, 22, 11, 22, 29, 16, 25, 9, 23, 25, 13]
-    }])
+
+   
     return (
         <div className="card ">
             <div className="card-header py-3 d-flex justify-content-between align-items-center bg-transparent border-bottom-0">
-                <h6 className="m-0 fw-bold">Top Selling Product</h6>
+                <h6 className="m-0 fw-bold">Orders</h6>
             </div>
             <div className="card-body" style={{ position: 'relative' }}>
                 <Chart
