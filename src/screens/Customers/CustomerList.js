@@ -5,8 +5,9 @@ import PageHeader1 from '../../components/common/PageHeader1';
 import { CustomerData } from '../../components/Data/CustomerData';
 import httpCommon from "../../http-common"
 import { ReactLoader } from '../../components/common/ReactLoader';
+import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 
-function CustomerList() {
+function CustomerList(props) {
     const [table_row, setTable_row] = useState([...CustomerData.rows]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
@@ -26,6 +27,8 @@ function CustomerList() {
     // const data=useSelector(state=>state?.userDetail);
 
     const columns = () => {
+        let user = localStorage.getItem("user");
+        let obj = JSON.parse(user);
         return [
             // {
             //     name: " ID",
@@ -35,7 +38,7 @@ function CustomerList() {
             {
                 name: "CUSTOMER",
                 selector: (row) => row.name,
-                //cell: row => <><img className="avatar rounded lg border" src={row.image} alt="" /> <span className="px-2"><Link to={process.env.PUBLIC_URL + '/customer-detail'}>{row.name}</Link></span></>,
+                cell: row => <div style={{ backgroundColor: "#b4ebed", cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/customer-Allorders/${obj?.role === "ADMIN" ? row?._id :row?.customerId}`} >{row?.name}</Link></div>,
                 sortable: true, width: "150px"
             },
             {
@@ -151,8 +154,8 @@ function CustomerList() {
         setTable_row([...result])
     }
 
-  
 
+    console.log("data", data);
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">

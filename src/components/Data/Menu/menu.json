@@ -362,17 +362,8 @@
                     "isCategory": false,
                     "isApp": false,
                     "children": []
-                },
-                {
-                    "name": "Customers Detail",
-                    "routerLink": ["customer-detail"],
-                    "identifier": "Customers Detail",
-                    "iconClass": "",
-                    "breadcrumbMessage": "",
-                    "isCategory": false,
-                    "isApp": false,
-                    "children": []
-                }   
+                }
+                 
             ]
         }
        
