@@ -73,6 +73,7 @@ import BankAccount from './PaymentsDeatails/BankAccount';
 import ReturnList from './Orders/ReturnList';
 import ReturnDetails from './Orders/ReturnDetails';
 import ReturnRequest from './Orders/ReturnRequest';
+import CustomerOrderList from './Customers/CustomerOrder';
 const BrandIndex = (props) => {
   const { activekey } = props;
   return (
@@ -122,7 +123,11 @@ const BrandIndex = (props) => {
 
 
           <Route exact path={props?.url + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
-          <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList /> }} />
+          <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList url={props?.url}/> }} />
+          <Route exact path={props?.url + '/customer-Allorders/:id'} render={() => { return <CustomerOrderList url={props?.url} /> }} />
+
+
+
           <Route exact path={props?.url + '/customer-detail'} render={() => { return <CustomerDetail /> }} />
           <Route exact path={props?.url + '/coupons-list'} render={() => { return <CouponsList /> }} />
           <Route exact path={props?.url + '/coupons-add'} render={() => { return <CouponsAdd /> }} />

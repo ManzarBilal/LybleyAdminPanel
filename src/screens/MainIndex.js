@@ -82,6 +82,7 @@ import MyProductList from './Products/MyProductList';
 import MySparePartGrid from './SpareParts/MySparePartGrid';
 import MySparePartList from './SpareParts/MySparePartList';
 import MyOrderList from './Orders/MyOrderList';
+import CustomerOrderList from './Customers/CustomerOrder';
 
 function MainIndex(props) {
 
@@ -150,7 +151,11 @@ function MainIndex(props) {
 
 
           <Route exact path={props?.url + '/order-invoice'} render={() => { return <OrderInvoice /> }} />
-          <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList /> }} />
+          <Route exact path={props?.url + '/customer-list'} render={() => { return <CustomerList url={props?.url}/> }} />
+          <Route exact path={props?.url + '/customer-Allorders/:id'} render={() => { return <CustomerOrderList url={props?.url}/> }} />
+
+
+
           <Route exact path={props?.url + '/customer-detail'} render={() => { return <CustomerDetail /> }} />
           <Route exact path={props?.url + '/coupons-list'} render={() => { return <CouponsList /> }} />
           <Route exact path={props?.url + '/coupons-add'} render={() => { return <CouponsAdd /> }} />
