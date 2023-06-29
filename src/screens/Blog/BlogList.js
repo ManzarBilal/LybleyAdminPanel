@@ -17,6 +17,7 @@ import { userEmail } from '../../Redux/Actions/userEmail';
 const defaultBanner = "https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
 function BlogList() {
     const [table_row, setTable_row] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [viewDetail, setViewDetail] = useState([]);
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
@@ -27,6 +28,10 @@ function BlogList() {
 
     const [imageView, setImageView] = useState(false)
     const [image, setImage] = useState("")
+    const [file, setFile] = useState("")
+    const [blogImage, setBlogImage] = useState("")
+    const [blogData, setBlogData] = useState("")
+
 
     const columns = () => {
         return [
@@ -40,7 +45,7 @@ function BlogList() {
 
             {
                 name: "CONTENT",
-                selector: (row) => row?.content,
+                selector: (row) => (row?.content).substr(0, 100),
                 sortable: true
             },
 
@@ -63,6 +68,7 @@ function BlogList() {
 
     useEffect(() => {
         GetAllBlogs()
+        GetAllBlogsCategort()
     }, [randomValue])
     const GetAllBlogs = async () => {
         try {
@@ -70,6 +76,20 @@ function BlogList() {
             let response = await httpCommon.get("/getAllBlogs")
             let { data } = response
             setTable_row(data)
+            setLoading(false)
+        }
+        catch (err) {
+            console.log(err)
+            setLoading(false)
+
+        }
+    }
+    const GetAllBlogsCategort = async () => {
+        try {
+            setLoading(true)
+            let response = await httpCommon.get("/getAllBlogsCategory")
+            let { data } = response
+            setCategories(data)
             setLoading(false)
         }
         catch (err) {
@@ -177,9 +197,9 @@ function BlogList() {
 
     }
     const updateImage = async (obj) => {
-    
+
         const formData = new FormData()
-            formData.append("image", file);
+        formData.append("image", file);
         try {
             setLoading(true)
             let response = await httpCommon.patch(`/updateImage/${blogId}`, formData);
@@ -194,8 +214,8 @@ function BlogList() {
         }
     }
     const updateBlog = async (obj) => {
-    
-        const dataObj={title:obj?.title,content:obj?.content}
+
+        const dataObj = { title: obj?.title, content: obj?.content }
         try {
             setLoading(true)
             let response = await httpCommon.patch(`/updateBlog/${blogId}`, dataObj);
@@ -209,10 +229,7 @@ function BlogList() {
             console.log(err);
         }
     }
-    const [file, setFile] = useState("")
-    const [blogImage, setBlogImage] = useState("")
-    const [blogData, setBlogData] = useState("")
-
+   
 
     const handleFileChangeImage = (e) => {
         const reader = new FileReader();
@@ -300,7 +317,7 @@ function BlogList() {
                                 </div>
                                 <div className="col-md-6 col-12 col-lg-6">
                                     <div style={{ marginTop: "40px" }}>
-                                        <button type="submit" className="btn btn-primary" disabled={loading} onClick={()=>updateImage()}>Upload Image</button>
+                                        <button type="submit" className="btn btn-primary" disabled={loading} onClick={() => updateImage()}>Upload Image</button>
                                     </div>
                                 </div>
                             </div>
@@ -341,7 +358,7 @@ function BlogList() {
                     </Modal.Body>
                     <div className="modal-footer">
                         <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" className="btn btn-primary"disabled={loading} onClick={handleSubmit(onUpdate)}>Update</button>
+                        <button type="submit" className="btn btn-primary" disabled={loading} onClick={handleSubmit(onUpdate)}>Update</button>
                     </div>
 
                 </Modal>
@@ -363,11 +380,47 @@ function BlogList() {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="col-12">
                                 <div className="mb-1">
-                                    <label className="form-label">Blog Content</label>
-                                    <input type="email" className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Content"
+                                    <label className="form-label">Blog Category</label>
+                                    <label className="form-label">Category</label>
+                                    <select className="form-select" name='category'    >
+                                        <option value="" selected>Choose Category</option>
+                                        {categories?.map(c1 =>
+                                            <option value={c1?.category} >{c1?.category}</option>
+                                        )}
+                                    </select>
+                                    
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Slug</label>
+                                    <input type="email" className={(errors && errors.slug) ? "form-control  border-danger " : "form-control"} placeholder="Slug"
+                                        {...register('slug')}
+
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.slug?.message}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Short Description</label>
+                                    <input type="email" className={(errors && errors.shortDescription) ? "form-control  border-danger " : "form-control"} placeholder="Short Description"
+                                        {...register('shortDescription')}
+
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.shortDescription?.message}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Blog Description</label>
+                                    <input type="email" className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Description"
                                         {...register('content')}
 
                                     />
@@ -390,7 +443,53 @@ function BlogList() {
                                     </> : ""}
                                 </div>
                             </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Meta Title</label>
+                                    <input type="email" className={(errors && errors.metaTitle) ? "form-control  border-danger " : "form-control"} placeholder="Meta Title"
+                                        {...register('metaTitle')}
 
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.metaTitle?.message}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Meta Description</label>
+                                    <input type="email" className={(errors && errors.metaDescription) ? "form-control  border-danger " : "form-control"} placeholder="Meta Description"
+                                        {...register('metaDescription')}
+
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.metaDescription?.message}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Meta Keyword</label>
+                                    <input type="email" className={(errors && errors.metaKeyword) ? "form-control  border-danger " : "form-control"} placeholder="Meta Keyword"
+                                        {...register('metaKeyword')}
+
+                                    />
+                                    <div className='text-danger'>
+                                        {errors.metaKeyword?.message}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Upload Meta Image</label>
+                                    <input type="file" name="metaImage" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                                    // {...register('gstDocument')}
+
+                                    />
+
+
+                                </div>
+                            </div>
                         </div>
 
                     </Modal.Body>

@@ -83,6 +83,7 @@ import MySparePartGrid from './SpareParts/MySparePartGrid';
 import MySparePartList from './SpareParts/MySparePartList';
 import MyOrderList from './Orders/MyOrderList';
 import CustomerOrderList from './Customers/CustomerOrder';
+import BlogCategoryList from './Blog/BlogCategory';
 
 function MainIndex(props) {
 
@@ -96,6 +97,7 @@ function MainIndex(props) {
           {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
           <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url} /> }} />
           <Route exact path={props?.url + '/blog-list'} render={() => { return <BlogList /> }} />
+          <Route exact path={props?.url + '/blog-category'} render={() => { return <BlogCategoryList /> }} />
 
           <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList /> }} />
 

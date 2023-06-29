@@ -20,6 +20,16 @@
             "isApp": true,
             "children": [
                 {
+                    "name": "Blog Category",
+                    "routerLink": ["blog-category"],
+                    "identifier": "Blog Category",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "Blog List",
                     "routerLink": ["blog-list"],
                     "identifier": "Blog List",
