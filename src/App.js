@@ -12,7 +12,7 @@ import SignIn from './components/Auth/SignIn';
 function App(props) {
 const history=useHistory()
   useEffect(()=>{
-     history.push("/")
+     history.push("https://www.brand.sparetrade.in")
     //  window.location.reload()
   },[])
   let user1 = localStorage.getItem("user");
