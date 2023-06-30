@@ -504,7 +504,7 @@ function BlogList() {
                     </div>
 
                 </Modal>
-                <Modal className="modal fade show" id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+                <Modal   show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                     <Modal.Header className="modal-header" closeButton>
                         <h5 className="modal-title  fw-bold" id="expaddLabel">Add Blog</h5>
                     </Modal.Header>
@@ -633,7 +633,7 @@ function BlogList() {
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
-                        <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button onClick={() =>setIsmodal(false) }   className="btn btn-secondary"  >Close</button>
                         <button onClick={handleSubmit(onRegister)} disabled={loading} className="btn btn-primary">Add Blog</button>
                     </Modal.Footer>
 

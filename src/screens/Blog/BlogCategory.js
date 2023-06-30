@@ -25,8 +25,7 @@ function BlogCategoryList() {
     const [blogId, setBlogId] = useState("");
     const [loading, setLoading] = useState(false)
 
-    const [imageView, setImageView] = useState(false)
-    const [image, setImage] = useState("")
+    
     const [blogData, setBlogData] = useState("")
 
     const columns = () => {
@@ -145,7 +144,7 @@ function BlogCategoryList() {
     const history = useHistory()
     const onRegister = data => {
         // console.log("data", gstDocument);
-        setImageView(true)
+        // setImageView(true)
         createBlog(data);
 
     }
@@ -242,7 +241,7 @@ function BlogCategoryList() {
                     </div>
 
                 </Modal>
-                <Modal className="modal fade show" id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+                <Modal className=""  show={ismodal} onHide={() => setIsmodal(false) }  >
                     <Modal.Header className="modal-header" closeButton>
                         <h5 className="modal-title  fw-bold" id="expaddLabel">Add Blog Category</h5>
                     </Modal.Header>
@@ -264,7 +263,7 @@ function BlogCategoryList() {
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
-                        <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button onClick={() => setIsmodal(false) }   className="btn btn-secondary"  >Close</button>
                         <button onClick={handleSubmit(onRegister)} disabled={loading} className="btn btn-primary">Add Category</button>
                     </Modal.Footer>
 

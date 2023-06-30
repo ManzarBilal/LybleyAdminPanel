@@ -161,7 +161,7 @@ function CustomerList(props) {
             <div className="container-xxl">
                 <PageHeader1 pagetitle='Customers Information' modalbutton={() => {
                     return <div className="col-auto d-flex w-sm-100">
-                        <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Customers</button>
+                        {/* <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Customers</button> */}
                     </div>
                 }} />
                 <div className="row clearfix g-3">

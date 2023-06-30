@@ -327,7 +327,7 @@ function BrandList() {
                     </div>
 
                 </Modal>
-                <Modal className="modal fade show" id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+                <Modal   show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                     <Modal.Header className="modal-header" closeButton>
                         <h5 className="modal-title  fw-bold" id="expaddLabel">Add Brand</h5>
                     </Modal.Header>
@@ -454,7 +454,7 @@ function BrandList() {
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
-                        <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button onClick={() => setIsmodal(false) }   className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button onClick={handleSubmit(onRegister)} className="btn btn-primary">Add Brand</button>
                     </Modal.Footer>
 
