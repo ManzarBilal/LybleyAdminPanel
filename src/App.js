@@ -1,5 +1,5 @@
-import React from 'react';
-import { Redirect, Switch,Route, withRouter } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Redirect, Switch,Route, withRouter,useHistory } from 'react-router-dom';
 import AddModal from './components/common/AddModal';
 import Sidebar from './components/common/Sidebar';
 import AuthIndex from "./screens/AuthIndex";
@@ -7,8 +7,14 @@ import MainIndex from './screens/MainIndex';
 import { Toaster } from 'react-hot-toast';
 import BrandIndex from './screens/BrandIndex';
 import SignIn from './components/Auth/SignIn';
+ 
 
 function App(props) {
+const history=useHistory()
+  useEffect(()=>{
+     history.push("/")
+    //  window.location.reload()
+  },[])
   let user1 = localStorage.getItem("user");
   let user = JSON.parse(user1);
  // let user = 
