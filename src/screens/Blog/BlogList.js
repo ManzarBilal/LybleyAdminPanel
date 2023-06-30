@@ -27,15 +27,23 @@ function BlogList() {
     const [loading, setLoading] = useState(false)
 
     const [imageView, setImageView] = useState(false)
+    const [categoryView, setCategoryView] = useState(false)
+    const [metaImage, setMetaImage] = useState("")
+    const [metaImageFile, setMetaImageFile] = useState("")
     const [image, setImage] = useState("")
     const [file, setFile] = useState("")
     const [blogImage, setBlogImage] = useState("")
     const [blogData, setBlogData] = useState("")
-
+    const [category, setCategory] = useState("")
 
     const columns = () => {
         return [
-
+            {
+                name: "SR. NO.",
+                selector: (row) => row?.i,
+                cell: row => row?.i,
+                sortable: true, maxWidth: "50px"
+            },
             {
                 name: "TITLE",
                 selector: (row) => row?.title,
@@ -120,8 +128,10 @@ function BlogList() {
             return obj._id === id
         })
         setBlogId(id)
-        setBlogData({ title: findData?.title, content: findData?.content })
+        setBlogData({   title: findData?.title, slug: findData?.slug, content: findData?.content, shortDescription: findData?.shortDescription,
+            metaTitle: findData?.metaTitle, metaKeyword: findData?.metaKeyword, metaDescription: findData?.metaDescription })
         setBlogImage(findData?.image)
+        setMetaImage(findData?.metaImage)
         setIseditmodal(true)
 
     }
@@ -138,6 +148,10 @@ function BlogList() {
     const validationSchema = Yup.object().shape({
         title: Yup.string().required(' Blog Name is required')
             .min(4, "Blog title must be at least 4 characters"),
+        slug: Yup.string().required('slug is required')
+            .min(4, "slug must be at least 4 characters"),
+        shortDescription: Yup.string().required('Short Description is required')
+            .min(4, "Short Description must be at least 4 characters"),
         content: Yup.string().required('Blog content is required')
             .min(4, "Blog content must be at least 4 characters"),
 
@@ -159,6 +173,10 @@ function BlogList() {
                 // console.log(e.target.files[0]);
                 setImage(e.target.files[0]);
             }
+            if (e.target.name === "metaImage") {
+                // console.log(e.target.files[0]);
+                setMetaImage(e.target.files[0]);
+            }
         }
     };
 
@@ -168,11 +186,18 @@ function BlogList() {
             setLoading(true)
             const formData = new FormData()
             formData.append("image", image);
-            formData.append("title", obj.title);
-            formData.append("content", obj.content,)
+            formData.append("title", obj?.title);
+            formData.append("content", obj?.content,)
+            formData.append("category", category,)
 
-            // const fullData={...body ,gstDocument:gstDocument}
-            // console.log(fullData,"fullData");
+            formData.append("slug", obj?.slug);
+            formData.append("shortDescription", obj?.shortDescription);
+            formData.append("metaTitle", obj?.metaTitle,)
+            formData.append("metaImage", metaImage);
+            formData.append("metaDescription", obj?.metaDescription);
+            formData.append("metaKeyword", obj?.metaKeyword,)
+
+
             let response = await httpCommon.post("/createBlog", formData);
             let { data } = response;
             setLoading(false)
@@ -187,8 +212,8 @@ function BlogList() {
 
     const history = useHistory()
     const onRegister = data => {
-        // console.log("data", gstDocument);
         setImageView(true)
+        setCategoryView(true)
         createBlog(data);
 
     }
@@ -213,9 +238,29 @@ function BlogList() {
             console.log(err);
         }
     }
+    const updateMetaImage = async (obj) => {
+
+        const formData = new FormData()
+        formData.append("metaImage", metaImageFile);
+        try {
+            setLoading(true)
+            let response = await httpCommon.patch(`/updateMetaImage/${blogId}`, formData);
+            let { data } = response;
+            setIseditmodal(false)
+            ToastMessage(data)
+            setLoading(false)
+            let x = Math.floor((Math.random() * 10) + 1);
+            setRandomValue(x);
+        } catch (err) {
+            console.log(err);
+        }
+    }
     const updateBlog = async (obj) => {
 
-        const dataObj = { title: obj?.title, content: obj?.content }
+        const dataObj = {
+            title: obj?.title, slug: obj?.slug, content: obj?.content, shortDescription: obj?.shortDescription,
+            metaTitle: obj?.metaTitle, metaKeyword: obj?.metaKeyword, metaDescription: obj?.metaDescription
+        }
         try {
             setLoading(true)
             let response = await httpCommon.patch(`/updateBlog/${blogId}`, dataObj);
@@ -229,7 +274,7 @@ function BlogList() {
             console.log(err);
         }
     }
-   
+
 
     const handleFileChangeImage = (e) => {
         const reader = new FileReader();
@@ -238,6 +283,10 @@ function BlogList() {
             if (e.target.name === "file") {
                 // console.log(e.target.files[0]);
                 setFile(e.target.files[0]);
+            }
+            if (e.target.name === "metaImage") {
+                // console.log(e.target.files[0]);
+                setMetaImageFile(e.target.files[0]);
             }
         }
     };
@@ -257,6 +306,9 @@ function BlogList() {
             console.log(err);
         }
     }
+
+    const finalData = table_row?.map((item, i) => ({ ...item, i: i + 1 }))
+
     return (
         <>
             <div className="body d-flex py-lg-3 py-md-2">
@@ -276,7 +328,7 @@ function BlogList() {
                                                 <div className="col-sm-12">
                                                     <DataTable
                                                         columns={columns()}
-                                                        data={table_row}
+                                                        data={finalData}
                                                         defaultSortField="title"
                                                         pagination
                                                         selectableRows={false}
@@ -336,10 +388,47 @@ function BlogList() {
                                             </div>
                                         </div>
                                     </div>
-
                                     <div className="col-12">
                                         <div className="mb-1">
-                                            <label className="form-label">Blog Content</label>
+                                            <label className="form-label">Blog Category</label>
+                                            <label className="form-label">Category</label>
+                                            <select className="form-select" name='category' defaultValue={category} onChange={(e) => setCategory(e.target.value)}  >
+                                                <option value="" selected>Choose Category</option>
+                                                {categories?.map(c1 =>
+                                                    <option value={c1?.category} >{c1?.category}</option>
+                                                )}
+                                            </select>
+                                            {categoryView ? <> {category === "" ? <div className='text-danger'>Blog Category is required</div> : ""
+                                            } </> : ""}
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="mb-1">
+                                            <label className="form-label">Slug</label>
+                                            <input type="email" defaultValue={blogData?.slug} className={(errors && errors.slug) ? "form-control  border-danger " : "form-control"} placeholder="Slug"
+                                                {...register('slug')}
+
+                                            />
+                                            <div className='text-danger'>
+                                                {errors.slug?.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="mb-1">
+                                            <label className="form-label">Short Description</label>
+                                            <input type="email" defaultValue={blogData?.shortDescription} className={(errors && errors.shortDescription) ? "form-control  border-danger " : "form-control"} placeholder="Short Description"
+                                                {...register('shortDescription')}
+
+                                            />
+                                            <div className='text-danger'>
+                                                {errors.shortDescription?.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="mb-1">
+                                            <label className="form-label">Blog Description</label>
                                             <input type="email" defaultValue={blogData?.content} className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Content"
                                                 {...register('content')}
 
@@ -350,8 +439,58 @@ function BlogList() {
                                         </div>
                                     </div>
 
+                                    <div className="col-12">
+                                        <div className="mb-1">
+                                            <label className="form-label">Meta Title</label>
+                                            <input type="email" defaultValue={blogData?.metaTitle} className={(errors && errors.metaTitle) ? "form-control  border-danger " : "form-control"} placeholder="Meta Title"
+                                                {...register('metaTitle')}
+
+                                            />
+
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="mb-1">
+                                            <label className="form-label">Meta Description</label>
+                                            <input type="email" defaultValue={blogData?.metaDescription} className={(errors && errors.metaDescription) ? "form-control  border-danger " : "form-control"} placeholder="Meta Description"
+                                                {...register('metaDescription')}
+
+                                            />
+
+                                        </div>
+                                    </div>
+                                    <div className="col-12">
+                                        <div className="mb-1">
+                                            <label className="form-label">Meta Keyword</label>
+                                            <input type="email" defaultValue={blogData?.metaKeyword} className={(errors && errors.metaKeyword) ? "form-control  border-danger " : "form-control"} placeholder="Meta Keyword"
+                                                {...register('metaKeyword')}
+
+                                            />
+
+                                        </div>
+                                    </div>
+                                    <div className="profile-block text-center w220 mx-auto">
+                                        <a href="#!">
+                                            <img src={metaImage ? metaImage : Avatar4} alt="blogLogo" className="avatar xl rounded img-thumbnail shadow-sm" />
+                                        </a>
+                                    </div>
+                                    <div className='row'>
+                                        <div className="col-md-6 col-12 col-lg-6">
+                                            <div className="mt-2 mb-1">
+                                                <label className="form-label">Upload Meta Image</label>
+                                                <input type="file" name="metaImage" onChange={(e) => handleFileChangeImage(e)} id="myfile" className="form-control"
 
 
+                                                />
+
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 col-12 col-lg-6">
+                                            <div style={{ marginTop: "40px" }}>
+                                                <button type="submit" className="btn btn-primary" disabled={loading} onClick={() => updateMetaImage()}>Upload Meta Image</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -384,13 +523,14 @@ function BlogList() {
                                 <div className="mb-1">
                                     <label className="form-label">Blog Category</label>
                                     <label className="form-label">Category</label>
-                                    <select className="form-select" name='category'    >
+                                    <select className="form-select" name='category' value={category} onChange={(e) => setCategory(e.target.value)}  >
                                         <option value="" selected>Choose Category</option>
                                         {categories?.map(c1 =>
                                             <option value={c1?.category} >{c1?.category}</option>
                                         )}
                                     </select>
-                                    
+                                    {categoryView ? <> {category === "" ? <div className='text-danger'>Blog Category is required</div> : ""
+                                    } </> : ""}
                                 </div>
                             </div>
                             <div className="col-12">
@@ -420,10 +560,10 @@ function BlogList() {
                             <div className="col-12">
                                 <div className="mb-1">
                                     <label className="form-label">Blog Description</label>
-                                    <input type="email" className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Description"
+                                    <textarea rows={3} type="email" className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Description"
                                         {...register('content')}
 
-                                    />
+                                    ></textarea>
                                     <div className='text-danger'>
                                         {errors.content?.message}
                                     </div>
@@ -483,7 +623,7 @@ function BlogList() {
                                 <div className="mb-1">
                                     <label className="form-label">Upload Meta Image</label>
                                     <input type="file" name="metaImage" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
-                                    // {...register('gstDocument')}
+
 
                                     />
 
