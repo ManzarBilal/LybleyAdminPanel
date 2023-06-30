@@ -127,10 +127,13 @@ function BlogList() {
         const findData = table_row.find(obj => {
             return obj._id === id
         })
+        // console.log("findData",findData);
+        
         setBlogId(id)
         setBlogData({   title: findData?.title, slug: findData?.slug, content: findData?.content, shortDescription: findData?.shortDescription,
             metaTitle: findData?.metaTitle, metaKeyword: findData?.metaKeyword, metaDescription: findData?.metaDescription })
         setBlogImage(findData?.image)
+        setCategory(findData?.category)
         setMetaImage(findData?.metaImage)
         setIseditmodal(true)
 
@@ -258,7 +261,7 @@ function BlogList() {
     const updateBlog = async (obj) => {
 
         const dataObj = {
-            title: obj?.title, slug: obj?.slug, content: obj?.content, shortDescription: obj?.shortDescription,
+            title: obj?.title, slug: obj?.slug,category: category, content: obj?.content, shortDescription: obj?.shortDescription,
             metaTitle: obj?.metaTitle, metaKeyword: obj?.metaKeyword, metaDescription: obj?.metaDescription
         }
         try {
@@ -391,11 +394,11 @@ function BlogList() {
                                     <div className="col-12">
                                         <div className="mb-1">
                                             <label className="form-label">Blog Category</label>
-                                            <label className="form-label">Category</label>
-                                            <select className="form-select" name='category' defaultValue={category} onChange={(e) => setCategory(e.target.value)}  >
+                                           
+                                            <select className="form-select" name='category' value={category} onChange={(e) => setCategory(e.target.value)}  >
                                                 <option value="" selected>Choose Category</option>
-                                                {categories?.map(c1 =>
-                                                    <option value={c1?.category} >{c1?.category}</option>
+                                                {categories?.map((c1 ,i)=>
+                                                    <option key={i} value={c1?.category} >{c1?.category}</option>
                                                 )}
                                             </select>
                                             {categoryView ? <> {category === "" ? <div className='text-danger'>Blog Category is required</div> : ""
@@ -525,8 +528,8 @@ function BlogList() {
                                     <label className="form-label">Category</label>
                                     <select className="form-select" name='category' value={category} onChange={(e) => setCategory(e.target.value)}  >
                                         <option value="" selected>Choose Category</option>
-                                        {categories?.map(c1 =>
-                                            <option value={c1?.category} >{c1?.category}</option>
+                                        {categories?.map((c1,i) =>
+                                            <option key={i} value={c1?.category} >{c1?.category}</option>
                                         )}
                                     </select>
                                     {categoryView ? <> {category === "" ? <div className='text-danger'>Blog Category is required</div> : ""
@@ -619,17 +622,13 @@ function BlogList() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12">
+                            {/* <div className="col-12">
                                 <div className="mb-1">
                                     <label className="form-label">Upload Meta Image</label>
                                     <input type="file" name="metaImage" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
-
-
                                     />
-
-
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
                     </Modal.Body>
