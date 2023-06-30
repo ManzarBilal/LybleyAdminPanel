@@ -12,7 +12,10 @@ import SignIn from './components/Auth/SignIn';
 function App(props) {
 const history=useHistory()
   useEffect(()=>{
-     history.push("https://www.brand.sparetrade.in")
+    let user1 = localStorage.getItem("user");
+    let user = JSON.parse(user1);
+    user?.role==="ADMIN" ? history.push("/admin/dashboard")
+    :history.push("/brand/dashboard")
     //  window.location.reload()
   },[])
   let user1 = localStorage.getItem("user");
