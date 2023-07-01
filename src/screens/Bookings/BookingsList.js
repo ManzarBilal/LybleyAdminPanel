@@ -20,9 +20,9 @@ function BookingList(props) {
     const columns = () => {
         return [
             {
-                name: "SR NO.",
-                selector: (row) => row?.i,
-                sortable: true,
+                name: "COMPLAIN NO.",
+                selector: (row) => row?._id,
+                sortable: true, minWidth: "220px"
             },
             {
                 name: "CUSTOMER NAME",
@@ -65,7 +65,7 @@ function BookingList(props) {
                 name: "ACTION",
                 selector: (row) => { },
                 sortable: true,
-                cell: (row)=>  <Switch
+                cell: (row)=> <> <Switch
                 checked={checkedB?.find(f1=>f1?.orderId===row?._id)?.closed}
                 onChange={()=>updateClosed(row?._id,!checkedB?.find(f1=>f1?.orderId===row?._id)?.closed)}
                 color="primary"
@@ -73,6 +73,8 @@ function BookingList(props) {
                 value={checkedB?.find(f1=>f1.orderId===row?._id)?.closed}
                 inputProps={{ 'aria-label': 'primary checkbox' }}
               />
+              <div style={{ cursor:"pointer"}}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/order-detail/${row?._id}`} >  <button   type="button" className="btn btn-outline-secondary"><i className="icofont-eye fs-3 text-primary"></i></button></Link></div>
+              </>
             },
            
         ]

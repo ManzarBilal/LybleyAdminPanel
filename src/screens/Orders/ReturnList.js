@@ -42,6 +42,11 @@ function ReturnList(props) {
                 sortable: true,
             },
             {
+                name: "PRODUCT IMAGE",
+                cell: row => row?.items?.map((item,i)=> <><img key={i} className="avatar rounded lg border" src={item?.sparePartImage} alt="" /> </>),
+                sortable: true,
+            },
+            {
                 name: "RETURN CREATE DATE",
                 cell: row => new Date(row?.createdAt).toLocaleString(),
                 sortable: true,

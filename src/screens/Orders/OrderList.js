@@ -4,9 +4,12 @@ import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
 import { Link } from 'react-router-dom';
 import { ReactLoader } from '../../components/common/ReactLoader';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 function OrderList(props) {
 
+    console.log(props?.id);
+const param=useParams()
     const columns = () => {
         return [
             {
@@ -89,8 +92,9 @@ function OrderList(props) {
 
     let userData = localStorage?.getItem("user")
     let user = JSON.parse(userData)
+    // const orders =  user?.role === "ADMIN" && props?.id===param?.id ? order?.filter((item, i) => item?.items?.find((it => it?.brandId === param?.id))) : user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
 
-    const orders = user?.role === "ADMIN" ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
+    const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
     const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
 

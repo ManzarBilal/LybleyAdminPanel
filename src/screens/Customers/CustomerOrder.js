@@ -12,8 +12,8 @@ function CustomerOrderList(props) {
     const columns = () => {
         return [
             {
-                name: "SR NO.",
-                selector: (row) => row?.i,
+                name: "DATE",
+                selector: (row) => new Date(row?.createdAt)?.toLocaleDateString(),
                 sortable: true,
             },
             {
@@ -25,13 +25,13 @@ function CustomerOrderList(props) {
             {
                 name: "ADDRESS",
                 cell: row => row?.address,
-                sortable: true, minWidth: "200px"
+                sortable: true, 
             },
 
             {
                 name: "EMAIL",
                 cell: row => row?.email,
-                sortable: true, minWidth: "220px"
+                sortable: true, 
             },
             {
                 name: "CONTACT NO.",
@@ -43,7 +43,18 @@ function CustomerOrderList(props) {
                 cell: row => row?.items?.length,
                 sortable: true,
             },
-            
+            {
+                name: "PRODUCT IMAGE",
+                cell: row => row?.items?.map((item,i)=> <><img key={i} className="avatar rounded lg border" src={item?.sparePartImage} alt="" /> </>),
+                sortable: true,
+            },
+            {
+                    name: "ACTION",
+                    selector: (row) => { },
+                    sortable: true,
+                    cell: (row) => <div style={{ cursor:"pointer"}}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/order-detail/${row?._id}`} >  <button   type="button" className="btn btn-outline-secondary"><i className="icofont-eye fs-3 text-primary"></i></button></Link></div>
+                     
+                 }
         ]
     }
 
@@ -73,7 +84,7 @@ function CustomerOrderList(props) {
     
     const finalData = order?.map((item, i) => ({ ...item, i: i + 1 }))
 
-
+ 
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">

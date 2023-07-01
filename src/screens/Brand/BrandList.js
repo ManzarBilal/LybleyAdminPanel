@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
 
 const defaultBanner = "https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
-function BrandList() {
+function BrandList(props) {
     const [table_row, setTable_row] = useState([]);
     const [viewDetail, setViewDetail] = useState([]);
     const [ismodal, setIsmodal] = useState(false);
@@ -68,6 +68,9 @@ function BrandList() {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
+                    <div style={{ cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/brand-dashboard/${row?._id}`} >
+                        <button type="button" onClick={() => { handleBrand(row?._id) }} className="btn btn-outline-secondary deleterow"><i className="icofont-eye-alt text-info"></i></button></Link>
+                    </div>
                     <button onClick={() => { handleBrandEdit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
                     <button type="button" onClick={() => { handleBrand(row?._id) }} className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
                 </div>
@@ -127,7 +130,7 @@ function BrandList() {
         setBrandId(id)
         setBrandImage(findData?.brandLogo)
         setIseditmodal(true)
-        
+
     }
 
     const handleViewDetail = (id) => {
@@ -226,7 +229,7 @@ function BrandList() {
 
     const [file, setFile] = useState("")
     const [brandImage, setBrandImage] = useState("")
-  
+
 
     const handleFileChangeImage = (e) => {
         const reader = new FileReader();
@@ -238,21 +241,21 @@ function BrandList() {
             }
         }
     };
-    const uploadBrandLogo=async()=>{
-         
-        const formData=new FormData();
-        formData.append("file",file);
-       try{
-        let response= await httpCommon.patch(`/updateBrandLogoBy/${brandId}`,formData);
-        let { data } = response;
-        setFile("")
-        let x = Math.floor((Math.random() * 10) + 1);
-       setRandomValue(x);
-        ToastMessage(data);
-        setIseditmodal(false)
-       }catch(err){
-        console.log(err);
-       }
+    const uploadBrandLogo = async () => {
+
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+            let response = await httpCommon.patch(`/updateBrandLogoBy/${brandId}`, formData);
+            let { data } = response;
+            setFile("")
+            let x = Math.floor((Math.random() * 10) + 1);
+            setRandomValue(x);
+            ToastMessage(data);
+            setIseditmodal(false)
+        } catch (err) {
+            console.log(err);
+        }
     }
     return (
         <>
@@ -298,7 +301,7 @@ function BrandList() {
                         <div className="card-body d-flex profile-fulldeatil flex-column">
                             <div className="profile-block text-center w220 mx-auto">
                                 <a href="#!">
-                                    <img src={brandImage  ? brandImage  : Avatar4} alt="brandLogo" className="avatar xl rounded img-thumbnail shadow-sm" />
+                                    <img src={brandImage ? brandImage : Avatar4} alt="brandLogo" className="avatar xl rounded img-thumbnail shadow-sm" />
                                 </a>
                             </div>
                             <div className="profile-info w-100">
@@ -309,25 +312,25 @@ function BrandList() {
                                         <div className="mt-2 mb-1">
                                             <label className="form-label">Upload Brand Logo</label>
                                             <input type="file" name="file" onChange={(e) => handleFileChangeImage(e)} id="myfile" className="form-control"
-                                            
+
 
                                             />
 
                                         </div>
                                     </div>
-                                    
-                                     
+
+
                                 </div>
                             </div>
                         </div>
                     </Modal.Body>
                     <div className="modal-footer">
                         <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" className="btn btn-primary"  onClick={uploadBrandLogo}>Save</button>
+                        <button type="submit" className="btn btn-primary" onClick={uploadBrandLogo}>Save</button>
                     </div>
 
                 </Modal>
-                <Modal   show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+                <Modal show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                     <Modal.Header className="modal-header" closeButton>
                         <h5 className="modal-title  fw-bold" id="expaddLabel">Add Brand</h5>
                     </Modal.Header>
@@ -454,7 +457,7 @@ function BrandList() {
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
-                        <button onClick={() => setIsmodal(false) }   className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button onClick={() => setIsmodal(false)} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button onClick={handleSubmit(onRegister)} className="btn btn-primary">Add Brand</button>
                     </Modal.Footer>
 
