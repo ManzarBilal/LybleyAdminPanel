@@ -61,6 +61,7 @@
                     "isApp": false,
                     "children": []
                 }
+                
                   
             ]
         },
@@ -286,9 +287,9 @@
                     "children": []
                 },
                 {
-                    "name": "Return List",
+                    "name": "Return Order",
                     "routerLink": ["return-list"],
-                    "identifier": "Return List",
+                    "identifier": "Return Order",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
@@ -296,7 +297,7 @@
                     "children": []
                 },
                 {
-                    "name": "Return Request List",
+                    "name": " Order Return Request List",
                     "routerLink": ["return-request-list"],
                     "identifier": "Return Request List",
                     "iconClass": "",
@@ -306,7 +307,7 @@
                     "children": []
                 },
                 {
-                    "name": "Booking List",
+                    "name": "Technician  Booked",
                     "routerLink": ["booking-list"],
                     "identifier": "Booking List",
                     "iconClass": "",

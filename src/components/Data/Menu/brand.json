@@ -171,7 +171,7 @@
                     "children": []
                 },
                 {
-                    "name": "Return List",
+                    "name": "Order Return List",
                     "routerLink": ["return-list"],
                     "identifier": "Return List",
                     "iconClass": "",
@@ -181,7 +181,7 @@
                     "children": []
                 },
                 {
-                    "name": "Return Request List",
+                    "name": "Order Return Request List",
                     "routerLink": ["return-request-list"],
                     "identifier": "Return Request List",
                     "iconClass": "",

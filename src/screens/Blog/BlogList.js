@@ -432,10 +432,10 @@ function BlogList() {
                                     <div className="col-12">
                                         <div className="mb-1">
                                             <label className="form-label">Blog Description</label>
-                                            <input type="email" defaultValue={blogData?.content} className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Content"
+                                            <textarea rows={3} type="email" defaultValue={blogData?.content} className={(errors && errors.content) ? "form-control  border-danger " : "form-control"} placeholder="Blog Content"
                                                 {...register('content')}
 
-                                            />
+                                            ></textarea>
                                             <div className='text-danger'>
                                                 {errors.content?.message}
                                             </div>
