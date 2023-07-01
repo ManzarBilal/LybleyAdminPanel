@@ -11,13 +11,14 @@ import SignIn from './components/Auth/SignIn';
 
 function App(props) {
 const history=useHistory()
-  useEffect(()=>{
-    let user1 = localStorage.getItem("user");
-    let user = JSON.parse(user1);
-    user?.role==="ADMIN" ? history.push("/admin/dashboard")
-    :history.push("/brand/dashboard")
-    //  window.location.reload()
-  },[])
+  // useEffect(()=>{
+  //   let user1 = localStorage.getItem("user");
+  //   let user = JSON.parse(user1);
+  //   user?.role==="ADMIN" ? history.push("/admin/dashboard"):
+  //   user?.role==="BRAND" ?history.push("/brand/dashboard")
+  //   : history.push("/user/sign-in")
+     
+  // },[])
   let user1 = localStorage.getItem("user");
   let user = JSON.parse(user1);
  // let user = 
