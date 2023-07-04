@@ -8,8 +8,8 @@ import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 function OrderList(props) {
 
-    console.log(props?.id);
-const param=useParams()
+
+    const param = useParams()
     const columns = () => {
         return [
             {
@@ -20,7 +20,7 @@ const param=useParams()
             {
                 name: "CUSTOMER NAME",
                 selector: (row) => row?.name,
-                cell: (row) => <div style={{backgroundColor:"#b4ebed",cursor:"pointer"}}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/order-detail/${row?._id}`} >{row?.name}</Link></div>,
+                cell: (row) => <div style={{ backgroundColor: "#b4ebed", cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/order-detail/${row?._id}`} >{row?.name}</Link></div>,
                 sortable: true,
             },
             {
@@ -92,9 +92,12 @@ const param=useParams()
 
     let userData = localStorage?.getItem("user")
     let user = JSON.parse(userData)
-    // const orders =  user?.role === "ADMIN" && props?.id===param?.id ? order?.filter((item, i) => item?.items?.find((it => it?.brandId === param?.id))) : user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-
-    const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
+    let propsId1=props?.id===undefined ? "wewewer" : props?.id;
+    const orders = (user?.role === "ADMIN" && propsId1 === param?.id) ? order?.filter((item, i) => item?.items?.find((it => it?.brandId === param?.id))) : (user?.role === "ADMIN") ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
+    //console.log("orders", orders);
+   // const orders1 = ((user?.role === "ADMIN") && (props?.id === param?.id)) ? console.log("admin and param id",props?.id === param?.id, props?.id,param?.id) : (user?.role === "ADMIN") ? console.log("only admin") : console.log("only brand");
+   //  console.log("orders1",orders1)
+    // const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
     const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
 
