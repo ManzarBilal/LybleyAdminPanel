@@ -26,7 +26,7 @@ function ProductEdit(props) {
     const dispatch=useDispatch()
     const categories=useSelector(state=>state?.category)
     const products = useSelector(state => state?.products);
- 
+    const [loading,setLoading]=useState(false);
     const [product,setProduct]=useState({});
     const [img,setImage]=useState("");
     useEffect(()=>{
@@ -58,12 +58,15 @@ function ProductEdit(props) {
     const editProduct = async () => {
         try {
             let obj={productName:product.productName,productCategory:product.productCategory,productDescription:product.productDescription};
+            setLoading(true);
             let response = await httpCommon.patch(`/updateProduct/${id}`,obj);
             let { data } = response;
+            setLoading(false);
             ToastMessage(data);
               history.push(`${props?.url}/product-grid`)
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     }
    
@@ -112,7 +115,7 @@ function ProductEdit(props) {
                         <Images id={id} img={img} product={product} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={editProduct}>Save</button>
+                        <button type="submit" disabled={loading} className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={editProduct}>{loading ? "Updating..." : "Update"}</button>
                     </div>
                     {/* <div className="card">
                         <CroppedImages />

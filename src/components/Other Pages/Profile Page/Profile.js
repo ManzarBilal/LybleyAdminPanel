@@ -61,7 +61,7 @@ function Profile(props) {
                         <div className="col-xl-12">
                             <div className="d-flex align-items-center">
                                 <i className="icofont-license text-primary"></i>
-                                <span className="ms-2">{props?.user?.aboutUs}</span>
+                                <span className="ms-2" style={{whiteSpace:"pre-wrap"}}>{props?.user?.aboutUs}</span>
                             </div>
                         </div>
                         <div className="col-xl-12 mt-5 pt-5">

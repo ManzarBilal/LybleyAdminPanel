@@ -6,16 +6,25 @@ import httpCommon from "../../../http-common";
 function ProfileSetting(props) {
     // const[userDetail,setUserDetail]=useState({});
    
-    const [file, setFile] = useState("")
-  
+    const [file1, setFile1] = useState("")
+    const [file2, setFile2] = useState("")
+    const [file3, setFile3] = useState("")
+
+    const [loading,setLoading]=useState(false);
+    const [loadingUpload,setLoadingUpload]=useState(0);
 
     const handleFileChange = (e) => {
         const reader = new FileReader();
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0])
-            if (e.target.name === "file") {
-                // console.log(e.target.files[0]);
-                setFile(e.target.files[0]);
+            if (e.target.name === "file1") {
+                setFile1(e.target.files[0]);
+            }
+            if (e.target.name === "file2") {
+                setFile2(e.target.files[0]);
+            }
+            if (e.target.name === "file3") {
+                setFile3(e.target.files[0]);
             }
         }
     };
@@ -26,13 +35,16 @@ function ProfileSetting(props) {
         const user=localStorage.getItem("user")
         const obj=JSON.parse(user);
         try {
+            setLoading(true);
             let response = await httpCommon.patch(`/updateBrandBy/${obj?._id}`, userDetail);
             let { data } = response;
-            let x = Math.random() * 10;
+            let x = Math.floor((Math.random() * 10) + 1);
             props.setRandomValue(x);
+            setLoading(false);
             ToastMessage(data)
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     }
 
@@ -43,52 +55,61 @@ function ProfileSetting(props) {
         
     }
 
-    const uploadGstDocument=async()=>{
+    const uploadGstDocument=async(val)=>{
         const user=localStorage.getItem("user")
         const obj=JSON.parse(user);
         const formData=new FormData();
-        formData.append("file",file);
+        formData.append("file",file1);
        try{
+        setLoadingUpload(val)
         let response= await httpCommon.patch(`/updateBrandGstDocumentBy/${obj?._id}`,formData);
         let { data } = response;
-        setFile("")
-        let x = Math.random() * 10;
+        setFile1("")
+        setLoadingUpload(0)
+        let x = Math.floor((Math.random() * 10) + 1);
         props.setRandomValue(x);
         ToastMessage(data);
        }catch(err){
         console.log(err);
+        setLoadingUpload(0)
        }
     }
-    const uploadBrandLogo=async()=>{
+    const uploadBrandLogo=async(val)=>{
         const user=localStorage.getItem("user")
         const obj=JSON.parse(user);
         const formData=new FormData();
-        formData.append("file",file);
+        formData.append("file",file2);
        try{
+        setLoadingUpload(val);
         let response= await httpCommon.patch(`/updateBrandLogoBy/${obj?._id}`,formData);
         let { data } = response;
-        setFile("")
-        let x = Math.random() * 10;
+        setFile2("")
+        setLoadingUpload(0)
+        let x = Math.floor((Math.random() * 10) + 1);
         props.setRandomValue(x);
         ToastMessage(data);
        }catch(err){
         console.log(err);
+        setLoadingUpload(0)
        }
     }
-    const uploadBrandBanner=async()=>{
+    const uploadBrandBanner=async(val)=>{
         const user=localStorage.getItem("user")
         const obj=JSON.parse(user);
         const formData=new FormData();
-        formData.append("file",file);
+        formData.append("file",file3);
        try{
+        setLoadingUpload(val)
         let response= await httpCommon.patch(`/updateBrandBannerBy/${obj?._id}`,formData);
         let { data } = response;
-        setFile("")
-        let x = Math.random() * 10;
+        setFile3("")
+        setLoadingUpload(0)
+        let x = Math.floor((Math.random() * 10) + 1);
         props.setRandomValue(x);
         ToastMessage(data);
        }catch(err){
         console.log(err);
+        setLoadingUpload(0)
        }
     }
 
@@ -166,12 +187,12 @@ function ProfileSetting(props) {
                         </div>
                     </div>
                     <div className="col-12 mt-4">
-                        <button type="button" className="btn btn-primary text-uppercase px-5" onClick={handleSave} >SAVE</button>
+                        <button type="button" disabled={loading} className="btn btn-primary text-uppercase px-5" onClick={handleSave} >{loading ? "Saving..." : "SAVE"}</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <div className="mt-3 mb-1">
                             <label className="form-label">Upload GST Document</label>
-                            <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            <input type="file" name="file1" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
 
                             />
@@ -179,12 +200,15 @@ function ProfileSetting(props) {
                         </div>
                     </div>
                     <div className="col-md-6 mt-5 pt-3 col-sm-12">
-                        <button type="button" className="btn btn-primary text-uppercase px-5" onClick={uploadGstDocument}  >Upload</button>
+                        <button type="button" disabled={loadingUpload===1 || !file1 ? true : false} className="btn btn-primary text-uppercase px-5" onClick={(e)=>
+                            uploadGstDocument(1)
+                        }
+                            >{loadingUpload===1 ? "Uploading..." : "Upload"}</button>
                     </div>
                     <div className="col-md-6 col-sm-12">
                         <div className="mt-2 mb-1">
                             <label className="form-label">Upload Brand Logo</label>
-                            <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            <input type="file" name="file2" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
 
                             />
@@ -192,12 +216,14 @@ function ProfileSetting(props) {
                         </div>
                     </div>
                     <div className="col-md-6 mt-5 pt-3 col-sm-12">
-                        <button type="button" className="btn btn-primary text-uppercase px-5"   onClick={uploadBrandLogo}>Upload</button>
+                        <button type="button" disabled={loadingUpload===2 || !file2 ? true : false} className="btn btn-primary text-uppercase px-5"   onClick={(e)=>
+                            uploadBrandLogo(2)
+                            }>{loadingUpload===2 ? "Uploading..." : "Upload"}</button>
                     </div>
                     <div className="col-md-6 col-sm-12 ">
                         <div className="mt-2 mb-1">
                             <label className="form-label">Upload Brand Banner</label>
-                            <input type="file" name="file" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+                            <input type="file" name="file3" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
                             // {...register('gstDocument')}
 
                             />
@@ -205,7 +231,8 @@ function ProfileSetting(props) {
                         </div>
                     </div>
                     <div className="col-md-6 mt-5 pt-3 col-sm-12">
-                        <button type="button" className="btn btn-primary text-uppercase px-5"  onClick={uploadBrandBanner} >Upload</button>
+                        <button type="button" disabled={loadingUpload===3 || !file3 ? true : false} className="btn btn-primary text-uppercase px-5"  onClick={(e)=>
+                            uploadBrandBanner(3)} >{loadingUpload===3 ? "Uploading..." : "Upload"}</button>
                     </div>
 
                      

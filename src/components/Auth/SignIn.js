@@ -10,7 +10,7 @@ import { userEmail } from '../../Redux/Actions/userEmail';
 function SignIn(props) {
 
     const history = useHistory();
-
+    const [loading,setLoading]=useState(false);
     const dispatch =useDispatch()
     const [brandData,setBrandData]=useState({
         email:"",password:"",
@@ -18,10 +18,12 @@ function SignIn(props) {
 
     const login = async (obj) => {
         try {
-            let response = await httpCommon.post("/brandLogin", obj);
-            let { data } = response;
-              data && data.user && localStorage.setItem("user",JSON.stringify(data?.user));
+            setLoading(true)
+            let response= await httpCommon.post("/brandLogin", obj);
+             let { data } = response;
+             setLoading(false);
             if (data?.user?.status === "ACTIVE") {
+              data && data.user && localStorage.setItem("user",JSON.stringify(data?.user));
                 ToastMessage(data);
                 if(data?.user?.role==="ADMIN"){
                 history.push("/admin/dashboard");
@@ -32,16 +34,23 @@ function SignIn(props) {
                 ToastMessage(data);
             }
             else{
-                history.push(`${props?.url+"/verification"}`)
+                history.push(`/user/verification`);
             }
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     }
 
     const handleLogin = () => {
         login(brandData)
         dispatch(userEmail(brandData?.email))
+    }
+    const handleEnter=(e)=>{
+        if(e.key==="Enter"){
+        login(brandData)
+        dispatch(userEmail(brandData?.email))
+        }
     }
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100 " >
@@ -74,7 +83,7 @@ function SignIn(props) {
                                     <Link className="text-secondary" to={ "/user/reset-password"}>Forgot Password?</Link>
                                 </span>
                             </div>
-                            <input type="password" onChange={(e)=>setBrandData({...brandData,password:e.target.value})} className="form-control form-control-lg lift" placeholder="***************" />
+                            <input type="password" onKeyPress={(e)=>handleEnter(e)} onChange={(e)=>setBrandData({...brandData,password:e.target.value})} className="form-control form-control-lg lift" placeholder="***************" />
                         </div>
                     </div>
                     <div className="col-12">
@@ -86,7 +95,7 @@ function SignIn(props) {
                         </div>
                     </div>
                     <div className="col-12 text-center mt-4">
-                        <div type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleLogin}>SIGN IN</div>
+                        <button type='button' disabled={loading} className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleLogin}>{loading ? "Loadnig..." : "SIGN IN"}</button>
                     </div>
                     <div className="col-12 text-center mt-4">
                         <span>Don't have an account yet? <Link to={"/user/sign-up"} className="text-secondary">Sign up here</Link></span>
