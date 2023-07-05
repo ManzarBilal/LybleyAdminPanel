@@ -19,6 +19,8 @@ function FaultList() {
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [loading, setLoading] = useState(false)
+    const [loading1, setLoading1] = useState(false)
+
 
 
     let table_row1 = table_row.map((t1, i) => ({ ...t1, i: i + 1 }));
@@ -132,11 +134,13 @@ function FaultList() {
 
     const editFault = async () => {
         try {
+            setLoading1(true);
             let response = await httpCommon.patch(`/updateFaultBy/${id}`, fault);
             let { data } = response;
+            setLoading1(false);
             setIseditmodal(false)
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x)
+           // let x = Math.floor((Math.random() * 10) + 1);
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -150,11 +154,13 @@ function FaultList() {
         const dataObj = { faultName: fault?.faultName, productModel: product?.productName, productId: product?._id, userId: obj?._id }
 
         try {
+            setLoading1(true);
             let response = await httpCommon.post("/addFault", dataObj);
             let { data } = response;
+            setLoading1(false);
+            setFault({ faultName: "", productId: "", productModel: "" })
             setIsmodal(false)
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x)
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -165,8 +171,7 @@ function FaultList() {
             let response = await httpCommon.deleteData(`/deleteFaultBy/${brandId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x);
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -249,7 +254,7 @@ function FaultList() {
                 </Modal.Body>
                 <div className="modal-footer">
                     <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={() => editFault()}>Save</button>
+                    <button type="submit" disabled={loading1} className="btn btn-primary" onClick={() => editFault()}>{loading1 ? "Updating..." : "Update"}</button>
                 </div>
 
             </Modal>
@@ -283,7 +288,7 @@ function FaultList() {
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={addFault}>Add</button>
+                    <button type="submit" disabled={loading1} className="btn btn-primary" onClick={addFault}>{loading1 ? "Adding..." : "Add"}</button>
                 </Modal.Footer>
 
             </Modal>
