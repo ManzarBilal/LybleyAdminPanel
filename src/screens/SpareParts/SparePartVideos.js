@@ -205,9 +205,9 @@ function SparePartVideos() {
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
-                <PageHeader1 pagetitle='All Faults' modalbutton={() => {
+                <PageHeader1 pagetitle='All Videos' modalbutton={() => {
                     return <div className="col-auto d-flex w-sm-100">
-                        <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Add Fault</button>
+                        <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100"  ><i className="icofont-plus-circle me-2 fs-6"></i>Upload Video</button>
                     </div>
                 }} />
                 <div className="row clearfix g-3">
@@ -286,6 +286,8 @@ function SparePartVideos() {
                     <div className="deadline-form">
                         <form>
                             <div className="row g-3 mb-3">
+                                <div className="border border-5 border-primary"
+                                >
                                 <div className="col-md-12">
                                     <label className="form-label">Product video Upload</label>
                                     <small className="d-block text-muted mb-2">Only portrait or square video, 2M max and 2000px max-height.</small>
@@ -293,10 +295,19 @@ function SparePartVideos() {
                                         <div className='mb-3' >
                                             <input id='filesize' onChange={(e) => handleFileChange(e)} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
                                         </div>
-                                        {videoUrl === "" ? <div className='text-danger fw-bold text-center'>Please select Video</div> : <ReactPlayer ref={playerRef} url={videoUrl} controls width="100%" height="200px" />}
+                                        {videoUrl === "" ? <div className='text-danger fw-bold text-center'></div> : <ReactPlayer ref={playerRef} url={videoUrl} controls width="100%" height="200px" />}
 
                                     </div>
                                 </div>
+                                <h4 className='text-center fw-bold'>Or</h4>
+                                <div className="col-xl-12 col-lg-12 mb-1">
+                                    <div className="card-body m-0 p-0">
+                                        <label className="form-label">Enter URL</label>
+                                        <input type="text" className='form-control' placeholder='Youtube url' />
+                                    </div>
+                                </div>
+                                </div>
+                                 <hr />
                                 <div className="col-xl-12 col-lg-12">
                                     <div className="card-body m-0 p-0">
                                         <label className="form-label">Product Model</label>
