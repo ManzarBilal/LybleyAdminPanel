@@ -16,6 +16,8 @@ function BookingDetail() {
     const [faults,setFaults]=useState([]);
 
 
+
+    
    const getFaults=async()=>{
     try{
         let response=await httpCommon.get("/getAllFault");
