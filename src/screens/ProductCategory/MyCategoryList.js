@@ -18,6 +18,8 @@ function MyCategoryList() {
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [loading, setLoading] = useState(false)
+    const [loading1, setLoading1] = useState(false)
+
 
 
     const admin = localStorage.getItem("user");
@@ -115,8 +117,7 @@ function MyCategoryList() {
         try {
             let response = await httpCommon.patch(`/updateProductCategoryBy/${_id}`, { status: body });
             let { data } = response;
-            let x = Math.random() * 5;
-            setRandomValue(x);
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -145,14 +146,16 @@ function MyCategoryList() {
         try {
             const formData = new FormData();
             formData.append("categoryName", categoryName);
+            setLoading1(true);
             let response = await httpCommon.patch(`/updateProductCategoryBy/${id}`, { categoryName: categoryName });
             let { data } = response;
+            setLoading1(false)
             setIseditmodal(false)
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x)
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
+            setLoading1(false);
         }
     }
     const addCategory = async () => {
@@ -164,14 +167,16 @@ function MyCategoryList() {
             formData.append("brandName", obj?.brandName);
             formData.append("categoryName", categoryName);
             formData.append("categoryImage", categoryImage);
+            setLoading1(true);
             let response = await httpCommon.post("/addProductCategory", formData);
             let { data } = response;
+            setLoading1(false);
             setIsmodal(false)
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x)
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
+            setLoading1(false);
         }
     }
     const deleteCategory = async () => {
@@ -179,8 +184,7 @@ function MyCategoryList() {
             let response = await httpCommon.deleteData(`/deleteProductCategoryBy/${brandId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x);
+            setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -250,7 +254,7 @@ function MyCategoryList() {
                 </Modal.Body>
                 <div className="modal-footer">
                     <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={() => editCategory()}>Save</button>
+                    <button type="submit" disabled={loading1} className="btn btn-primary" onClick={() => editCategory()}>{loading1 ? "Updating..." : "Update"}</button>
                 </div>
 
             </Modal>
@@ -277,7 +281,8 @@ function MyCategoryList() {
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" className="btn btn-primary" onClick={addCategory}>Add</button>
+                    <button type="submit" disabled={loading1} className="btn btn-primary" onClick={addCategory}>{loading1 ? "Adding..." : "Add"}</button>
+                  
                 </Modal.Footer>
 
             </Modal>

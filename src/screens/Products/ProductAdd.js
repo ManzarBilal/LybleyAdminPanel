@@ -19,14 +19,28 @@ import { ToastMessage } from '../../components/common/ToastMessage';
 function ProductAdd() {
 
     const dispatch=useDispatch();
-    const categories=useSelector(state=>state?.category);
+     const categories=useSelector(state=>state?.category);
+   // const [categories,setCategories]=useState([]);
+    const [loading,setLoading]=useState(false);
     console.log(categories);
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getCategory(obj?._id));
+         dispatch(getCategory(obj?._id));
+       // GetAllCategory();
+
     },[dispatch])
     
+    const GetAllCategory = async () => {
+        try {
+            let response = await httpCommon.get(`/getAllProductCategories`)
+            let { data } = response
+           // setCategories(data)
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
     const [product,setProduct]=useState({
         productName:"",
         productDescription:"",
@@ -56,11 +70,14 @@ function ProductAdd() {
             formData.append("userId",category?.userId);
             formData.append("brandName",category?.brandName);
             formData.append("categoryId",category?._id);
+            setLoading(true);
             let response=await httpCommon.post("/addProduct",formData);
             let {data}=response;
+            setLoading(false);
             ToastMessage(data);
             setProduct({productName:"",productDescription:"",productCategory:"",productImage:""});
         }catch(err){
+            setLoading(false);
             console.log(err);
         }
     }
@@ -109,7 +126,7 @@ function ProductAdd() {
                         <Images product={product} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addProduct}>Save</button>
+                        <button type="submit" disabled={loading} className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addProduct}>{loading ? "Saving..." : "Save"}</button>
                     </div>
                     {/* <div className="card">
                         <CroppedImages />

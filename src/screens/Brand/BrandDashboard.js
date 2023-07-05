@@ -225,7 +225,7 @@ function BrandDashboard(props) {
                                 <div className="d-flex align-items-center">
                                     <div className={`avatar rounded no-thumbnail bg-warning text-light`}><i className='fa fa-smile-o fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
-                                        <div className="h6 mb-0">Happy Clients</div>
+                                        <div className="h6 mb-0">Happy Customers</div>
                                         <span className="small">{data?.totalCustomers?.length}</span>
                                     </div>
                                 </div>

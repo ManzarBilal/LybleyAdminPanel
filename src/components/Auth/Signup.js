@@ -13,6 +13,7 @@ function Signup(props) {
     const [gstView, setGstView] = useState(false)
     const [gstDocument, setGstDocument] = useState("")
     const history = useHistory()
+    const [loading,setLoading]=useState(false);
 
     const dispatch = useDispatch()
 
@@ -25,7 +26,7 @@ function Signup(props) {
             .max(10, 'Contact No. must not exceed 10 characters'),
         gstNo: Yup.string()
             .required('GST No. is required')
-            .min(10, 'GST No. must be at least 10 characters'),
+            .min(14, 'GST No. must be at least 14 characters'),
         address: Yup.string()
             .required('address is required')
             .min(10, 'address must be at least 10 characters'),
@@ -81,15 +82,18 @@ function Signup(props) {
 
             // const fullData={...body ,gstDocument:gstDocument}
             // console.log(fullData,"fullData");
+            setLoading(true);
             let response = await httpCommon.post("/brandRegistration", formData);
             let { data } = response;
             ToastMessage(data)
+            setLoading(false);
             if (data.status === true) {
                 history.push(`${  "/user/verification"}`)
             }
             else return null;
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     }
     const onRegister = data => {
@@ -98,6 +102,7 @@ function Signup(props) {
         signUp(data);
         dispatch(userEmail(data?.email))
     }
+
 
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
@@ -226,7 +231,7 @@ function Signup(props) {
                         </div>
                     </div>
                     <div className="col-12 text-center mt-3">
-                        <div type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleSubmit(onRegister)} >SIGN UP</div>
+                        <button type='button' className="btn btn-lg btn-block btn-light lift text-uppercase" disabled={loading} onClick={handleSubmit(onRegister)} >{loading ? "Loading..." : "SIGN UP"}</button>
                     </div>
                     <div className="col-12 text-center mt-3">
                         <span>Already have an account? <Link to={'/user/sign-in'} title="Sign in" className="text-secondary">Sign in here</Link></span>

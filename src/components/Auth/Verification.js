@@ -13,15 +13,20 @@ function Verification(props) {
 
     const brandEmail = useSelector(state => state?.userEmail)
     const [otp, setOtp] = useState('');
+    const [loading,setLoading]=useState(false);
+    const [loading1,setLoading1]=useState(false);
+
 
     const otpVerification = async (obj) => {
         let body = { email: brandEmail?.email, otp: otp }
         try {
+            setLoading(true);
             let response = await httpCommon.patch("/brandOtpVerification", body);
             let { data } = response;
             let user=localStorage.getItem("user");
             let user1=JSON.parse(user);
             ToastMessage(data)
+            setLoading(false);
             if (data?.status === true && user1?.role!=="ADMIN") {
                 history.push(`${props?.url + "/sign-in"}`)
             }
@@ -32,17 +37,20 @@ function Verification(props) {
             }
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     }
     const reSendOtpVerification = async (obj) => {
         let body = { email: brandEmail?.email }
         try {
+            setLoading1(true);
             let response = await httpCommon.post("/brandResendOtp", body);
             let { data } = response;
             ToastMessage(data)
-          
+            setLoading1(false);
         } catch (err) {
             console.log(err);
+            setLoading1(false);
         }
     }
 
@@ -73,10 +81,10 @@ function Verification(props) {
                 </div>
 
                 <div className="col-12 text-center mt-4">
-                    <div className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleOtp}>Verify my account</div>
+                    <div className="btn btn-lg btn-block btn-light lift text-uppercase" onClick={handleOtp}>{loading ? "Verifying..." : "Verify my account"}</div>
                 </div>
                 <div className="col-12 text-center mt-4">
-                    <span>Haven't received it? <div  className="text-secondary" onClick={handleResendOtp}>Resend a new code.</div></span>
+                    <span>Haven't received it? <div  className="text-secondary" onClick={handleResendOtp}>{loading1 ? "Sending..." : "Resend a new code" }</div></span>
                 </div>
             </form>
         </div>
