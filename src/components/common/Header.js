@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown, Image } from 'react-bootstrap';
 import Avatar1 from '../../assets/images/xs/avatar1.svg';
 import Avatar3 from '../../assets/images/xs/avatar3.svg';
@@ -15,6 +15,7 @@ import { Notification } from './Notification';
 
 
 function Header(props) {
+    const {url}=props
     const data = localStorage.getItem("user");
     const userType = JSON.parse(data);
     const headerData = JSON.parse(data)
@@ -24,6 +25,12 @@ function Header(props) {
         history.push("/user/sign-in");
     }
     //  console.log("headerData",headerData);
+    const [showDropdown, setShowDropdown] = useState(true);
+    
+    const setDropdown = () => {
+        setShowDropdown(!showDropdown);   
+    }
+    
     return (
         <div className="header">
             <nav className="navbar py-4">
@@ -61,14 +68,16 @@ function Header(props) {
                                     </div>
                                 </Dropdown.Menu> */}
                         </Dropdown>
+
+
                         <Dropdown className="notifications zindex-popover">
-                            <Dropdown.Toggle as="a" className="nav-link dropdown-toggle pulse" style={{ fontSize: "33px", marginTop: "-17px",cursor:"pointer" }}>
-                                <i className="icofont-alarm fs-51 me-3" ></i>
+                            <Dropdown.Toggle   as="a" className="nav-link dropdown-toggle pulse" style={{ fontSize: "33px", marginTop: "-17px",cursor:"pointer" }}>
+                                <i onClick={()=>setDropdown()} className="icofont-alarm fs-51 me-3" ></i>
                                 <span className="pulse-ring"></span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="rounded-lg shadow border-0 dropdown-animation dropdown-menu-sm-end p-0 m-0">
 
-                                <Notification />
+                                <Notification showDropdown={showDropdown} onSubmit={setDropdown}  url={url} />
 
                             </Dropdown.Menu>
                         </Dropdown>
