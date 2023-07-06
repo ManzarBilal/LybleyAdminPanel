@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react'
 
 import httpCommon from "../../http-common"
 import { ReactLoader } from './ReactLoader'
+import { Link } from 'react-router-dom';
 
-export const Notification = () => {
+export const Notification = (props) => {
 
     const [notifications, setNotifications] = useState([])
     const [brands, setBrands] = useState([])
     const [loading, setLoading] = useState(false)
 
+   console.log("props",props); 
+
     useEffect(() => {
         getAllNotification()
         GetAllBrands()
-    }, [])
+       
+    }, [ ])
 
 
     const getAllNotification = async () => {
@@ -46,17 +50,20 @@ export const Notification = () => {
     }
 
     const brand = brands?.filter(fe => notifications?.find(f1 => f1?.brandId === fe._id));
-    console.log(brand, "brand");
+    // console.log(brand, "brand");
     // console.log(notifications, "getAllNotification");
     let userData = localStorage?.getItem("user")
     let user = JSON.parse(userData)
-    console.log(user, "user");
+    // console.log(user, "user");
 
-    const notification = user?.role === "ADMIN" ? notifications?.reverse() : notifications?.filter(f1 => f1?.brandId === user?._id);
-    const notification1 = notification?.map(n1 => ({ ...n1, brandName: brands?.find(f1 => f1?._id === n1?.brandId)?.brandName }));
+    const notification = user?.role === "ADMIN" ? notifications : notifications?.filter(f1 => f1?.brandId === user?._id);
+    const notification1 = notification?.map(n1 => ({ ...n1, brandName: brands?.find(f1 => f1?._id === n1?.brandId)?.brandName }))?.reverse();
 
+    // console.log("notification1",props);
+
+   console.log(props?.showDropdown,"props?.showDropdown");
     return (
-        <div>
+        <div className={props?.showDropdown ? "" : "d-none"}>
 
             <div className="card border-0 w380">
                 <div className="card-header border-0 p-3">
@@ -74,7 +81,17 @@ export const Notification = () => {
                                         {/* <img className="avatar rounded-circle" src={Avatar1} alt="" /> */}
                                         <div className="flex-fill ms-2">
                                             <p className="d-flex justify-content-between mb-0 "><span className="font-weight-bold">{item?.name}</span> <small>{new Date(item?.createdAt)?.toLocaleString()}</small></p>
-                                            <span className=""> {item?.title}<span className="badge bg-success ms-3">{item?.brandName} </span></span>
+                                            <div className="d-flex justify-content-between">
+                                                <div> <span className=""> {item?.title}<span className="badge bg-success ms-3">{item?.brandName} </span></span></div>
+                                                <button type="button" className='btn btn-primary btn-sm' onClick={() => props?.onSubmit()}  ><Link to={
+                                                    item?.category === "BRAND" ?
+                                                        `${props?.url}/brand-dashboard/${item?.id}`
+                                                        : item?.category === "USER" ? `${props?.url}/customer-list`
+                                                            : item?.category === "ORDER" ? `${props?.url}/order-detail/${item?.id}`
+                                                                : item?.category === "RETURN" ? `${props?.url}/return-list`
+                                                                    : `${props?.url}/dashboard`
+                                                }  className="text-decoration-none text-white" > View </Link></button>
+                                            </div>
                                         </div>
                                     </div>
                                 </li>
@@ -83,7 +100,7 @@ export const Notification = () => {
                         }
                     </div>
                 </div>
-                <a className="card-footer text-center border-top-0" href="#!"> View all notifications</a>
+                <div className="card-footer text-center border-top-0"  > View all notifications</div>
             </div>
 
             {/* <li className="py-2 mb-1 border-bottom">
