@@ -24,11 +24,15 @@ function Header(props) {
         localStorage.removeItem("user")
         history.push("/user/sign-in");
     }
-    //  console.log("headerData",headerData);
     const [showDropdown, setShowDropdown] = useState(true);
+    // useEffect(()=>{
+
+    // },[showDropdown]);
+    //  console.log("headerData",headerData);
     
-    const setDropdown = () => {
-        setShowDropdown(!showDropdown);   
+    
+    const setDropdown = (bool) => {
+        setShowDropdown(bool);   
     }
     
     return (
@@ -72,7 +76,7 @@ function Header(props) {
 
                         <Dropdown className="notifications zindex-popover">
                             <Dropdown.Toggle   as="a" className="nav-link dropdown-toggle pulse" style={{ fontSize: "33px", marginTop: "-17px",cursor:"pointer" }}>
-                                <i onClick={()=>setDropdown()} className="icofont-alarm fs-51 me-3" ></i>
+                                <i onClick={()=>setDropdown(true)} className="icofont-alarm fs-51 me-3" ></i>
                                 <span className="pulse-ring"></span>
                             </Dropdown.Toggle>
                             <Dropdown.Menu className="rounded-lg shadow border-0 dropdown-animation dropdown-menu-sm-end p-0 m-0">

@@ -10,13 +10,12 @@ export const Notification = (props) => {
     const [brands, setBrands] = useState([])
     const [loading, setLoading] = useState(false)
 
-   console.log("props",props); 
 
     useEffect(() => {
         getAllNotification()
         GetAllBrands()
        
-    }, [ ])
+    }, [])
 
 
     const getAllNotification = async () => {
@@ -61,9 +60,9 @@ export const Notification = (props) => {
 
     // console.log("notification1",props);
 
-   console.log(props?.showDropdown,"props?.showDropdown");
+//    console.log(props?.showDropdown,"props?.showDropdown");
     return (
-        <div className={props?.showDropdown ? "" : "d-none"}>
+        <div className={props?.showDropdown===true ? "" : "d-none"}>
 
             <div className="card border-0 w380">
                 <div className="card-header border-0 p-3">
@@ -83,7 +82,7 @@ export const Notification = (props) => {
                                             <p className="d-flex justify-content-between mb-0 "><span className="font-weight-bold">{item?.name}</span> <small>{new Date(item?.createdAt)?.toLocaleString()}</small></p>
                                             <div className="d-flex justify-content-between">
                                                 <div> <span className=""> {item?.title}<span className="badge bg-success ms-3">{item?.brandName} </span></span></div>
-                                                <button type="button" className='btn btn-primary btn-sm' onClick={() => props?.onSubmit()}  ><Link to={
+                                                <button type="button" className='btn btn-primary btn-sm' onClick={() => props?.onSubmit(false)}  ><Link to={
                                                     item?.category === "BRAND" ?
                                                         `${props?.url}/brand-dashboard/${item?.id}`
                                                         : item?.category === "USER" ? `${props?.url}/customer-list`
