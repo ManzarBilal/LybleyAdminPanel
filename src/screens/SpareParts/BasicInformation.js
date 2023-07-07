@@ -67,6 +67,17 @@ const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.
                             <label className="form-label"> Best Price</label>
                             <input type="number" className="form-control" name='bestPrice' value={bestPrice} onChange={(e) => {props.onChange(e) }} />
                         </div>
+                      {props?.user?.role==="RESELLER" ?  <div className="col-xl-12 col-lg-12">
+                        <div className="card-body m-0 p-0">
+                            <label className="form-label">Brand</label>
+                            <select className="form-select" name='category' value={category} onChange={(e)=>props.onChange(e)}  >
+                                <option value="" selected>Choose Brand</option>
+                                {props?.brands?.filter(f1=>f1?.approval==="APPROVED")?.map(c1=>
+                                    <option value={c1.brandName} >{c1.brandName}</option>
+                                    )}
+                            </select>
+                        </div>
+                    </div> : ""}
                         <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
                             <label className="form-label">Category</label>

@@ -88,7 +88,7 @@ function Header(props) {
                         <Dropdown className="dropdown user-profilem ml-2 ml-sm-3 d-flex align-items-center zindex-popover">
                             <div className="u-info me-2 d-flex flex-column justify-content-center align-items-center">
                                 <p className="mb-0 text-end line-height-sm "><span className="font-weight-bold">{headerData?.brandName}</span></p>
-                                <p> {headerData && headerData?.role === "ADMIN" ? <span className="font-weight-bold"> ADMIN   </span> : <span className="font-weight-bold" > BRAND   </span>}</p>
+                                <p> {headerData && headerData?.role === "ADMIN" ? <span className="font-weight-bold"> ADMIN   </span> : headerData?.role === "BRAND" ? <span className="font-weight-bold"> BRAND   </span> : <span className="font-weight-bold" > RESELLER   </span>}</p>
                             </div>
                             <Dropdown.Toggle as='a' className="nav-link dropdown-toggle pulse p-0 mb-3" href="#!" role="button">
                                 <img className="img-thumbnail avatar rounded-circle " src={userType?.role === "ADMIN" ? ImageLogo ? ImageLogo : Avatar4 : userType?.brandLogo ? userType?.brandLogo : Avatar4} alt="profile" height="50px" width="50px" />

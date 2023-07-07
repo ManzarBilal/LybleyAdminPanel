@@ -14,11 +14,14 @@ function SparePartAdd() {
     const products=useSelector(state=>state?.products);
     const categories=useSelector(state=>state?.category);
     const [faults,setFault]=useState([]);
+    const [brands,setBrands]=useState([]);
+
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         dispatch(getCategory(obj?._id));
         dispatch(getProduct(obj?._id));
+        GetAllBrands();
         getFaults();
     },[dispatch])
 
@@ -34,6 +37,20 @@ function SparePartAdd() {
         productModel:"",
         images:[]
     })
+
+    const GetAllBrands = async () => {
+        try {
+            let response = await httpCommon.get("/getAllBrands")
+            let { data } = response
+            setBrands(data);
+
+        }
+        catch (err) {
+            console.log(err)
+
+
+        }
+    }
     
     const handleChange=(e)=>{
         const {currentTarget:input}=e;
@@ -112,6 +129,9 @@ function SparePartAdd() {
             console.log(err);
         }
     }
+
+    let obj=localStorage.getItem("user");
+    let user=JSON.parse(obj);
     return (
         <div className="container-xxl">
             <PageHeader1
@@ -123,7 +143,7 @@ function SparePartAdd() {
                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
+                        <BasicInformation user={user} brands={brands} onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                    
