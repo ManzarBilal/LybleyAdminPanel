@@ -107,7 +107,7 @@ function Header(props) {
                                     </div>
                                     <div className="list-group m-2 ">
                                         <Link to={`${props?.url}/profile-pages`} className="list-group-item list-group-item-action border-0 "><i className="icofont-ui-user fs-5 me-3"></i>Profile Page</Link>
-                                        <Link to={process.env.PUBLIC_URL + "/order-invoice"} className="list-group-item list-group-item-action border-0 "><i className="icofont-file-text fs-5 me-3"></i>Order Invoices</Link>
+                                        {/* <Link to={process.env.PUBLIC_URL + "/order-invoice"} className="list-group-item list-group-item-action border-0 "><i className="icofont-file-text fs-5 me-3"></i>Order Invoices</Link> */}
                                         <div onClick={handleSignout} style={{ cursor: "pointer" }} className="list-group-item list-group-item-action border-0 "><i className="icofont-logout fs-5 me-3"></i>Signout</div>
                                     </div>
                                 </div>

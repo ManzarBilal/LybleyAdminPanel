@@ -11,7 +11,9 @@ import { userEmail } from '../../Redux/Actions/userEmail';
 function Signup(props) {
 
     const [gstView, setGstView] = useState(false)
+    const [roleView, setRoleView] = useState(false)
     const [gstDocument, setGstDocument] = useState("")
+    const [role, setRole] = useState("")
     const history = useHistory()
     const [loading,setLoading]=useState(false);
 
@@ -49,7 +51,7 @@ function Signup(props) {
         chooseCb: Yup.bool().oneOf([true], 'Please fill the box')
     });
 
-
+     
     const {
         register,
         handleSubmit,
@@ -72,13 +74,15 @@ function Signup(props) {
         try {
             const formData = new FormData()
             formData.append("gstDocument", gstDocument);
+            formData.append("role", role);
             formData.append("gstNo", obj.gstNo);
             formData.append("brandName", obj.name,)
             formData.append("address", obj.address,)
             formData.append("email", obj.email,)
             formData.append("contact", +obj.contact,)
             formData.append("password", obj.password,)
-            console.log(gstDocument, "gstDocument");
+            // console.log(gstDocument, "gstDocument");
+           
 
             // const fullData={...body ,gstDocument:gstDocument}
             // console.log(fullData,"fullData");
@@ -99,11 +103,12 @@ function Signup(props) {
     const onRegister = data => {
         // console.log("data", gstDocument);
         setGstView(true)
+        setRoleView(true)
         signUp(data);
         dispatch(userEmail(data?.email))
     }
 
-
+// console.log("role",role);
     return (
         <div className="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
             <div className="w-100 p-3 p-md-5 card border-0 shadow-sm mt-md-5" style={{ maxWidth: '32rem' }}>
@@ -189,6 +194,20 @@ function Signup(props) {
                             </div>
                         </div>
 
+                    </div>
+                    <div className="col-12">
+                        <div className=" mb-1">
+                            <label className="form-label">Select Role</label>
+                            <select className="form-select" name='role' value= {role} onChange={(e)=>setRole(e.target.value)}   >
+                                <option value="" selected>Choose Role</option>
+                                    <option value= "BRAND" >BRAND</option>
+                                    <option value= "RESELLER" >RESELLER</option>
+                            </select>
+                            {roleView ?  <> {  role==="" ?  <div className='text-danger'>
+                                Role is required.
+                            </div> :""}
+                            </>:""}
+                        </div>
                     </div>
                     <div className="col-12">
                         <div className="mb-1">

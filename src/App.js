@@ -7,6 +7,7 @@ import MainIndex from './screens/MainIndex';
 import { Toaster } from 'react-hot-toast';
 import BrandIndex from './screens/BrandIndex';
 import SignIn from './components/Auth/SignIn';
+import ResellerIndex from './screens/ResellerIndex';
  
 
 function App(props) {
@@ -22,11 +23,11 @@ const history=useHistory()
   let user1 = localStorage.getItem("user");
   let user = JSON.parse(user1);
  // let user = 
-  let url=user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "/user";
+  let url=user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : user && user?.role==="RESELLER" ?"/reseller":"/user";
   const activekey = () => {
     var res = window.location.pathname;
   //  var res = url;
-    var baseUrl = user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : "/user";
+    var baseUrl = user && user?.role==="ADMIN" ? "/admin" : user && user?.role==="BRAND" ? "/brand" : user && user?.role==="RESELLER" ?"/reseller": "/user";
    // var baseUrl = process.env.PUBLIC_URL;
     baseUrl = baseUrl?.split("/");
     res = res?.split("/");
@@ -66,6 +67,18 @@ const history=useHistory()
         <AddModal />
         <Switch>
           <MainIndex url={"/admin"} activekey={activekey()} />
+        </Switch>
+      </div>
+    )
+  }
+  else if(user && user.role === "RESELLER"){
+    return (
+      <div id="ebazar-layout" className='theme-black'>
+        <Toaster />
+        <Sidebar url={"/reseller"} user={user} activekey={activekey()} history={props.history} />
+        <AddModal />
+        <Switch>
+          <ResellerIndex url={"/reseller"} activekey={activekey()} />
         </Switch>
       </div>
     )
