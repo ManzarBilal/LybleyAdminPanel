@@ -2,13 +2,14 @@ import React, {useState } from "react";
 import { Link } from "react-router-dom";
 import { menu } from '../Data/Menu/menu.json';
 import {brand} from '../Data/Menu/brand.json';
+import {reseller} from '../Data/Menu/reseller.json'
 import ImageLogo from "../../assets/images/spareLogo.png";
 
 function Sidebar(props) {
 
     const [isSidebarMini, setIsSidebarMini] = useState(false);
    // const [menuData, setMenuData] = useState([...menu]);
-    const menuData=props?.user && props?.user?.role==="ADMIN" ? [...menu] : [...brand];
+    const menuData=props?.user && props?.user?.role==="ADMIN" ? [...menu] :props?.user?.role==="BRAND" ? [...brand] :  [...reseller];
     const openChildren = (id) => {
         var otherTabs = document.getElementsByClassName("has-children")
         if (otherTabs) {

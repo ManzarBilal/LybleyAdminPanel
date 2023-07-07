@@ -136,7 +136,7 @@ function BankAccount() {
                 <div className="container-xxl">
                     <PageHeader1 pagetitle='Brand Information' modalbutton={() => {
                         return <>{ !table_row && <div className="col-auto d-flex w-sm-100">
-                            <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Brand</button>
+                            <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Bank Account</button>
                         </div>
                         }
                         </>

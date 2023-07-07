@@ -61,7 +61,7 @@ function ProductAdd() {
     const addProduct=async ()=>{
         try{
             let category=categories.find(c1=>c1?.categoryName===product?.productCategory);
-            console.log("category",category)
+            // console.log("category",category)
             const formData=new FormData();
             formData.append("productName",product?.productName);
             formData.append("productImage",product?.productImage);
