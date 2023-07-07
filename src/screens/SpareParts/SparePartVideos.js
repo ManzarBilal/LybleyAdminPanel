@@ -17,9 +17,10 @@ function SparePartVideos() {
     const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
-    const [faultVideo, setFaultVideo] = useState({ video: "", brandId: "", productModel: "" });
+    const [faultVideo, setFaultVideo] = useState({ video: "", brandId: "",videoUrl:"", productModel: "" });
     const [v_id, setCatId] = useState("");
     const [videoId, setVideoId] = useState("");
+    const [isUrl,setIsUrl]=useState(false);
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [hasWindow, setHasWindow] = useState(false);
     const [video, setVideo] = useState([])
@@ -145,10 +146,17 @@ function SparePartVideos() {
         formData.append("productModel", product?.productName);
         formData.append("brandId", obj?._id);
         formData.append("video", video);
+        let body={productModel:product?.productName,brandId:obj?._id,videoUrl:faultVideo?.videoUrl};
         try {
-            setLoading(true);
-            let response = await httpCommon.post("/uploadVideo", formData);
-            let { data } = response;
+            if(faultVideo?.videoUrl){
+                setLoading(true);
+                let response = await httpCommon.post("/videoUrl", body);
+                var { data } = response;
+            }else{
+                setLoading(true);
+                let response = await httpCommon.post("/uploadVideo", formData);
+                var { data } = response;
+            }
             setLoading(false);
             setIsmodal(false)
             let x = Math.floor((Math.random() * 10) + 1);
@@ -198,6 +206,7 @@ function SparePartVideos() {
             if (e.target.name === "file") {
                 // setImage(e.target.files[0]);
                 setVideo(e.target.files[0])
+                setIsUrl(true);
             }
         }
     };
@@ -279,7 +288,7 @@ function SparePartVideos() {
 
             </Modal>
             <Modal show={ismodal} style={{ display: 'block' }}>
-                <Modal.Header className="modal-header" onClick={() => { setIsmodal(false) }} closeButton>
+                <Modal.Header className="modal-header" onClick={() => {setVideoUrl(""); setIsmodal(false); setFaultVideo({ video: "", brandId: "",videoUrl:"", productModel: "" }) ; setIsUrl(false); setVideo([]);}} closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Fault Video</h5>
                 </Modal.Header>
                 <Modal.Body className="modal-body">
@@ -293,7 +302,7 @@ function SparePartVideos() {
                                     <small className="d-block text-muted mb-2">Only portrait or square video, 2M max and 2000px max-height.</small>
                                     <div id='create-token' className='dropzoneww'>
                                         <div className='mb-3' >
-                                            <input id='filesize' onChange={(e) => handleFileChange(e)} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
+                                            <input id='filesize' disabled={faultVideo?.videoUrl ? true : false} onChange={(e) => handleFileChange(e)} name="file" type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff, .mp4, .webm, .mp3, awv, .ogg, .glb"></input>
                                         </div>
                                         {videoUrl === "" ? <div className='text-danger fw-bold text-center'></div> : <ReactPlayer ref={playerRef} url={videoUrl} controls width="100%" height="200px" />}
 
@@ -303,7 +312,7 @@ function SparePartVideos() {
                                 <div className="col-xl-12 col-lg-12 mb-1">
                                     <div className="card-body m-0 p-0">
                                         <label className="form-label">Enter URL</label>
-                                        <input type="text" className='form-control' placeholder='Youtube url' />
+                                        <input type="text" className='form-control' disabled={isUrl} name='videoUrl' value={faultVideo?.videoUrl} placeholder='Youtube url' onChange={handleChange} />
                                     </div>
                                 </div>
                                 </div>
@@ -325,7 +334,7 @@ function SparePartVideos() {
 
                 </Modal.Body>
                 <Modal.Footer className="modal-footer">
-                    <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button onClick={() => {setVideo([]); setVideoUrl(""); setIsmodal(false); setFaultVideo({ video: "", brandId: "",videoUrl:"", productModel: "" }) ; setIsUrl(false); }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" className="btn btn-primary" disabled={loading} onClick={addFaultVideo}>{loading ? "Uploading" : "Add Video"}</button>
                 </Modal.Footer>
 
