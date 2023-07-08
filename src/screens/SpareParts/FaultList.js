@@ -143,6 +143,7 @@ function FaultList() {
             setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
+            setLoading1(false);
             console.log(err);
         }
     }
@@ -163,6 +164,7 @@ function FaultList() {
             setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
+            setLoading1(false);
             console.log(err);
         }
     }

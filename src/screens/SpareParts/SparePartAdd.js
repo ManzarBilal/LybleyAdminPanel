@@ -5,22 +5,24 @@ import { ToastMessage } from '../../components/common/ToastMessage';
 import BasicInformation from './BasicInformation';
 import Image from './Images';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct } from '../../Redux/Actions/product';
-import { getCategory } from '../../Redux/Actions/category';
+import { getAllProduct, getProduct } from '../../Redux/Actions/product';
+import { getAllCategory, getCategory } from '../../Redux/Actions/category';
 
 function SparePartAdd() {
     
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
     const categories=useSelector(state=>state?.category);
+    const [loading,setLoading]=useState(false);
     const [faults,setFault]=useState([]);
     const [brands,setBrands]=useState([]);
-
+ 
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getCategory(obj?._id));
-        dispatch(getProduct(obj?._id));
+        (obj?.role!=="RESELLER" && setSpareParts({...sparePart,brandName:obj?.brandName})); 
+        dispatch(getAllCategory());
+        dispatch(getAllProduct());
         GetAllBrands();
         getFaults();
     },[dispatch])
@@ -33,6 +35,7 @@ function SparePartAdd() {
         category:"",
         technician:"",
         faultType:[],
+        brandName:"",
         partNo:"",
         productModel:"",
         images:[]
@@ -97,6 +100,8 @@ function SparePartAdd() {
 
     const addSparePart=async ()=>{
         try{
+            let user=localStorage.getItem("user");
+            let obj=JSON.parse(user);
             let technician= +sparePart?.technician;
             let product=products?.data?.find(p1=>p1.productName===sparePart.productModel);
             const formData=new FormData();
@@ -107,26 +112,29 @@ function SparePartAdd() {
             formData.append("technician",technician);
             formData.append("skuNo",sparePart?.skuNo);
             formData.append("partNo",sparePart?.partNo);
-            formData.append("length",sparePart?.length);
-            formData.append("weight",sparePart?.weight);
-            formData.append("height",sparePart?.height);
-            formData.append("breadth",sparePart?.breadth);
+            formData.append("length",+sparePart?.length);
+            formData.append("weight",+sparePart?.weight);
+            formData.append("height",+sparePart?.height);
+            formData.append("breadth",+sparePart?.breadth);
+            formData.append("seller",obj?.role);
             sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
             formData.append("category",sparePart?.category);
             formData.append("productModel",sparePart?.productModel);
             for(let x=0; x<sparePart?.images?.length; x++){
                 formData.append("images",sparePart?.images[x]);
             }
-            formData.append("userId",product?.userId);
+            formData.append("userId",obj?._id);
             formData.append("productId",product?._id);
-            formData.append("brandName",product?.brandName);
-
+            formData.append("brandName",sparePart?.brandName);
+            setLoading(true);
             let response=await httpCommon.post("/addSparePart",formData);
             let {data}=response;
+            setLoading(false);
             ToastMessage(data);
-            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:"",partNo:""});
+            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:"",partNo:"",length:"",weight:"",height:"",breadth:"",skuNo:""});
         }catch(err){
             console.log(err);
+            setLoading(false);
         }
     }
 
@@ -151,7 +159,7 @@ function SparePartAdd() {
                         <Image product={sparePart} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addSparePart}>Save</button>
+                        <button type="submit" disabled={loading} className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addSparePart}>{loading ? "Saving..." : "Save"}</button>
                     </div>
                      
                 </div>

@@ -13,12 +13,11 @@ const [technicianPrice]=useState(["350","600"]);
       props.onDelete(i);
       setFault("");
  }
-let {partName,description,partNo,skuNo,length,breadth,height,weight,faultType,MRP,bestPrice,technician,productModel,category,}=props?.sparePart;
+let {partName,description,partNo,skuNo,length,breadth,height,weight,faultType,MRP,bestPrice,technician,productModel,category,brandName}=props?.sparePart;
 let {categories}=props;
 
-const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.categoryId===p1?._id))
 
- 
+let categories1=props?.user?.role==="RESELLER" ? categories?.filter(f1=>f1?.brandName===brandName) : categories;
     return (
         <>
             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
@@ -70,7 +69,7 @@ const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.
                       {props?.user?.role==="RESELLER" ?  <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
                             <label className="form-label">Brand</label>
-                            <select className="form-select" name='category' value={category} onChange={(e)=>props.onChange(e)}  >
+                            <select className="form-select" name='brandName' value={brandName} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Brand</option>
                                 {props?.brands?.filter(f1=>f1?.approval==="APPROVED")?.map(c1=>
                                     <option value={c1.brandName} >{c1.brandName}</option>
@@ -83,7 +82,7 @@ const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.
                             <label className="form-label">Category</label>
                             <select className="form-select" name='category' value={category} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Category</option>
-                                {categories?.map(c1=>
+                                {categories1?.filter(f1=>(f1?.status==="ACTIVE"))?.map(c1=>
                                     <option value={c1.categoryName} >{c1.categoryName}</option>
                                     )}
                             </select>
@@ -94,7 +93,7 @@ const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.
                             <label className="form-label">Product Model</label>
                             <select className="form-select" name='productModel' value={productModel} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Model</option>
-                                {category && props?.products?.data?.filter(p1=>categoryById?.find(c1=>c1?._id===p1?.categoryId))?.map(c1=>
+                                {category && props?.products?.data?.filter(p1=>p1?.productCategory===category)?.map(c1=>
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>
@@ -105,7 +104,7 @@ const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.
                             <label className="form-label">Fault Type </label>{" "} <span className='text-muted'>(Select max 5)</span>
                             <select className="form-select" name='fault' value={fault} onChange={(e)=>fault1(e.currentTarget.value)}  >
                                 <option value="" selected>Choose Fault</option>
-                                {props?.faultType?.map(c1=>
+                                {productModel && props?.faultType?.filter(f1=>f1?.productModel===productModel)?.map(c1=>
                                     <option value={c1.faultName} >{c1.faultName}</option>
                                     )}
                             </select>

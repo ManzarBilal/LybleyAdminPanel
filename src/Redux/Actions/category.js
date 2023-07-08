@@ -13,3 +13,16 @@ export const getCategory=(id)=>{
        }
     }
 }
+export const getAllCategory=()=>{
+    return async (dispatch)=>{
+     try{
+         let response= await httpCommon.get("/getAllProductCategories");
+         dispatch({
+             type:"CATEGORY",
+             payload:response.data
+         })
+    }catch(err){
+     console.log(err);
+    }
+ }
+}
