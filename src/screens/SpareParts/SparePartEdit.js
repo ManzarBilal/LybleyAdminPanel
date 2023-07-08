@@ -19,7 +19,7 @@ function SparePartEdit(props) {
     const categories=useSelector(state=>state?.category);
     const spareParts=useSelector(state=>state?.spareParts);
     const [randomValue,setRandomValue]=useState("");
-
+    const [loading,setLoading]=useState(false);
     const [img,setImage]=useState("");
     const [faults,setFault]=useState([]);
     const [sparePart,setSpareParts]=useState({ })
@@ -86,13 +86,15 @@ function SparePartEdit(props) {
         let obj={partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
             MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType,partNo:sparePart?.partNo,skuNo:sparePart?.skuNo,length:sparePart?.length,breadth:sparePart?.breadth,height:sparePart?.height,weight:sparePart?.weight};
         try {
-           
+            setLoading(true);
             let response = await httpCommon.patch(`/updateSparePart/${id}`,obj);
             let { data } = response;
+            setLoading(false);
             ToastMessage(data);
               history.push(`${props?.url}/spareParts-grid`)
         } catch (err) {
             console.log(err);
+            setLoading(false);
         }
     }
    
@@ -114,7 +116,7 @@ function SparePartEdit(props) {
                         <EditImage url={props?.url} id={id} img={img} setImage={setImage} sparePart={sparePart} onImage={handleImage} changeRandom={changeRandom} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5"onClick={editProduct} >Save</button>
+                        <button type="submit" disabled={loading} className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5"onClick={editProduct} >{loading ? "Updating..." : "Update"}</button>
                     </div>
                    
                 </div>
