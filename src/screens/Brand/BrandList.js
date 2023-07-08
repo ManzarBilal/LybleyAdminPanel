@@ -27,6 +27,7 @@ function BrandList(props) {
 
     const [gstView, setGstView] = useState(false)
     const [gstDocument, setGstDocument] = useState("")
+    const [brandLogo, setBrandLogo] = useState("")
 
     const columns = () => {
         return [
@@ -124,13 +125,13 @@ function BrandList(props) {
         setConfirmBoxView(true);
     }
     const handleBrandEdit = (id) => {
-        const findData = table_row.find(obj => {
-            return obj._id === id
-        })
-        setBrandId(id)
-        setBrandImage(findData?.brandLogo)
-        setIseditmodal(true)
-
+        // const findData = table_row.find(obj => {
+        //     return obj._id === id
+        // })
+        // setBrandId(id)
+        // setBrandImage(findData?.brandLogo)
+        // setIseditmodal(true)
+        history.push(props?.url + `/brand-details/${id}`)
     }
 
     const handleViewDetail = (id) => {
@@ -145,33 +146,33 @@ function BrandList(props) {
     const validationSchema = Yup.object().shape({
         name: Yup.string().required(' Brand Name is required')
             .min(4, "Brand Name must be at least 4 characters"),
-        contact: Yup.string()
-            .required('Contact No. is required')
-            .min(10, 'Contact No. must be at least 10 characters')
-            .max(10, 'Contact No. must not exceed 10 characters'),
-        gstNo: Yup.string()
-            .required('GST No. is required')
-            .min(10, 'GST No. must be at least 10 characters'),
-        address: Yup.string()
-            .required('address is required')
-            .min(10, 'address must be at least 10 characters'),
-        email: Yup.string()
-            .required('Email is required')
-            .email('Email is invalid'),
+        // contact: Yup.string()
+        //     .required('Contact No. is required')
+        //     .min(10, 'Contact No. must be at least 10 characters')
+        //     .max(10, 'Contact No. must not exceed 10 characters'),
+        // gstNo: Yup.string()
+        //     .required('GST No. is required')
+        //     .min(10, 'GST No. must be at least 10 characters'),
+        // address: Yup.string()
+        //     .required('address is required')
+        //     .min(10, 'address must be at least 10 characters'),
+        // email: Yup.string()
+        //     .required('Email is required')
+        //     .email('Email is invalid'),
         // gstDocument: Yup.mixed().test("file", "You need to provide a file", (value) => {
         //     if (value.length > 0) {
         //         return true;
         //     }
         //     return false;
         // }),
-        password: Yup.string()
-            .required('Password is required')
-            .min(8, 'Password must be at least 8 characters')
-            .max(40, 'Password must not exceed 40 characters'),
-        confirmPassword: Yup.string()
-            .required('Confirm Password is required')
-            .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
-        chooseCb: Yup.bool().oneOf([true], 'Please fill the box')
+        // password: Yup.string()
+        //     .required('Password is required')
+        //     .min(8, 'Password must be at least 8 characters')
+        //     .max(40, 'Password must not exceed 40 characters'),
+        // confirmPassword: Yup.string()
+        //     .required('Confirm Password is required')
+        //     .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
+        // chooseCb: Yup.bool().oneOf([true], 'Please fill the box')
     });
 
 
@@ -187,8 +188,10 @@ function BrandList(props) {
         if (e.target.files[0]) {
             reader.readAsDataURL(e.target.files[0])
             if (e.target.name === "gstDocument") {
-                // console.log(e.target.files[0]);
                 setGstDocument(e.target.files[0]);
+            }
+            if (e.target.name === "brandLogo") {
+                setBrandLogo(e.target.files[0]);
             }
         }
     };
@@ -196,14 +199,15 @@ function BrandList(props) {
     const signUp = async (obj) => {
         try {
             const formData = new FormData()
-            formData.append("gstDocument", gstDocument);
-            formData.append("gstNo", obj.gstNo);
+            // formData.append("gstDocument", gstDocument);
+            // formData.append("gstNo", obj.gstNo);
             formData.append("brandName", obj.name,)
-            formData.append("address", obj.address,)
-            formData.append("email", obj.email,)
-            formData.append("contact", +obj.contact,)
-            formData.append("password", obj.password,)
-            console.log(gstDocument, "gstDocument");
+            formData.append("brandLogo", brandLogo,)
+            // formData.append("address", obj.address,)
+            // formData.append("email", obj.email,)
+            // formData.append("contact", +obj.contact,)
+            // formData.append("password", obj.password,)
+
 
             // const fullData={...body ,gstDocument:gstDocument}
             // console.log(fullData,"fullData");
@@ -348,8 +352,17 @@ function BrandList(props) {
                                     </div>
                                 </div>
                             </div>
-
                             <div className="col-12">
+                                <div className="mb-1">
+                                    <label className="form-label">Brand Logo</label>
+                                    <input type="file" name="brandLogo" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
+
+
+                                    />
+
+                                </div>
+                            </div>
+                            {/* <div className="col-12">
                                 <div className="mb-1">
                                     <label className="form-label">Email address</label>
                                     <input type="email" className={(errors && errors.email) ? "form-control  border-danger " : "form-control"} placeholder="name@example.com"
@@ -391,7 +404,7 @@ function BrandList(props) {
                                 <div className="mb-1">
                                     <label className="form-label">Upload GST Document</label>
                                     <input type="file" name="gstDocument" onChange={(e) => handleFileChange(e)} id="myfile" className="form-control"
-                                    // {...register('gstDocument')}
+                                   
 
                                     />
                                     {gstView ? <> {gstDocument === "" ? <div className='text-danger'>
@@ -448,11 +461,9 @@ function BrandList(props) {
                                     <label className="form-check-label" htmlFor="flexCheckDefault">
                                         I accept the <Link to="#!" title="Terms and Conditions" className="text-secondary">Terms and Conditions</Link>
                                     </label>
-                                    {/* <div className='text-danger'>
-                                 {errors.chooseCb?.message}
-                             </div> */}
+                                    
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
                     </Modal.Body>
