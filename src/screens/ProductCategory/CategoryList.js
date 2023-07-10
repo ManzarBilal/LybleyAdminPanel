@@ -19,8 +19,8 @@ function CategoryList() {
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [loading, setLoading] = useState(false)
     const [loading1, setLoading1] = useState(false)
-
-
+    const [brandName,setBrandName]=useState("");
+    const [brands,setBrands]=useState([]);
     const admin = localStorage.getItem("user");
     const Admindata = JSON.parse(admin);
 
@@ -71,9 +71,27 @@ function CategoryList() {
     useEffect(() => {
         const admin = localStorage.getItem("user");
         const Admindata = JSON.parse(admin);
-        Admindata?.role === "ADMIN" ? GetAllCategory()
-            : GetAllCategoryByBrand()
+        if(Admindata?.role === "ADMIN"){
+            GetAllCategory()
+            GetAllBrands();
+        }else{
+            GetAllCategoryByBrand()
+        } 
     }, [randomValue]);
+
+    const GetAllBrands = async () => {
+        try {
+            let response = await httpCommon.get("/getAllBrands")
+            let { data } = response
+            setBrands(data);
+        }
+        catch (err) {
+            console.log(err)
+
+
+        }
+    }
+
     const GetAllCategory = async () => {
         try {
             setLoading(true)
@@ -176,9 +194,10 @@ function CategoryList() {
         try {
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
+            let obj1=obj?.role==="ADMIN" ? brands.find(f1=>f1?.brandName===brandName) : obj;
             const formData = new FormData();
-            formData.append("userId", obj?._id);
-            formData.append("brandName", obj?.brandName);
+            formData.append("userId", obj1?._id);
+            formData.append("brandName", obj1?.brandName);
             formData.append("categoryName", categoryName);
             formData.append("categoryImage", categoryImage);
             setLoading1(true)
@@ -188,6 +207,7 @@ function CategoryList() {
             setLoading1(false);
             setRandomValue(data);
             setCategoryName("")
+            setBrandName("")
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -283,6 +303,15 @@ function CategoryList() {
                     <div className="deadline-form">
                         <form>
                             <div className="row g-3 mb-3">
+                             {Admindata?.role==="ADMIN" ?  <div className="col-sm-12">
+                                <label className="form-label">Select Brand</label>
+                               <select className="form-select" name='brandName' value={brandName} onChange={(e)=>setBrandName(e.currentTarget.value)}  >
+                                <option value="" selected>Choose Brand</option>
+                                {brands?.filter(f1=>f1?.approval==="APPROVED")?.map(b1=>
+                                    <option value={b1?.brandName} >{b1.brandName}</option>
+                                    )}
+                               </select>
+                                </div> : ""}
                                 <div className="col-sm-12">
                                     <label htmlFor="item" className="form-label">Category Name</label>
                                     <input type="text" className="form-control" id="item" value={categoryName} onChange={(e) => setCategoryName(e.currentTarget.value)} />

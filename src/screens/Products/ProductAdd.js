@@ -12,7 +12,7 @@ import BasicInformation from '../../components/Products/ProductAdd/BasicInformat
 import Images from '../../components/Products/ProductAdd/Images';
 //import CroppedImages from '../../components/Products/ProductAdd/CroppedImages';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategory } from '../../Redux/Actions/category';
+import { getAllCategory, getCategory } from '../../Redux/Actions/category';
 import httpCommon from "../../http-common";
 import { ToastMessage } from '../../components/common/ToastMessage';
 
@@ -26,7 +26,7 @@ function ProductAdd() {
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-         dispatch(getCategory(obj?._id));
+         dispatch(getAllCategory());
        // GetAllCategory();
 
     },[dispatch])
@@ -62,13 +62,15 @@ function ProductAdd() {
         try{
             let category=categories.find(c1=>c1?.categoryName===product?.productCategory);
             // console.log("category",category)
+            let user=localStorage.getItem("user");
+            let obj=JSON.parse(user);
             const formData=new FormData();
             formData.append("productName",product?.productName);
             formData.append("productImage",product?.productImage);
             formData.append("productCategory",product?.productCategory);
             formData.append("productDescription",product?.productDescription);
-            formData.append("userId",category?.userId);
-            formData.append("brandName",category?.brandName);
+            formData.append("userId",obj?._id);
+            formData.append("brandName",obj?.brandName);
             formData.append("categoryId",category?._id);
             setLoading(true);
             let response=await httpCommon.post("/addProduct",formData);
