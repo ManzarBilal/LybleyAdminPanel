@@ -37,7 +37,7 @@ const GetProfile = async () => {
 
     return (    
         <div className='row g-3'>
-            <PageHeader1 pagetitle='Brand Profile' />
+            <PageHeader1 pagetitle='  Profile' />
             <div className='col-xl-4 col-lg-5 col-md-12'>
 
                 <Profile setRandomValue={setRandomValue}  user={userDetail}/>

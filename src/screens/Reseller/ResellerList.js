@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import { userEmail } from '../../Redux/Actions/userEmail';
 
 const defaultBanner = "https://visme.co/blog/wp-content/uploads/2021/01/header-3.png"
-function BrandList(props) {
+function ResellerList(props) {
     const [table_row, setTable_row] = useState([]);
     const [viewDetail, setViewDetail] = useState([]);
     const [ismodal, setIsmodal] = useState(false);
@@ -69,7 +69,7 @@ function BrandList(props) {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    <div style={{ cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/brand-dashboard/${row?._id}`} >
+                    <div style={{ cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/reseller-dashboard/${row?._id}`} >
                         <button type="button" onClick={() => { handleBrand(row?._id) }} className="btn btn-outline-secondary deleterow"><i className="icofont-eye-alt text-info"></i></button></Link>
                     </div>
                     <button onClick={() => { handleBrandEdit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
@@ -131,7 +131,7 @@ function BrandList(props) {
         // setBrandId(id)
         // setBrandImage(findData?.brandLogo)
         // setIseditmodal(true)
-        history.push(props?.url + `/brand-details/${id}`)
+        history.push(props?.url + `/reseller-details/${id}`)
     }
 
     const handleViewDetail = (id) => {
@@ -262,8 +262,8 @@ function BrandList(props) {
         }
     }
 
-    const brandData=table_row?.filter(f1=>f1?.role==="BRAND");
-
+    const resellerData=table_row?.filter(f1=>f1?.role==="RESELLER");
+ 
     return (
         <>
             <div className="body d-flex py-lg-3 py-md-2">
@@ -283,7 +283,7 @@ function BrandList(props) {
                                                 <div className="col-sm-12">
                                                     <DataTable
                                                         columns={columns()}
-                                                        data={brandData}
+                                                        data={resellerData}
                                                         defaultSortField="title"
                                                         pagination
                                                         selectableRows={false}
@@ -482,4 +482,4 @@ function BrandList(props) {
         </>
     )
 }
-export default BrandList;
+export default ResellerList;
