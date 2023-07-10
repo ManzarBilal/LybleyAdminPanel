@@ -85,6 +85,8 @@ import MyOrderList from './Orders/MyOrderList';
 import CustomerOrderList from './Customers/CustomerOrder';
 import BlogCategoryList from './Blog/BlogCategory';
 import BrandDashboard from './Brand/BrandDashboard';
+import BrandProfile from './Brand/brandProfile';
+import ResellerList from './Reseller/ResellerList';
 
 function MainIndex(props) {
 
@@ -108,7 +110,13 @@ function MainIndex(props) {
           <Route exact path={props?.url + '/blog-category'} render={() => { return <BlogCategoryList /> }} />
 
           <Route exact path={props?.url + '/brand-list'} render={() => { return <BrandList url={props?.url}/> }} />
+          <Route exact path={props?.url + '/brand-details/:id'} render={() => { return <BrandProfile url={props?.url}/> }} />
           <Route exact path={props?.url + '/brand-dashboard/:id'} render={() => { return <BrandDashboard url={props?.url}/> }} />
+
+          <Route exact path={props?.url + '/reseller-list'} render={() => { return <ResellerList url={props?.url}/> }} />
+          <Route exact path={props?.url + '/reseller-details/:id'} render={() => { return <BrandProfile url={props?.url}/> }} />
+          <Route exact path={props?.url + '/reseller-dashboard/:id'} render={() => { return <BrandDashboard url={props?.url}/> }} />
+
 
           <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
           <Route exact path={props?.url + '/myCategory-list'} render={() => { return <MyCategoryList /> }} />

@@ -25,7 +25,7 @@ function BlogCategoryList() {
     const [blogId, setBlogId] = useState("");
     const [loading, setLoading] = useState(false)
 
-    
+
     const [blogData, setBlogData] = useState("")
 
     const columns = () => {
@@ -35,7 +35,7 @@ function BlogCategoryList() {
                 name: "SR. NO.",
                 selector: (row) => row?.i,
                 cell: row => row?.i,
-                sortable: true, 
+                sortable: true,
             },
             {
                 name: "CATEGORY TITLE",
@@ -49,7 +49,7 @@ function BlogCategoryList() {
                 cell: row => new Date(row?.createdAt)?.toLocaleString(),
                 sortable: true, minWidth: "200px"
             },
-            
+
             {
                 name: "ACTION",
                 selector: (row) => { },
@@ -101,13 +101,13 @@ function BlogCategoryList() {
             return obj._id === id
         })
         setBlogId(id)
-        setBlogData({ category: findData?.category  })
-         
+        setBlogData({ category: findData?.category })
+
         setIseditmodal(true)
 
     }
 
-   
+
 
     const validationSchema = Yup.object().shape({
         category: Yup.string().required(' Category is required')
@@ -118,26 +118,31 @@ function BlogCategoryList() {
     const {
         register,
         handleSubmit,
+        reset,
+        setValue,
         formState: { errors }
     } = useForm({
         resolver: yupResolver(validationSchema)
     });
-     
+
 
     const createBlog = async (obj) => {
 
         try {
             setLoading(true)
-       
-            let response = await httpCommon.post("/createBlogCategory", {category:obj?.category});
+
+            let response = await httpCommon.post("/createBlogCategory", { category: obj?.category });
             let { data } = response;
+            reset();
+            setValue('category',"");
             setLoading(false)
             setIsmodal(false)
             ToastMessage(data)
-            let x = Math.floor((Math.random() * 10) + 1);
-            setRandomValue(x);
+            setRandomValue(data);
         } catch (err) {
             console.log(err);
+            setLoading(false)
+
         }
     }
 
@@ -151,10 +156,10 @@ function BlogCategoryList() {
     const onUpdate = data => {
         updateBlog(data);
     }
-   
+
     const updateBlog = async (obj) => {
-    
-        const dataObj={category:obj?.category }
+
+        const dataObj = { category: obj?.category }
         try {
             setLoading(true)
             let response = await httpCommon.patch(`/updateBlogCategory/${blogId}`, dataObj);
@@ -166,12 +171,14 @@ function BlogCategoryList() {
             setRandomValue(x);
         } catch (err) {
             console.log(err);
+            setLoading(false)
+
         }
     }
-    
+
     const finalData = table_row?.map((item, i) => ({ ...item, i: i + 1 }))
 
-    
+
     return (
         <>
             <div className="body d-flex py-lg-3 py-md-2">
@@ -214,8 +221,8 @@ function BlogCategoryList() {
                     <Modal.Body className="modal-body">
 
                         <div className="card-body d-flex profile-fulldeatil flex-column">
- 
-                             
+
+
                             <div className="profile-info w-100">
                                 <h6 className="mb-0 mt-2 fw-bold d-block fs-6 text-center"> {viewDetail?.brandName}</h6>
                                 <div className="row g-2 pt-2">
@@ -237,11 +244,11 @@ function BlogCategoryList() {
                     </Modal.Body>
                     <div className="modal-footer">
                         <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" className="btn btn-primary"disabled={loading} onClick={handleSubmit(onUpdate)}>Update</button>
+                        <button type="submit" className="btn btn-primary" disabled={loading} onClick={handleSubmit(onUpdate)}>Update</button>
                     </div>
 
                 </Modal>
-                <Modal className=""  show={ismodal} onHide={() => setIsmodal(false) }  >
+                <Modal className="" show={ismodal} onHide={() => setIsmodal(false)}  >
                     <Modal.Header className="modal-header" closeButton>
                         <h5 className="modal-title  fw-bold" id="expaddLabel">Add Blog Category</h5>
                     </Modal.Header>
@@ -263,7 +270,7 @@ function BlogCategoryList() {
 
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
-                        <button onClick={() => setIsmodal(false) }   className="btn btn-secondary"  >Close</button>
+                        <button onClick={() => setIsmodal(false)} className="btn btn-secondary"  >Close</button>
                         <button onClick={handleSubmit(onRegister)} disabled={loading} className="btn btn-primary">Add Category</button>
                     </Modal.Footer>
 

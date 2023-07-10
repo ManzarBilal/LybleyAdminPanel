@@ -66,6 +66,29 @@
             ]
         },
         {
+            "name": "Reseller",
+            "routerLink": [""],
+            "identifier": "Reseller",
+            "iconClass": "icofont-funky-man fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                {
+                    "name": "Reseller List",
+                    "routerLink": ["reseller-list"],
+                    "identifier": "Reseller List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                
+                  
+            ]
+        },
+        {
             "name": "Category",
             "routerLink": [""],
             "identifier": "Category",

@@ -173,6 +173,7 @@ function MyCategoryList() {
             setLoading1(false);
             setIsmodal(false)
             setRandomValue(data);
+            setCategoryName("")
             ToastMessage(data);
         } catch (err) {
             console.log(err);
