@@ -4,8 +4,9 @@ import React from 'react';
 
 
 function BasicInformation(props) {
- 
-let {productName,productDescription,productCategory}=props?.product;
+    let obj=localStorage.getItem("user");
+    let user=JSON.parse(obj);
+    let {productName,productDescription,productCategory}=props?.product;
 
     return (
         <>
@@ -15,6 +16,15 @@ let {productName,productDescription,productCategory}=props?.product;
             <div className="card-body">
                 <form>
                     <div className="row g-3 align-items-center">
+                      {(user?.role==="ADMIN" && !props?.myProduct) ? <div className="col-md-12">
+                        <label className="form-label">Select Brand</label>
+                               <select className="form-select" name='brandName' value={props?.brandName} onChange={(e)=>props?.setBrandName(e.currentTarget.value)}  >
+                                <option value="" selected>Choose Brand</option>
+                                {props?.brands?.filter(f1=>f1?.approval==="APPROVED")?.map(b1=>
+                                    <option value={b1?.brandName} >{b1.brandName}</option>
+                                    )}
+                               </select>
+                        </div> : (props?.myProduct && user?.role==="ADMIN") ? "" : ""}   
                         <div className="col-md-12">
                             <label className="form-label"> Product Name</label>
                             <input type="text" className="form-control" name='productName' value={productName} onChange={(e) => {props.onChange(e) }} />

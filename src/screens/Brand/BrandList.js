@@ -24,6 +24,7 @@ function BrandList(props) {
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [brandId, setBrandId] = useState("");
     const [loading, setLoading] = useState(false)
+    const [loading1, setLoading1] = useState(false)
 
     const [gstView, setGstView] = useState(false)
     const [gstDocument, setGstDocument] = useState("")
@@ -211,15 +212,20 @@ function BrandList(props) {
 
             // const fullData={...body ,gstDocument:gstDocument}
             // console.log(fullData,"fullData");
-            let response = await httpCommon.post("/brandRegistration", formData);
+            setLoading1(true);
+            let response = await httpCommon.post("/adminRegistrationBrand", formData);
             let { data } = response;
+            setLoading1(false);
+            setRandomValue(data);
+            setIsmodal(false)
             ToastMessage(data)
-            if (data.status === true) {
-                history.push(`${"/user/verification"}`)
-            }
-            else return null;
+            // if (data.status === true) {
+            //     history.push(`${"/user/verification"}`)
+            // }
+            // else return null;
         } catch (err) {
             console.log(err);
+            setLoading1(false);
         }
     }
     const dispatch = useDispatch()
@@ -262,7 +268,7 @@ function BrandList(props) {
         }
     }
 
-    const brandData=table_row?.filter(f1=>f1?.role==="BRAND");
+    const brandData = table_row?.filter(f1 => f1?.role === "BRAND");
 
     return (
         <>
@@ -472,7 +478,7 @@ function BrandList(props) {
                     </Modal.Body>
                     <Modal.Footer className="modal-footer">
                         <button onClick={() => setIsmodal(false)} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button onClick={handleSubmit(onRegister)} className="btn btn-primary">Add Brand</button>
+                        <button onClick={handleSubmit(onRegister)} disabled={loading1} className="btn btn-primary">{loading1 ? "Adding..." : "Add Brand"}</button>
                     </Modal.Footer>
 
                 </Modal>
