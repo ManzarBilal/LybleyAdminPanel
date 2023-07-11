@@ -16,33 +16,19 @@ import { getAllCategory, getCategory } from '../../Redux/Actions/category';
 import httpCommon from "../../http-common";
 import { ToastMessage } from '../../components/common/ToastMessage';
 
-function ProductAdd() {
+function MyProductAdd() {
 
     const dispatch=useDispatch();
      const categories=useSelector(state=>state?.category);
    // const [categories,setCategories]=useState([]);
     const [loading,setLoading]=useState(false);
-    const [brands,setBrands]=useState([]);
-    const [brandName,setBrandName]=useState("");
     
     useEffect(()=>{
-        let user=localStorage.getItem("user");
-        let obj=JSON.parse(user);
+        
          dispatch(getAllCategory());
-         GetAllBrands();
+       // GetAllCategory();
 
     },[dispatch])
-
-    const GetAllBrands = async () => {
-        try {
-            let response = await httpCommon.get("/getAllBrands")
-            let { data } = response
-            setBrands(data);
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
     
     const GetAllCategory = async () => {
         try {
@@ -77,20 +63,18 @@ function ProductAdd() {
             // console.log("category",category)
             let user=localStorage.getItem("user");
             let obj=JSON.parse(user);
-            let obj1=obj?.role==="ADMIN" ? brands.find(f1=>f1?.brandName===brandName) : obj;
             const formData=new FormData();
             formData.append("productName",product?.productName);
             formData.append("productImage",product?.productImage);
             formData.append("productCategory",product?.productCategory);
             formData.append("productDescription",product?.productDescription);
-            formData.append("userId",obj1?._id);
-            formData.append("brandName",obj1?.brandName);
+            formData.append("userId",obj?._id);
+            formData.append("brandName",obj?.brandName);
             formData.append("categoryId",category?._id);
             setLoading(true);
             let response=await httpCommon.post("/addProduct",formData);
             let {data}=response;
             setLoading(false);
-            setBrandName("");
             ToastMessage(data);
             setProduct({productName:"",productDescription:"",productCategory:"",productImage:""});
         }catch(err){
@@ -133,7 +117,7 @@ function ProductAdd() {
                 </div> */}
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation brands={brands} brandName={brandName} setBrandName={setBrandName} categories={categories} product={product} onChange={handleChange} />
+                        <BasicInformation myProduct={true} categories={categories} product={product} onChange={handleChange} />
                     </div>
                     {/* <div className="card mb-3">
                         <ShippingCountries />
@@ -153,4 +137,4 @@ function ProductAdd() {
         </div>
     )
 }
-export default ProductAdd;
+export default MyProductAdd;

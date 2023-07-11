@@ -12,7 +12,7 @@ import BasicInformation from '../../components/Products/ProductEdit/BasicInforma
 import Images from '../../components/Products/ProductEdit/Images';
 // import CroppedImages from '../../components/Products/ProductEdit/CroppedImages';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategory } from '../../Redux/Actions/category';
+import { getAllCategory, getCategory } from '../../Redux/Actions/category';
 import httpCommon from "../../http-common"
 import { ToastMessage } from '../../components/common/ToastMessage';
 import { useHistory, useParams } from 'react-router-dom';
@@ -32,7 +32,7 @@ function ProductEdit(props) {
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getCategory(obj?._id));
+        dispatch(getAllCategory());
     const filterProduct = products?.data?.find(e1 => e1?._id === id)
      setProduct(filterProduct);
     },[id,dispatch,products])
@@ -57,7 +57,8 @@ function ProductEdit(props) {
 
     const editProduct = async () => {
         try {
-            let obj={productName:product.productName,productCategory:product.productCategory,productDescription:product.productDescription};
+            let catId=categories.find(f1=>f1?.categoryName===product.productCategory);
+            let obj={categoryId:catId?._id,productName:product.productName,productCategory:product.productCategory,productDescription:product.productDescription};
             setLoading(true);
             let response = await httpCommon.patch(`/updateProduct/${id}`,obj);
             let { data } = response;

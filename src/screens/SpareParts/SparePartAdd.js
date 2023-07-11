@@ -131,7 +131,7 @@ function SparePartAdd() {
             let {data}=response;
             setLoading(false);
             ToastMessage(data);
-            setSpareParts({ partName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:"",partNo:"",length:"",weight:"",height:"",breadth:"",skuNo:""});
+            setSpareParts({ partName:"",brandName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:"",partNo:"",length:"",weight:"",height:"",breadth:"",skuNo:""});
         }catch(err){
             console.log(err);
             setLoading(false);

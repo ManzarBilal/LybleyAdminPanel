@@ -150,6 +150,16 @@
                     "children": []
                 },
                 {
+                    "name": "My Product Add",
+                    "routerLink": ["myproduct-Add"],
+                    "identifier": "My Product Add",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
                     "name": "Product Grid",
                     "routerLink": ["product-grid"],
                     "identifier": "Product Grid",
