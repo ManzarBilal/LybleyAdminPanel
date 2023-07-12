@@ -16,8 +16,14 @@ const [technicianPrice]=useState(["350","600"]);
 let {partName,description,partNo,skuNo,length,breadth,height,weight,faultType,MRP,bestPrice,technician,productModel,category,brandName}=props?.sparePart;
 let {categories}=props;
 
+let product1=props?.products?.data?.filter(f1=>f1?.brandName===brandName)?.map(m1=>({status:"ACTIVE",categoryName:m1?.productCategory}));
+let category1=categories?.filter(f1=>f1?.brandName===brandName)?.map(m1=>({status:"ACTIVE", categoryName:m1?.categoryName}));
+let merge=product1.concat(category1);
+let unique1=Array.from(new Set(merge.map(JSON.stringify))).map(JSON.parse);
+console.log(unique1)
+let categories1=props?.user?.role==="RESELLER" ? unique1 : categories;
+let products1=props?.user?.role==="RESELLER" ?  props?.products?.data?.filter(p1=>p1?.productCategory===category && p1?.brandName===brandName) :  props?.products?.data?.filter(p1=>p1?.productCategory===category);
 
-let categories1=props?.user?.role==="RESELLER" ? categories?.filter(f1=>f1?.brandName===brandName) : categories;
     return (
         <>
             <div className="card-header py-3 d-flex justify-content-between bg-transparent border-bottom-0">
@@ -93,7 +99,7 @@ let categories1=props?.user?.role==="RESELLER" ? categories?.filter(f1=>f1?.bran
                             <label className="form-label">Product Model</label>
                             <select className="form-select" name='productModel' value={productModel} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Model</option>
-                                {category && props?.products?.data?.filter(p1=>p1?.productCategory===category)?.map(c1=>
+                                {category && products1.map(c1=>
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>

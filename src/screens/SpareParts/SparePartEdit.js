@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCategory } from '../../Redux/Actions/category';
+import { getAllCategory, getCategory } from '../../Redux/Actions/category';
 import httpCommon from "../../http-common"
 import { ToastMessage } from '../../components/common/ToastMessage';
 import { useHistory, useParams } from 'react-router-dom';
 import EditBasicInformation from './EditBasicInformation';
-import { getProduct } from '../../Redux/Actions/product';
+import { getAllProduct, getProduct } from '../../Redux/Actions/product';
 import EditImage from './EditImage';
 
 function SparePartEdit(props) {
@@ -26,8 +26,8 @@ function SparePartEdit(props) {
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        dispatch(getCategory(obj?._id));
-        dispatch(getProduct(obj?._id));
+        dispatch(getAllCategory());
+        dispatch(getAllProduct());
         getFaults();
         const filterPart = spareParts?.data?.find(e1 => e1?._id === id)
         console.log(randomValue,filterPart.images);
@@ -83,7 +83,8 @@ function SparePartEdit(props) {
 
     //  console.log("sparePart",sparePart);
     const editProduct = async () => {
-        let obj={partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
+        let pdId=products?.data?.find(f1=>f1?.productName===sparePart?.productModel)
+        let obj={productId:pdId?._id,partName:sparePart?.partName,category:sparePart?.category,description:sparePart?.description,
             MRP:sparePart?.MRP,bestPrice:sparePart?.bestPrice,productModel:sparePart?.productModel,faultType:sparePart?.faultType,partNo:sparePart?.partNo,skuNo:sparePart?.skuNo,length:sparePart?.length,breadth:sparePart?.breadth,height:sparePart?.height,weight:sparePart?.weight};
         try {
             setLoading(true);
