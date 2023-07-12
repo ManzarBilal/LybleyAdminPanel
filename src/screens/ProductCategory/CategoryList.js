@@ -12,6 +12,7 @@ function CategoryList() {
     const [randomValue, setRandomValue] = useState("");
     const [ismodal, setIsmodal] = useState(false);
     const [iseditmodal, setIseditmodal] = useState(false);
+    const [isExistmodal, setExistmodal] = useState(false);
     const [categoryName, setCategoryName] = useState("");
     const [categoryImage, setCategoryImage] = useState("");
     const [id, setCatId] = useState("");
@@ -203,12 +204,19 @@ function CategoryList() {
             setLoading1(true)
             let response = await httpCommon.post("/addProductCategory", formData);
             let { data } = response;
+            if(data?.status===false)
+            {
+            setIsmodal(false)
+                setExistmodal(true);
+            }else{
+                ToastMessage(data);
+            }
             setIsmodal(false)
             setLoading1(false);
             setRandomValue(data);
             setCategoryName("")
             setBrandName("")
-            ToastMessage(data);
+            
         } catch (err) {
             console.log(err);
             setLoading1(false);
@@ -333,6 +341,26 @@ function CategoryList() {
             </Modal>
             <ConfirmBox bool={confirmBoxView} setConfirmBoxView={setConfirmBoxView} onSubmit={deleteCategory} />
 
+
+            <Modal show={isExistmodal} style={{ display: 'block' }}>
+                <Modal.Header className="modal-header" onClick={() => { setExistmodal(false) }} closeButton>
+                    <h5 className="modal-title  fw-bold" id="expaddLabel">Category Exists</h5>
+                </Modal.Header>
+                <Modal.Body className="modal-body">
+                    <div className="deadline-form">
+                      <div className='fw-bold'> Category Already Exists! Please Add Your Product in This Category.</div> 
+                       <p style={{textAlign:"justify",fontFamily:"sans-serif"}} className='mt-2 text-danger'>We're sorry but it seems that the category you are trying to create already exists.
+                        However, you can still add your product to the existing category.
+                        </p> 
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer className="modal-footer">
+                    <button onClick={() => { setExistmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    {/* <button type="submit" disabled={loading1} className="btn btn-primary" onClick={addCategory}>{loading1 ? "Adding..." : "Add"}</button> */}
+                </Modal.Footer>
+
+            </Modal>
         </div>
     )
 }
