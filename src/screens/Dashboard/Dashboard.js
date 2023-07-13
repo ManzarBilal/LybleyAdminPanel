@@ -155,6 +155,8 @@ function Dashboard(props) {
         return val ? date >= sd && date <= ds : adminBrands;
     })
 
+    console.log(adminBrands1)
+
     let totalOrder = adminOrder1?.reduce((acc, curr) => acc.concat(curr?.items), []);
 
 
@@ -176,7 +178,7 @@ function Dashboard(props) {
     let qty = totalOrder?.reduce((acc, curr) => acc + curr?.quantity, 0);
     let totalSale = tot?.reduce((acc, curr) => acc + curr?.tot, 0)
     let avgSale = totalSale / adminOrder1?.length;
-    console.log(avgSale);
+    
     let avgSaleItem = tot?.reduce((acc, curr) => acc + curr?.tot, 0) / qty;
 
     return (
@@ -236,7 +238,7 @@ function Dashboard(props) {
                                     <div className={`avatar rounded no-thumbnail bg-warning text-light`}><i className='fa fa-smile-o fa-lg'></i></div>
                                     <div className="flex-fill ms-3 text-truncate">
                                         <div className="h6 mb-0">Happy Customers</div>
-                                        <span className="small">{data?.totalCustomers?.length}</span>
+                                        <span className="small">{orders?.length}</span>
                                     </div>
                                 </div>
                             </div>
@@ -282,7 +284,7 @@ function Dashboard(props) {
                                                 <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                     <div className="left-info">
                                                         <span className="text-muted">Brand</span>
-                                                        <div><span className="fs-6 fw-bold me-2">{adminBrands1.length === 0 ? 0 : adminBrands1?.length - 1}</span></div>
+                                                        <div><span className="fs-6 fw-bold me-2">{adminBrands1.length === 0 ? 0 : adminBrands1?.filter(f1=>f1?.role!=="ADMIN")?.length}</span></div>
                                                     </div>
                                                     <div className="right-icon">
                                                         <i className={`icofont-student-alt fs-3 color-light-orange`}></i>

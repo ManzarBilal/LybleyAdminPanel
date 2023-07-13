@@ -12,11 +12,12 @@ const [fault,setFault]=useState("");
       props.onDelete(i);
       setFault("");
  }
-let {partName,description,faultType,MRP,bestPrice,productModel,category,partNo,skuNo,length,breadth,height,weight}=props?.sparePart;
+let {partName,description,faultType,MRP,bestPrice,productModel,category,partNo,skuNo,length,breadth,height,weight,brandName}=props?.sparePart;
  
 let {categories}=props;
  
 const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.categoryId===p1?._id))
+let pds=props?.user?.role==="RESELLER" ? props?.products?.data?.filter(f1=>f1?.productCategory===category && f1?.brandName===brandName) : props?.products?.data?.filter(f1=>f1?.productCategory===category && f1?.userId===props?.user?._id);
  
     return (
         <>
@@ -82,7 +83,7 @@ const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.
                             <label className="form-label">Product Model</label>
                             <select className="form-select" name='productModel' value={productModel} onChange={(e)=>props.onChange(e)}  >
                                 <option value="" selected>Choose Model</option>
-                               { category && props?.products?.data?.filter(p1=>categoryById?.find(c1=>c1?._id===p1?.categoryId))?.map(c1=>
+                               { category && pds?.map(c1=>
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>
