@@ -44,6 +44,14 @@ function OrderList(props) {
                 cell: row => row?.items?.length,
                 sortable: true,
             },
+            {
+                name: "ORDER DATE & TIME",
+                selector: (row) => row.date,
+                sortable: true,
+                cell: row => <>
+                {<div className='row'> <span>({new Date(row?.createdAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
+
+            },
             // {
             //     name: "STATUS",
             //     selector: (row) => row?.status,
