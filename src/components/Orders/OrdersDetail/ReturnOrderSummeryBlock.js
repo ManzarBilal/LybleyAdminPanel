@@ -3,7 +3,7 @@ import DataTable from 'react-data-table-component';
  
  
 
-function OrderSummeryBlock(props) {
+function ReturnOrderSummeryBlock(props) {
     
     
     
@@ -55,14 +55,14 @@ function OrderSummeryBlock(props) {
                 {<div className='row'> <span>({new Date(row?.createdAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
 
             },
-            // {
-            //     name: " Recieve Return ",
-            //     selector: (row) => row.date,
-            //     sortable: true,
-            //     cell: row => <>
-            //     {<div className='row'> <span>({new Date(row?.updatedAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
+            {
+                name: " Recieve Return ",
+                selector: (row) => row.date,
+                sortable: true,
+                cell: row => <>
+                {<div className='row'> <span>({new Date(row?.updatedAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
 
-            // },
+            },
         ]
     }
 
@@ -81,4 +81,4 @@ function OrderSummeryBlock(props) {
         </div>
     )
 }
-export default OrderSummeryBlock;
+export default ReturnOrderSummeryBlock;

@@ -131,8 +131,9 @@ function BookingList(props) {
     const orders = user?.role === "ADMIN" ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
     const finalData = orders?.filter((item, i) => item?.items.find(it=>it?.technician>0))
-    const FinalData2=finalData?.map((item,i)=>({...item ,i:i+1}));
-    console.log(finalData);
+    const techData=finalData?.filter(f1=>f1?.status==="DELIVER")
+    const FinalData2=techData?.map((item,i)=>({...item ,i:i+1}));
+    // console.log(finalData);
 
     return (
         <div className="body d-flex py-3">

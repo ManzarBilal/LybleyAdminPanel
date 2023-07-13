@@ -117,7 +117,7 @@ let products1=props?.user?.role==="RESELLER" ?  props?.products?.data?.filter(p1
                         </div>
                         {faultType?.map((f1,i)=><div className='btn btn-sm bg-dark text-white m-1'>{f1} <i className='ms-2 icofont-close-circled' onClick={(e)=> handleIndex(i)}></i></div>)}
                     </div>
-                    <div className="col-xl-12 col-lg-12">
+                    {/* <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
                             <label className="form-label">Technician Price </label>
                             <select className="form-select" name='technician' value={technician} onChange={(e)=>props.onChange(e)}  >
@@ -127,7 +127,7 @@ let products1=props?.user?.role==="RESELLER" ?  props?.products?.data?.filter(p1
                                     )}
                             </select>
                         </div>
-                    </div>
+                    </div> */}
                         
                     </div>
                 </form>
