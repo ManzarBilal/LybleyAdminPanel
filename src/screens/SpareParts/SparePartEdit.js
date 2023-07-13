@@ -23,9 +23,10 @@ function SparePartEdit(props) {
     const [img,setImage]=useState("");
     const [faults,setFault]=useState([]);
     const [sparePart,setSpareParts]=useState({ })
+    let obj=localStorage.getItem("user");
+    let user=JSON.parse(obj);
     useEffect(()=>{
-        let user=localStorage.getItem("user");
-        let obj=JSON.parse(user);
+       
         dispatch(getAllCategory());
         dispatch(getAllProduct());
         getFaults();
@@ -110,7 +111,7 @@ function SparePartEdit(props) {
                  
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <EditBasicInformation onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
+                        <EditBasicInformation user={user} onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                     <div className="card mb-3">

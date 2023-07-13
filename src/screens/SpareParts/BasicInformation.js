@@ -20,9 +20,9 @@ let product1=props?.products?.data?.filter(f1=>f1?.brandName===brandName)?.map(m
 let category1=categories?.filter(f1=>f1?.brandName===brandName)?.map(m1=>({status:"ACTIVE", categoryName:m1?.categoryName}));
 let merge=product1.concat(category1);
 let unique1=Array.from(new Set(merge.map(JSON.stringify))).map(JSON.parse);
-console.log(unique1)
+
 let categories1=props?.user?.role==="RESELLER" ? unique1 : categories;
-let products1=props?.user?.role==="RESELLER" ?  props?.products?.data?.filter(p1=>p1?.productCategory===category && p1?.brandName===brandName) :  props?.products?.data?.filter(p1=>p1?.productCategory===category);
+let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category && p1?.brandName===brandName)
 
     return (
         <>
