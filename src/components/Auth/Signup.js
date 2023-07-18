@@ -120,8 +120,8 @@ function Signup(props) {
                     </div>
                     <div className="col-12">
                         <div className="mb-1">
-                            <label className="form-label">Brand name</label>
-                            <input type="email" className={(errors && errors.name) ? "form-control   border-danger " : "form-control  "} placeholder="Brand name"
+                            <label className="form-label">Firm Name</label>
+                            <input type="email" className={(errors && errors.name) ? "form-control   border-danger " : "form-control  "} placeholder="Firm Name"
                                 {...register('name')}
 
                             />
