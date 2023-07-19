@@ -103,7 +103,7 @@ function SparePartAdd() {
             let user=localStorage.getItem("user");
             let obj=JSON.parse(user);
             let technician= +sparePart?.technician;
-            let product=products?.data?.find(p1=>p1.productName===sparePart.productModel);
+            let product=products?.data?.find(p1=>(p1.productName===sparePart.productModel && p1?.brandName===sparePart?.brandName));
             const formData=new FormData();
             formData.append("partName",sparePart?.partName);
             formData.append("description",sparePart?.description);
