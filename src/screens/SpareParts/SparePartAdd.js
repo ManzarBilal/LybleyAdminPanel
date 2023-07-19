@@ -109,7 +109,7 @@ function SparePartAdd() {
             formData.append("description",sparePart?.description);
             formData.append("MRP",sparePart?.MRP);
             formData.append("bestPrice",sparePart?.bestPrice);
-            formData.append("technician",technician);
+            // formData.append("technician",technician);
             formData.append("skuNo",sparePart?.skuNo);
             formData.append("partNo",sparePart?.partNo);
             formData.append("length",+sparePart?.length);

@@ -7,6 +7,7 @@ import StatusOrderBlock from '../../components/Orders/OrdersDetail/StatusOrderBl
 import httpCommon from "../../http-common"
 import { useParams } from 'react-router-dom';
 import { ReactLoader } from '../../components/common/ReactLoader';
+import ReturnOrderSummeryBlock from '../../components/Orders/OrdersDetail/ReturnOrderSummeryBlock';
 
 function ReturnDetails() {
     const param = useParams()
@@ -71,10 +72,10 @@ function ReturnDetails() {
 
     }, [orderByCust]);
 
-    console.log("order",order)
-    console.log("orderByCust",orderByCust)
-    console.log("orderById",orderById)
-    console.log("finalData",finalData)
+    // console.log("order",order)
+    // console.log("orderByCust",orderByCust)
+    // console.log("orderById",orderById)
+    // console.log("finalData",finalData)
 
     return (
         <div className="body d-flex py-3">
@@ -142,7 +143,7 @@ function ReturnDetails() {
                                             <div className="row">
                                                 {loadingCust ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
                                                     :
-                                                    <OrderSummeryBlock orders={finalData} />
+                                                    <ReturnOrderSummeryBlock orders={finalData} />
                                                 }
                                             </div>
                                         </div>
