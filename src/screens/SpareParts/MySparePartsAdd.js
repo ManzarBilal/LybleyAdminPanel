@@ -2,17 +2,17 @@ import React, { useState ,useEffect} from 'react';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
 import { ToastMessage } from '../../components/common/ToastMessage';
-import BasicInformation from './BasicInformation';
 import Image from './Images';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProduct, getProduct } from '../../Redux/Actions/product';
 import { getAllCategory, getCategory } from '../../Redux/Actions/category';
+import MyBasicInformation from './MyBasicInformation';
 
 function MySparePartAdd() {
     
     const dispatch=useDispatch();
-    const products=useSelector(state=>state?.products);
-    const categories=useSelector(state=>state?.category);
+    // const products=useSelector(state=>state?.products);
+    // const categories=useSelector(state=>state?.category);
     const [loading,setLoading]=useState(false);
     const [faults,setFault]=useState([]);
     const [brands,setBrands]=useState([]);
@@ -21,9 +21,9 @@ function MySparePartAdd() {
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
         (obj?.role!=="RESELLER" && setSpareParts({...sparePart,brandName:obj?.brandName})); 
-        dispatch(getAllCategory());
-        dispatch(getAllProduct());
-        GetAllBrands();
+        // dispatch(getAllCategory());
+        // dispatch(getAllProduct());
+        // GetAllBrands();
         getFaults();
     },[dispatch])
 
@@ -33,27 +33,28 @@ function MySparePartAdd() {
         MRP:"",
         bestPrice:"",
         category:"",
-        technician:"",
+        // technician:"",
         faultType:[],
         brandName:"",
         partNo:"",
+        compactibleWith:[],
         productModel:"",
         images:[]
     })
 
-    const GetAllBrands = async () => {
-        try {
-            let response = await httpCommon.get("/getAllBrands")
-            let { data } = response
-            setBrands(data);
+    // const GetAllBrands = async () => {
+    //     try {
+    //         let response = await httpCommon.get("/getAllBrands")
+    //         let { data } = response
+    //         setBrands(data);
 
-        }
-        catch (err) {
-            console.log(err)
+    //     }
+    //     catch (err) {
+    //         console.log(err)
 
 
-        }
-    }
+    //     }
+    // }
     
     const handleChange=(e)=>{
         const {currentTarget:input}=e;
@@ -67,7 +68,16 @@ function MySparePartAdd() {
          setSpareParts(sparePart1);
        // setSpareParts({...sparePart,images:file});
     }
-
+    const handleCompactible=(val)=>{
+        let sparePart1={...sparePart};
+        let index=sparePart1?.compactibleWith?.findIndex(f1=>f1===val);
+        if(index>=0){
+            sparePart1?.compactibleWith?.splice(index,1);
+        }else{
+            sparePart1?.compactibleWith?.push(val);
+        }
+        setSpareParts(sparePart1);
+    }
     const handleFault=(fault)=>{
         let sparePart1={...sparePart};
         let index=sparePart1?.faultType?.findIndex(f1=>f1===fault);
@@ -97,19 +107,31 @@ function MySparePartAdd() {
          console.log(err);
         }
     }
-
+  
+const deleteCompactible=(val)=>{
+    let sparePart1={...sparePart};
+        let index=sparePart1?.compactibleWith?.findIndex(f1=>f1===val);
+        if(index>=0){
+            sparePart1?.compactibleWith?.splice(index,1);
+            setSpareParts(sparePart1);
+        }else{
+            return null;
+        }
+}
     const addSparePart=async ()=>{
         try{
             let user=localStorage.getItem("user");
             let obj=JSON.parse(user);
-            let technician= +sparePart?.technician;
-            let product=products?.data?.find(p1=>(p1.productName===sparePart.productModel && p1?.brandName===sparePart?.brandName));
+            // let technician= +sparePart?.technician;
+            // let product=products?.data?.find(p1=>(p1.productName===sparePart.productModel && p1?.brandName===sparePart?.brandName));
             const formData=new FormData();
             formData.append("partName",sparePart?.partName);
             formData.append("description",sparePart?.description);
             formData.append("MRP",sparePart?.MRP);
             formData.append("bestPrice",sparePart?.bestPrice);
-            // formData.append("technician",technician);
+            for(let x=0; x<sparePart?.compactibleWith?.length; x++){
+            formData.append("compactibleWith",sparePart?.compactibleWith[x]);
+            }
             formData.append("skuNo",sparePart?.skuNo);
             formData.append("partNo",sparePart?.partNo);
             formData.append("length",+sparePart?.length);
@@ -118,20 +140,20 @@ function MySparePartAdd() {
             formData.append("breadth",+sparePart?.breadth);
             formData.append("seller",obj?.role);
             sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
-            formData.append("category",sparePart?.category);
-            formData.append("productModel",sparePart?.productModel);
+            // formData.append("category",sparePart?.category);
+            // formData.append("productModel",sparePart?.productModel);
             for(let x=0; x<sparePart?.images?.length; x++){
                 formData.append("images",sparePart?.images[x]);
             }
             formData.append("userId",obj?._id);
-            formData.append("productId",product?._id);
+           // formData.append("productId",product?._id);
             formData.append("brandName",sparePart?.brandName);
             setLoading(true);
-            let response=await httpCommon.post("/addSparePart",formData);
+            let response=await httpCommon.post("/addCompactibleSparePart",formData);
             let {data}=response;
             setLoading(false);
             ToastMessage(data);
-            setSpareParts({ partName:"",brandName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:"",partNo:"",length:"",weight:"",height:"",breadth:"",skuNo:""});
+            setSpareParts({ partName:"",brandName:"",description:"",MRP:"",bestPrice:"",faultType:[],images:[],technician:"",compactibleWith:[],partNo:"",length:"",weight:"",height:"",breadth:"",skuNo:""});
         }catch(err){
             console.log(err);
             setLoading(false);
@@ -151,7 +173,7 @@ function MySparePartAdd() {
                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation user={user} brands={brands} onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
+                        <MyBasicInformation deleteCompactible={deleteCompactible} handleCompactible={handleCompactible} user={user} onDelete={handleFaultDelete} onSubmit={handleFault} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                    

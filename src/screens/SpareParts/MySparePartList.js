@@ -6,7 +6,7 @@ import PricingBlock from '../../components/Products/ProductList/PricingBlock';
 import RatingBlock from '../../components/Products/ProductList/RatingBlock';
 import PageHeader1 from '../../components/common/PageHeader1';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllSpareParts, getSpareParts, showLoading } from '../../Redux/Actions/sparePart';
+import { getAllSpareParts, getCompactibleSpareParts, showLoading } from '../../Redux/Actions/sparePart';
 import CardBlockList from './CardBlocList';
 import { ReactLoader } from '../../components/common/ReactLoader';
 
@@ -22,7 +22,8 @@ function MySparePartList(props) {
         let user = localStorage.getItem("user");
         let obj = JSON.parse(user);
         dispatch(showLoading(true))
-          dispatch(getSpareParts(obj?._id));
+        dispatch(getCompactibleSpareParts(obj?._id));
+
     }, [dispatch, randomValue])
 
 

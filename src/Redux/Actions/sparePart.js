@@ -32,6 +32,24 @@ export const getSpareParts = (id) => {
     }
 }
 
+export const getCompactibleSpareParts = (id) => {
+    return async (dispatch) => {
+        try {
+            let response = await httpCommon.get(`/compactibleSparePartByuserId/${id}`)
+            dispatch({
+                type: "All_SPAREPART",
+                payload: response.data
+            })
+            dispatch(showLoading(false))
+        } catch (err) {
+            console.log(err);
+            dispatch(showLoading(false))
+
+        }
+    }
+}
+
+
 export const showLoading = (status) => {
     return async (dispatch) => {
         try {
