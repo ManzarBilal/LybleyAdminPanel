@@ -19,11 +19,11 @@ function CardBlockList(props) {
     }
     const deleteSparePart = async () => {
         try {
-            let response = await httpCommon.deleteData(`/deleteSparePart/${partId}`);
+            let response = await httpCommon.deleteData(`/deleteCompactibleSparePart/${partId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x = Math.floor((Math.random() * 10) + 1);
-            props.setRandomValue(x);
+            // let x = Math.floor((Math.random() * 10) + 1);
+            props.setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);

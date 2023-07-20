@@ -14,11 +14,11 @@ function CardBlock(props) {
     }
     const deleteSparePart = async () => {
         try {
-            let response = await httpCommon.deleteData(`/deleteSparePart/${partId}`);
+            let response = await httpCommon.deleteData(`/deleteCompactibleSparePart/${partId}`);
             let { data } = response;
             setConfirmBoxView(false);
-            let x = Math.floor((Math.random() * 10) + 1);
-            props.setRandomValue(x);
+          //  let x = Math.floor((Math.random() * 10) + 1);
+            props.setRandomValue(data);
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -34,7 +34,7 @@ function CardBlock(props) {
                             <div className="product">
                                 <div className="product-image">
                                     <div className="product-item active">
-                                        <img src={d.images[0]} alt="product" className="img-fluid w-100" style={{ height: "200px" }} />
+                                        <img src={d?.images[0]} alt="product" className="img-fluid w-100" style={{ height: "200px" }} />
                                     </div>
                                     <a className="add-wishlist" href="#!">
                                         <i className="icofont-heart"></i>
