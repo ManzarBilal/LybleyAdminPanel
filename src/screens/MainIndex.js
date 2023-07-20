@@ -88,6 +88,7 @@ import BrandDashboard from './Brand/BrandDashboard';
 import BrandProfile from './Brand/brandProfile';
 import ResellerList from './Reseller/ResellerList';
 import MyProductAdd from './Products/MyProductAdd';
+import MySparePartAdd from './SpareParts/MySparePartsAdd';
 
 function MainIndex(props) {
 
@@ -132,6 +133,7 @@ function MainIndex(props) {
           <Route exact path={props?.url + '/myproduct-Add'} render={() => { return <MyProductAdd /> }} />
 
           <Route exact path={props?.url + '/spareParts-grid'} render={() => { return <SparePartGrid url={props?.url} /> }} />
+          <Route exact path={props?.url + '/my-spareParts-Add'} render={() => { return <MySparePartAdd url={props?.url} /> }} />
           <Route exact path={props?.url + '/myspareParts-grid'} render={() => { return <MySparePartGrid url={props?.url} /> }} />
           <Route exact path={props?.url + '/myspareParts-list'} render={() => { return <MySparePartList url={props?.url} /> }} />
           <Route exact path={props?.url + '/spareParts-list'} render={() => { return <SparePartList url={props?.url} /> }} />

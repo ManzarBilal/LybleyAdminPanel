@@ -204,9 +204,9 @@
             "isApp": false,
             "children": [
                 {
-                    "name": "Spare Parts Add",
-                    "routerLink": ["spareParts-Add"],
-                    "identifier": "Spare Parts Add",
+                    "name": "My Spare Parts Add",
+                    "routerLink": ["my-spareParts-Add"],
+                    "identifier": "My Spare Parts Add",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
@@ -227,6 +227,16 @@
                     "name": "My Spare Parts List",
                     "routerLink": ["myspareParts-list"],
                     "identifier": "My Spare Parts List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "Spare Parts Add",
+                    "routerLink": ["spareParts-Add"],
+                    "identifier": "Spare Parts Add",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
