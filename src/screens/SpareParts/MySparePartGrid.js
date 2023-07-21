@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllSpareParts, getCompactibleSpareParts, showLoading } from '../../Redux/Actions/sparePart';
 import CardBlock from './CardBlock';
 import { ReactLoader } from '../../components/common/ReactLoader';
+import MyCardBlock from './MyCardBlock';
 
 
 function MySparePartGrid(props) {
@@ -64,7 +65,7 @@ function MySparePartGrid(props) {
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
                     {spareParts?.showLoading === true ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
                         <>
-                            <CardBlock url={props?.url} role={obj?.role} setRandomValue={setRandomValue} sparePart={spareParts?.data} />
+                            <MyCardBlock url={props?.url} role={obj?.role} setRandomValue={setRandomValue} sparePart={spareParts?.data} />
 
                             <div className="row g-3 mb-3">
                                 <div className="col-md-12">

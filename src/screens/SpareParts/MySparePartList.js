@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllSpareParts, getCompactibleSpareParts, showLoading } from '../../Redux/Actions/sparePart';
 import CardBlockList from './CardBlocList';
 import { ReactLoader } from '../../components/common/ReactLoader';
+import MyCardBlockList from './MyCardBlockList';
 
 function MySparePartList(props) {
 
@@ -64,7 +65,7 @@ function MySparePartList(props) {
                 <div className="col-md-12 col-lg-8 col-xl-8 col-xxl-9">
                     {spareParts?.showLoading === true ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
                         <>
-                            <CardBlockList url={props?.url} role={obj?.role} spareParts={spareParts?.data} setRandomValue={setRandomValue} />
+                            <MyCardBlockList url={props?.url} role={obj?.role} spareParts={spareParts?.data} setRandomValue={setRandomValue} />
 
                             <div className="row g-3 mb-3">
                                 <div className="col-md-12">
