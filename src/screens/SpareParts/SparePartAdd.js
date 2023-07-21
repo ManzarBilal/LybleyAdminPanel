@@ -104,6 +104,7 @@ function SparePartAdd() {
             let obj=JSON.parse(user);
             let technician= +sparePart?.technician;
             let product=products?.data?.find(p1=>(p1.productName===sparePart.productModel && p1?.brandName===sparePart?.brandName));
+            const id=obj?.role==="ADMIN" ? product?.userId : obj?._id
             const formData=new FormData();
             formData.append("partName",sparePart?.partName);
             formData.append("description",sparePart?.description);
@@ -123,7 +124,7 @@ function SparePartAdd() {
             for(let x=0; x<sparePart?.images?.length; x++){
                 formData.append("images",sparePart?.images[x]);
             }
-            formData.append("userId",obj?._id);
+            formData.append("userId",id);
             formData.append("productId",product?._id);
             formData.append("brandName",sparePart?.brandName);
             setLoading(true);
