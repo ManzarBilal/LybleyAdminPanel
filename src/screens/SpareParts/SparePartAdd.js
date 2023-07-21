@@ -20,7 +20,7 @@ function SparePartAdd() {
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
-        (obj?.role!=="RESELLER" && setSpareParts({...sparePart,brandName:obj?.brandName})); 
+        ((obj?.role!=="RESELLER" || obj?.role!=="ADMIN") && setSpareParts({...sparePart,brandName:obj?.brandName})); 
         dispatch(getAllCategory());
         dispatch(getAllProduct());
         GetAllBrands();
@@ -102,6 +102,7 @@ function SparePartAdd() {
         try{
             let user=localStorage.getItem("user");
             let obj=JSON.parse(user);
+            const role=obj?.role==="ADMIN" ? "BRAND" : obj?.role;
             let technician= +sparePart?.technician;
             let product=products?.data?.find(p1=>(p1.productName===sparePart.productModel && p1?.brandName===sparePart?.brandName));
             const id=obj?.role==="ADMIN" ? product?.userId : obj?._id
@@ -117,7 +118,7 @@ function SparePartAdd() {
             formData.append("weight",+sparePart?.weight);
             formData.append("height",+sparePart?.height);
             formData.append("breadth",+sparePart?.breadth);
-            formData.append("seller",obj?.role);
+            formData.append("seller",role);
             sparePart?.faultType.forEach(fault => formData.append('faultType', fault))
             formData.append("category",sparePart?.category);
             formData.append("productModel",sparePart?.productModel);
