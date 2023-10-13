@@ -67,7 +67,9 @@ function MyEditBasicInformation(props) {
             </div>
             <div className='d-flex ps-3'>
                 {compactibleWith?.map(c1 =>
-                    <div className="px-2"> <div><div style={{ borderEndEndRadius: "0px", borderTopRightRadius: "0px" }} className='btn btn-info text-white fw-bold m-0'>{c1}</div><div style={{ borderEndStartRadius: "0px", borderTopLeftRadius: "0px" }} className='btn btn-danger text-white' onClick={() => props?.deleteCompactible(c1)}>X</div></div> </div>
+                    <div className="px-2"> <div><div style={{ borderEndEndRadius: "0px", borderTopRightRadius: "0px" }} className='btn btn-info text-white fw-bold m-0'>{c1}</div><div style={{ borderEndStartRadius: "0px", borderTopLeftRadius: "0px" }} className='btn btn-danger text-white'
+                    //  onClick={() => props?.deleteCompactible(c1)}
+                     >X</div></div> </div>
                 )}
             </div>
             <div className="card-body">
@@ -78,21 +80,12 @@ function MyEditBasicInformation(props) {
 
                             <div className=''>
                                 <div className={`${sparePart?.length > 0 ? style.searchBoxClick : style.searchBox} shadow`}>
-                                    <input onChange={(e) => handleInputChange(e)} name='search' value={search} type="text" placeholder="Search..." />
+                                    <input disabled={true} onChange={(e) => handleInputChange(e)} name='search' value={search} type="text" placeholder="Search..." />
                                 </div>
                                 {sparePart?.length > 0 ?
                                     <div className={`${style.categoryList} shadow`}>
                                         <h5 className="row w-100 d-flex justify-content-between align-items-center ps-3 pe-3 pt-2 fw-bold">  <div className='col-3'>Part Name</div><div className='col-2'>Image</div> <div className='col-3'>Model</div><div className='col-2'>Brand</div> <div className='col-2'>Price <button className='btn btn-danger btn-sm text-white ms-3 mt-0 fw-bold' onClick={() => { setSparePart([]); setSearch("") }}>Close</button> </div></h5>
                                         <div style={{ height: `${sparePart?.length >= 10 ? "510px" : ""}`, overflowY: `${sparePart?.length >= 10 ? "scroll" : ""}`, overflowX: "hidden" }}>
-                                            {sparePart?.map(sp1 =>
-                                                <div onClick={(e) => props?.handleCompactible(sp1?.partName)} className={`${compactibleWith?.find(f1 => f1 === sp1?.partName) ? "bg-info text-white" : "text-secondary"} row w-100 border d-flex justify-content-between ps-3 pe-3 align-items-center pt-1 pb-1 fw-bold`}>  <div className='col-3'>{sp1?.partName}</div><div className='col-2'><img src={sp1?.images?.[0]} alt="..." className='shadow' height="40px" width="40px" /> </div> <div className='col-3'>{sp1?.productModel}</div><div className='col-2'>{sp1?.brandName}</div> <div className='col-2'>{sp1?.bestPrice}</div> </div>
-                                            )}
-                                            {sparePart?.map(sp1 =>
-                                                <div onClick={(e) => props?.handleCompactible(sp1?.partName)} className={`${compactibleWith?.find(f1 => f1 === sp1?.partName) ? "bg-info text-white" : "text-secondary"} row w-100 border d-flex justify-content-between ps-3 pe-3 align-items-center pt-1 pb-1 fw-bold`}>  <div className='col-3'>{sp1?.partName}</div><div className='col-2'><img src={sp1?.images?.[0]} alt="..." className='shadow' height="40px" width="40px" /> </div> <div className='col-3'>{sp1?.productModel}</div><div className='col-2'>{sp1?.brandName}</div> <div className='col-2'>{sp1?.bestPrice}</div> </div>
-                                            )}
-                                            {sparePart?.map(sp1 =>
-                                                <div onClick={(e) => props?.handleCompactible(sp1?.partName)} className={`${compactibleWith?.find(f1 => f1 === sp1?.partName) ? "bg-info text-white" : "text-secondary"} row w-100 border d-flex justify-content-between ps-3 pe-3 align-items-center pt-1 pb-1 fw-bold`}>  <div className='col-3'>{sp1?.partName}</div><div className='col-2'><img src={sp1?.images?.[0]} alt="..." className='shadow' height="40px" width="40px" /> </div> <div className='col-3'>{sp1?.productModel}</div><div className='col-2'>{sp1?.brandName}</div> <div className='col-2'>{sp1?.bestPrice}</div> </div>
-                                            )}
                                             {sparePart?.map(sp1 =>
                                                 <div onClick={(e) => props?.handleCompactible(sp1?.partName)} className={`${compactibleWith?.find(f1 => f1 === sp1?.partName) ? "bg-info text-white" : "text-secondary"} row w-100 border d-flex justify-content-between ps-3 pe-3 align-items-center pt-1 pb-1 fw-bold`}>  <div className='col-3'>{sp1?.partName}</div><div className='col-2'><img src={sp1?.images?.[0]} alt="..." className='shadow' height="40px" width="40px" /> </div> <div className='col-3'>{sp1?.productModel}</div><div className='col-2'>{sp1?.brandName}</div> <div className='col-2'>{sp1?.bestPrice}</div> </div>
                                             )}

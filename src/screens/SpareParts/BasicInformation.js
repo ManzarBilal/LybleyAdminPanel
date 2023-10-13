@@ -21,7 +21,7 @@ let category1=categories?.filter(f1=>f1?.brandName===brandName)?.map(m1=>({statu
 let merge=product1.concat(category1);
 let unique1=Array.from(new Set(merge.map(JSON.stringify))).map(JSON.parse);
 
-let categories1=props?.user?.role==="RESELLER" ? unique1 : categories;
+let categories1=(props?.user?.role==="RESELLER" || props?.user?.role==="ADMIN") ? unique1 : categories;
 let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category && p1?.brandName===brandName)
 
     return (
@@ -72,7 +72,7 @@ let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category &
                             <label className="form-label"> Best Price</label>
                             <input type="number" className="form-control" name='bestPrice' value={bestPrice} onChange={(e) => {props.onChange(e) }} />
                         </div>
-                      {props?.user?.role==="RESELLER" ?  <div className="col-xl-12 col-lg-12">
+                      {(props?.user?.role==="RESELLER" || props?.user?.role==="ADMIN") ?  <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
                             <label className="form-label">Brand</label>
                             <select className="form-select" name='brandName' value={brandName} onChange={(e)=>props.onChange(e)}  >

@@ -17,7 +17,7 @@ let {partName,description,faultType,MRP,bestPrice,productModel,category,partNo,s
 let {categories}=props;
  
 const categoryById = categories?.filter(p1=>props?.products?.data?.find(f1=>f1?.categoryId===p1?._id))
-let pds=props?.user?.role==="RESELLER" ? props?.products?.data?.filter(f1=>f1?.productCategory===category && f1?.brandName===brandName) : props?.products?.data?.filter(f1=>f1?.productCategory===category && f1?.userId===props?.user?._id);
+let pds=(props?.user?.role==="RESELLER" || props?.user?.role==="ADMIN") ? props?.products?.data?.filter(f1=>f1?.productCategory===category && f1?.brandName===brandName) : props?.products?.data?.filter(f1=>f1?.productCategory===category && f1?.userId===props?.user?._id);
  
     return (
         <>

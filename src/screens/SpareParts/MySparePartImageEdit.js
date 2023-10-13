@@ -19,10 +19,10 @@ function MySparePartEditImages(props) {
 
     const handleDelete=async (image)=>{
         try{
-          let response=await httpCommon.patch(`/deleteSparePartImage/${props?.sparePart?._id}`,{img:image});
+          let response=await httpCommon.patch(`/deleteCompactibleSparePartImage/${props?.sparePart?._id}`,{img:image});
           let {data}=response;
           ToastMessage(data)
-          history.push(`${props?.url}/spareParts-grid`)
+          history.push(`${props?.url}/myspareParts-grid`)
          }catch(err){
             console.log(err);
          }
@@ -32,10 +32,10 @@ function MySparePartEditImages(props) {
           try{
             const formData=new FormData();
             formData.append("image",img);
-            let response=await httpCommon.patch(`/uploadSPImage/${props?.sparePart?._id}`,formData);
+            let response=await httpCommon.patch(`/uploadCompactibleImage/${props?.sparePart?._id}`,formData);
             let {data}=response;
             ToastMessage(data)
-            history.push(`${props?.url}/spareParts-grid`)
+            history.push(`${props?.url}/myspareParts-grid`)
           }catch(err){
             console.log(err);
           }
