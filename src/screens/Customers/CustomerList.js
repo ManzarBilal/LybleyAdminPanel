@@ -10,6 +10,9 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 function CustomerList(props) {
     const [table_row, setTable_row] = useState([...CustomerData.rows]);
     const [ismodal, setIsmodal] = useState(false);
+    const [openDiscount, setOpenDiscount] = useState(false);
+    const [userId, setUserId] = useState("");
+    const [discount, setDiscount] = useState("");
     const [iseditmodal, setIseditmodal] = useState(false);
 
     const [data, setData] = useState([]);
@@ -38,7 +41,7 @@ function CustomerList(props) {
             {
                 name: "CUSTOMER",
                 selector: (row) => row.name,
-                cell: row => <div style={{ backgroundColor: "#b4ebed", cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/customer-Allorders/${obj?.role === "ADMIN" ? row?._id :row?.customerId}`} >{row?.name}</Link></div>,
+                cell: row => <div style={{ backgroundColor: "#b4ebed", cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/customer-Allorders/${obj?.role === "ADMIN" ? row?._id : row?.customerId}`} >{row?.name}</Link></div>,
                 sortable: true, width: "150px"
             },
             {
@@ -70,23 +73,25 @@ function CustomerList(props) {
                 cell: (row) => <div className='text-primary text-decoration-underline'><a href={row.document} className='text-primary'> {row.document} </a></div>
             },
             {
-                name: "DISCOUNT STATUS",
-                selector: (row) => { },
-                sortable: true, width: "180px",
-                cell: (row) => row.role === "Reseller"  ?   <div>{row?.discountPercentage} %</div> :"0%"},
-            {
                 name: "DISCOUNT %",
                 selector: (row) => { },
                 sortable: true, width: "180px",
-                cell: (row) => row.role === "Reseller" && <button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { row.discount === "NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id) }}>{row.discount}</button>
+                cell: (row) => row.role === "Reseller" && <div>{row?.discountPercentage>0 ?  <div>{row?.discountPercentage} %</div>  : <div>0%</div>} </div>
             },
             {
                 name: "CREATE DISCOUNT ",
                 selector: (row) => { },
                 sortable: true, width: "180px",
+                cell: (row) => row.role === "Reseller" && <div>{row.discount === "NOT_VERIFIED" ? <div className='text-danger'> Please Verify Cervice Center</div> :<button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { handleOpenDiscount(row._id) }}>Create Discount</button>}</div> 
+            },
+            {
+                name: "DISCOUNT STATUS",
+                selector: (row) => { },
+                sortable: true, width: "180px",
                 cell: (row) => row.role === "Reseller" && <button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { row.discount === "NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id) }}>{row.discount}</button>
             },
-           
+
+
             {
                 name: "ACTION",
                 selector: (row) => { },
@@ -97,6 +102,20 @@ function CustomerList(props) {
                 </div>
             }
         ]
+    }
+    const handleOpenDiscount = (id) => {
+        setOpenDiscount(true)
+        setUserId(id)
+    }
+    const createDiscount = async ( ) => {
+        try {
+            let response = await httpCommon.patch(`/verifyReseller/${userId}`, { discountPercentage: +discount });
+            let { data } = response;
+            setOpenDiscount(false)
+            setRefresh(data);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     const allCustomers = async () => {
@@ -156,8 +175,8 @@ function CustomerList(props) {
         setTable_row([...result])
     }
 
-
-    console.log("data", data);
+ 
+ 
     return (
         <div className="body d-flex py-lg-3 py-md-2">
             <div className="container-xxl">
@@ -296,6 +315,33 @@ function CustomerList(props) {
                 <Modal.Footer className="modal-footer">
                     <button onClick={() => { setIsmodal(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Done</button>
                     <button type="submit" className="btn btn-primary">Add</button>
+                </Modal.Footer>
+
+            </Modal>
+            <Modal className="modal fade show" id="expadd" show={openDiscount} onHide={() => { setOpenDiscount(false) }} style={{ display: 'block' }}>
+                <Modal.Header className="modal-header" closeButton>
+                    <h5 className="modal-title  fw-bold" id="expaddLabel">Add Discount</h5>
+                </Modal.Header>
+                <Modal.Body className="modal-body">
+                    <div className="deadline-form">
+                        <form>
+                            
+                            
+                            <div className="row g-3 mb-3">
+                                 
+                                <div className="col-12">
+                                    <label htmlFor="abc111" className="form-label">Discount %</label>
+                                    <input type="number"onChange={(e)=>setDiscount(e.target.value)}  maxLength={3} className="form-control" id="ab" />
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+
+                </Modal.Body>
+                <Modal.Footer className="modal-footer">
+                    <button onClick={() => { setOpenDiscount(false) }} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" className="btn btn-primary" onClick={() => createDiscount( ) }>Add Discount</button>
                 </Modal.Footer>
 
             </Modal>
