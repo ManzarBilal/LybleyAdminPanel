@@ -73,18 +73,20 @@ function CustomerList(props) {
                 name: "DISCOUNT STATUS",
                 selector: (row) => { },
                 sortable: true, width: "180px",
+                cell: (row) => row.role === "Reseller"  ?   <div>{row?.discountPercentage} %</div> :"0%"},
+            {
+                name: "DISCOUNT %",
+                selector: (row) => { },
+                sortable: true, width: "180px",
                 cell: (row) => row.role === "Reseller" && <button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { row.discount === "NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id) }}>{row.discount}</button>
             },
-            // {
-            //     name: "COUNTRY",
-            //     selector: (row) => row.country,
-            //     sortable: true,
-            // },
-            // {
-            //     name: "TOTAL ORDER",
-            //     selector: (row) => row.order,
-            //     sortable: true,
-            // },
+            {
+                name: "CREATE DISCOUNT ",
+                selector: (row) => { },
+                sortable: true, width: "180px",
+                cell: (row) => row.role === "Reseller" && <button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { row.discount === "NOT_VERIFIED" ? verifyCustomer(row._id) : notVerifyCustomer(row._id) }}>{row.discount}</button>
+            },
+           
             {
                 name: "ACTION",
                 selector: (row) => { },
