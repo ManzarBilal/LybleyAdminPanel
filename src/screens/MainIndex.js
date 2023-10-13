@@ -90,6 +90,7 @@ import ResellerList from './Reseller/ResellerList';
 import MyProductAdd from './Products/MyProductAdd';
 import MySparePartAdd from './SpareParts/MySparePartsAdd';
 import MySparePartEdit from './SpareParts/MYSparePartEdit';
+import ShipOrderList from './ShipRocket/OrderList';
 
 function MainIndex(props) {
 
@@ -157,6 +158,9 @@ function MainIndex(props) {
           <Route exact path={props?.url + '/categories-list'} render={() => { return <CategoriesList /> }} />
           <Route exact path={props?.url + '/categories-edit'} render={() => { return <CategoriesEdit /> }} />
           <Route exact path={props?.url + '/categories-add'} render={() => { return <CategoriesAdd /> }} />
+
+
+          <Route exact path={props?.url + '/shipRocketOrder-list'} render={() => { return <ShipOrderList url={props?.url} /> }} /> 
 
 
           <Route exact path={props?.url + '/order-list'} render={() => { return <OrderList url={props?.url} /> }} />

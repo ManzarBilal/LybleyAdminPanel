@@ -298,7 +298,27 @@
 
             ]
         },
-      
+        {
+            "name": "Shiprocket",
+            "routerLink": [""],
+            "identifier": "Shiprocket",
+            "iconClass": "icofont-notepad fs-5",
+            "breadcrumbMessage": "",
+            "isCategory": false,
+            "isApp": true,
+            "children": [
+                 
+                {
+                    "name": "Orders List",
+                    "routerLink": ["shipRocketOrder-list"],
+                    "identifier": "Orders List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                ]},
         
         {
             "name": "Orders",
