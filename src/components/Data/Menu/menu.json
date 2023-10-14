@@ -299,10 +299,10 @@
             ]
         },
         {
-            "name": "Shiprocket",
+            "name": "Courier",
             "routerLink": [""],
-            "identifier": "Shiprocket",
-            "iconClass": "icofont-notepad fs-5",
+            "identifier": "Courier",
+            "iconClass": "icofont-truck-loaded fs-5",
             "breadcrumbMessage": "",
             "isCategory": false,
             "isApp": true,
@@ -312,6 +312,16 @@
                     "name": "Orders List",
                     "routerLink": ["shipRocketOrder-list"],
                     "identifier": "Orders List",
+                    "iconClass": "",
+                    "breadcrumbMessage": "",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                },
+                {
+                    "name": "All shipments List",
+                    "routerLink": ["allShipments-list"],
+                    "identifier": "All shipments List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
                     "isCategory": false,
