@@ -5,10 +5,11 @@ import httpCommon from "../../http-common";
 import { Link } from 'react-router-dom';
  
 import { ReactLoader } from '../../components/common/ReactLoader';
-import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function ShipOrderList(props) {
+function AllShipmentsList(props) {
 
+    const router=useHistory()
 
     const param = useParams()
     const columns = () => {
@@ -20,43 +21,37 @@ function ShipOrderList(props) {
                 maxWidth: "50px",
             },
             {
-                name: "CUSTOMER NAME",
+                name: "PRODUCT NAME",
                 selector: (row) => row?.customer_name,
-                cell: (row) => <div style={{ backgroundColor: "#b4ebed", cursor: "pointer" }}><Link className='ps-2 pe-2 text-decoration' to={props?.url + `/order-detail/${row?._id}`} >{row?.customer_name}</Link></div>,
-                sortable: true,
+                cell: (row) => row?.products?.map((item, i) => <div key={i}>{item?.name},</div>),
+                sortable: true,minWidth: "300px",
             },
             {
-                name: "ADDRESS",
-                cell: (row) => <div>{row?.customer_address}, {row?.customer_cit}</div>,
+                name: "SKU",
+                cell: (row) =>  row?.products?.map((item, i) => <div key={i}>{item?.sku},</div>),
                 sortable: true, minWidth: "200px",
             },
 
-            {
-                name: "EMAIL",
-                cell: row => row?.customer_email,
-                sortable: true, minWidth: "220px"
-            },
-            {
-                name: "CONTACT NO.",
-                cell: row => row?.customer_phone,
-                sortable: true,
-            },
+            
+
+            
             {
                 name: "ITEMS",
-                cell: (row) => row?.products?.map((item, i) => <div key={i}>{item?.name},</div>),
+                cell: (row) => row?.products?.map((item, i) => <div key={i}>{item?.quantity},</div>),
                 sortable: true, minWidth: "170px",
             },
             {
-                name: "STATUS",
-                cell: row => row?.status,
-                sortable: true,
+                name: "SHIPMENT STATUS",
+                selector: (row) => row?.status,
+                cell: (row) => row?.status,
+                sortable: true, minWidth: "170px",
             },
             {
                 name: "ORDER DATE & TIME",
                 selector: (row) => row.date,
                 sortable: true,
                 cell: row => row?.created_at,
-                minWidth: "170px",
+                minWidth: "190px",
                 //  <>
                 // {<div className='row'> <span>({new Date(row?.createdAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
 
@@ -76,11 +71,11 @@ function ShipOrderList(props) {
                 selector: (row) => { },
                 sortable: true,
                 cell: (row) =>
-                   row?.status==='CANCELED'? <div> </div>
-                   : <div className="btn-group d-flex justify-content-between" role="group" aria-label="Basic outlined example">
-                        <Link to={props?.url +`/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow"  > Select Courier</button></Link>
-                                   <button onClick={() => { cancelOrder(row?.id) }} type="button" className=" ms-4 btn btn-outline-secondary"><i className="icofont-ui-delete text-danger"></i></button>
-                    </div>, minWidth: "220px",
+                    <div className="btn-group" role="group" aria-label="Basic outlined example">
+                        <button onClick={() => { cancelShipment(row?.awb) }} type="button" className="btn btn-danger text-white">Cancel Shipment</button>
+                        <button onClick={() => { trackShipment(row?.awb) }} type="button" className="ms-3 btn btn-success text-white">Track Shipment</button>
+                        {/* <Link to={props?.url +`/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow"  > Select Courier</button></Link> */}
+                    </div>, minWidth: "320px",
             }
         ]
     }
@@ -91,27 +86,47 @@ function ShipOrderList(props) {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        getAllOrder();
+        getAllShipment();
     }, []);
 
-    const cancelOrder=async(id)=>{
+    const cancelShipment=async(awb)=>{ 
         try {
-            
-            let response = await httpCommon.post("/cancelOrder",{ids:[id]});
-            let { data } = response;
-console.log(data);
-        } catch (err) {
-            console.log(err);
-          
+        setLoading(true)
+        let response = await httpCommon.post("/cancelShipment",{awbs:awb});
+        let { data } = response;
+        setLoading(false)
+    } catch (err) {
+        console.log(err);
+        setLoading(false)
+
+    }
+}
+    const trackShipment=async(id)=>{ 
+        try {
+        
+        let response = await httpCommon.get(`/trackShipmentbyAWB/${id}`);
+        let { data } = response;
+        console.log(data);
+        if (data?.track_status=== 0) {
 
         }
+        else {
+            
+            window.open(data?.tracking_data?.track_url ,'_blank');
+        }
+    } catch (err) {
+        console.log(err);
+        setLoading(false)
+
     }
-    const getAllOrder = async () => {
+    }
+    const getAllShipment = async () => {
         try {
             setLoading(true)
-            let response = await httpCommon.get("/getAllShiprocketOrders");
+            let response = await httpCommon.get("/getAllShipment");
             let { data } = response;
-            setOrders(data?.data);
+            
+            setOrders(data?.data?.reverse());
             setLoading(false)
 
         } catch (err) {
@@ -131,14 +146,14 @@ console.log(data);
     //  console.log("orders1",orders1)
     // const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
-    const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
+    const finalData = order?.map((item, i) => ({ ...item, i: i + 1 }))
  
     console.log(finalData);
     
     return (
         <div className="body d-flex py-3">
             <div className="container-xxl">
-                <PageHeader1 pagetitle='Orders List' />
+                <PageHeader1 pagetitle='All Shipments List' />
                 <div className="row g-3 mb-3">
                     <div className="col-md-12">
                         {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div> :
@@ -170,4 +185,4 @@ console.log(data);
 
     )
 }
-export default ShipOrderList;
+export default AllShipmentsList;

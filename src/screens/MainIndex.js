@@ -92,6 +92,7 @@ import MySparePartAdd from './SpareParts/MySparePartsAdd';
 import MySparePartEdit from './SpareParts/MYSparePartEdit';
 import ShipOrderList from './ShipRocket/OrderList';
 import CourierPartners from './ShipRocket/CourierPartners';
+import AllShipmentsList from './ShipRocket/AllShipments';
 
 function MainIndex(props) {
 
@@ -162,6 +163,7 @@ function MainIndex(props) {
 
 
           <Route exact path={props?.url + '/shipRocketOrder-list'} render={() => { return <ShipOrderList url={props?.url} /> }} /> 
+          <Route exact path={props?.url + '/allShipments-list'} render={() => { return <AllShipmentsList url={props?.url} /> }} /> 
           <Route exact path={props?.url + '/coirierPartners'} render={() => { return <CourierPartners url={props?.url} /> }} /> 
 
 
