@@ -150,15 +150,16 @@ function PickupLocation() {
         }
     }
 
-
+   
     return (
         <>
             <div className="body d-flex py-lg-3 py-md-2">
                 <div className="container-xxl">
                     <PageHeader1 pagetitle='Courier Information' modalbutton={() => {
-                        return <>{!table_row && <div className="col-auto d-flex w-sm-100">
-                            <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Pickup Location</button>
-                        </div>
+                        return <>{table_row?.length>0 ?"":
+                         <div className="col-auto d-flex w-sm-100">
+                         <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Pickup Location</button>
+                     </div>
                         }
                         </>
                     }} />
@@ -181,7 +182,7 @@ function PickupLocation() {
                                                                     <th scope="col">Phone</th>
                                                                     <th scope="col">city</th>
                                                                     <th scope="col">state</th>
-                                                                    <th scope="col">Country</th>
+                                                                    <th scope="col">Pincode</th>
                                                                     <th scope="col">pickup address</th>
                                                                     
                                                                 </tr>
@@ -194,9 +195,9 @@ function PickupLocation() {
                                                                         <td>{item?.pickupLocation}</td>
                                                                         <td>{item?.email}</td>
                                                                         <td>{item?.phone}</td>
+                                                                        <td>{item?.city}</td>
                                                                         <td>{item?.state}</td>
                                                                         <td>{item?.pinCode}</td>
-                                                                        <td>{item?.country}</td>
                                                                         <td>{item?.address}</td>
                                                                         {/* <td>
                                                                             <div className="btn-group" role="group" aria-label="Basic outlined example">
