@@ -188,7 +188,7 @@ function PickupLocation() {
                                                             </thead>
                                                             <tbody>
                                                                     <tr>
-                                                            {table_row.map((item,i)=>
+                                                            {table_row?.map((item,i)=>
                                                                 <>
                                                                         <th scope="row">{item?.name}</th>
                                                                         <td>{item?.pickupLocation}</td>
