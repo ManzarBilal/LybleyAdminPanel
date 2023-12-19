@@ -74,6 +74,7 @@ import ReturnList from './Orders/ReturnList';
 import ReturnDetails from './Orders/ReturnDetails';
 import ReturnRequest from './Orders/ReturnRequest';
 import CustomerOrderList from './Customers/CustomerOrder';
+import PickupLocation from './PickupLocation/PickupLocation';
 const BrandIndex = (props) => {
   const { activekey } = props;
   return (
@@ -85,6 +86,9 @@ const BrandIndex = (props) => {
         <Switch>
           {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
           <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url}/> }} />
+
+          <Route exact path={props?.url + '/pickupLocation'} render={() => { return <PickupLocation url={props?.url}/> }} />
+
           <Route exact path={props?.url + '/category-list'} render={() => { return <CategoryList /> }} />
 
           <Route exact path={props?.url + '/product-grid'} render={() => { return <ProductGrid url={props?.url} /> }} />

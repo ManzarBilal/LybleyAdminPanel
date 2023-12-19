@@ -11,6 +11,16 @@
             "children": []
         },
         {
+            "name": "Pickup Location",
+            "routerLink": ["pickupLocation"],
+            "identifier": "Pickup Location",
+            "iconClass": "icofont-truck-loaded fs-5",
+            "breadcrumbMessage": "Welcome to Analytics Dashboard.",
+            "isCategory": false,
+            "isApp": false,
+            "children": []
+        },
+        {
             "name": "Blog",
             "routerLink": [""],
             "identifier": "Blog",
