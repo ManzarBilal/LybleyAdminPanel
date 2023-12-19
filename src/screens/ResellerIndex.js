@@ -22,6 +22,7 @@ import ReturnDetails from './Orders/ReturnDetails';
 import ReturnRequest from './Orders/ReturnRequest';
 import CustomerOrderList from './Customers/CustomerOrder';
 import ProductDetail from './Products/ProductDetail';
+import PickupLocation from './PickupLocation/PickupLocation';
 const ResellerIndex = (props) => {
   const { activekey } = props;
   return (
@@ -33,7 +34,9 @@ const ResellerIndex = (props) => {
         <Switch>
           {/* <Route exact path={props?.url + "/ghj"} render={() => { return <Dashboard /> }} /> */}
           <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url}/> }} />
-          
+
+          <Route exact path={props?.url + '/pickupLocation'} render={() => { return <PickupLocation url={props?.url}/> }} />
+
           <Route exact path={props?.url + '/spareParts-grid'} render={() => { return <SparePartGrid url={props?.url} /> }} />
           <Route exact path={props?.url + '/spareParts-list'} render={() => { return <SparePartList url={props?.url} /> }} />
           <Route exact path={props?.url + '/sparePart-edit/:id'} render={() => { return <SparePartEdit url={props?.url} /> }} />

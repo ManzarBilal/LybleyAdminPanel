@@ -134,7 +134,7 @@ function BankAccount() {
         <>
             <div className="body d-flex py-lg-3 py-md-2">
                 <div className="container-xxl">
-                    <PageHeader1 pagetitle='Brand Information' modalbutton={() => {
+                    <PageHeader1 pagetitle='Bank Information' modalbutton={() => {
                         return <>{ !table_row && <div className="col-auto d-flex w-sm-100">
                             <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Bank Account</button>
                         </div>
@@ -155,7 +155,7 @@ function BankAccount() {
                                                             <thead>
                                                                 <tr>
                                                                     <th scope="col">Account Holder Name</th>
-                                                                    <th scope="col">Bank Nmae</th>
+                                                                    <th scope="col">Bank Name</th>
                                                                     <th scope="col">IFSC Code</th>
                                                                     <th scope="col">Account Number</th>
                                                                     <th scope="col">Action</th>
@@ -250,11 +250,11 @@ function BankAccount() {
                     </Modal.Body>
                     <div className="modal-footer">
                         <button type="button" onClick={() => { setIseditmodal(false) }} className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" className="btn btn-primary" onClick={handleSubmit(onUpdate)} >Save</button>
+                        <button type="submit" className="btn btn-primary" onClick={handleSubmit(onUpdate)} >Update</button>
                     </div>
 
                 </Modal>
-                <Modal className="modal fade show" id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+                <Modal   show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                     <Modal.Header className="modal-header" closeButton>
                         <h5 className="modal-title  fw-bold" id="expaddLabel">Add Bank Account</h5>
                     </Modal.Header>

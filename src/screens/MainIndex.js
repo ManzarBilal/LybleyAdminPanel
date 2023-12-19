@@ -93,6 +93,7 @@ import MySparePartEdit from './SpareParts/MYSparePartEdit';
 import ShipOrderList from './ShipRocket/OrderList';
 import CourierPartners from './ShipRocket/CourierPartners';
 import AllShipmentsList from './ShipRocket/AllShipments';
+import PickupLocation from './PickupLocation/PickupLocation';
 
 function MainIndex(props) {
 
@@ -111,6 +112,7 @@ function MainIndex(props) {
         </Route> */}
           <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url} /> }} />
            
+          <Route exact path={props?.url + '/pickupLocation'} render={() => { return <PickupLocation url={props?.url}/> }} />
 
           <Route exact path={props?.url + '/blog-list'} render={() => { return <BlogList /> }} />
           <Route exact path={props?.url + '/blog-category'} render={() => { return <BlogCategoryList /> }} />
