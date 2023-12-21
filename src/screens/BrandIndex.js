@@ -75,6 +75,10 @@ import ReturnDetails from './Orders/ReturnDetails';
 import ReturnRequest from './Orders/ReturnRequest';
 import CustomerOrderList from './Customers/CustomerOrder';
 import PickupLocation from './PickupLocation/PickupLocation';
+import AllShipmentsList from './ShipRocket/AllShipments';
+import ShipOrderList from './ShipRocket/OrderList';
+import CourierPartners from './ShipRocket/CourierPartners';
+import BrandShipOrderList from './ShipRocket/BrandOrderList';
 const BrandIndex = (props) => {
   const { activekey } = props;
   return (
@@ -120,6 +124,9 @@ const BrandIndex = (props) => {
           <Route exact path={props?.url + '/return-request-list'} render={() => { return <ReturnRequest url={props?.url} /> }} />
           <Route exact path={props?.url + '/return-detail/:id'} render={() => { return <ReturnDetails /> }} />
 
+          <Route exact path={props?.url + '/shipRocketOrder-list/:id'} render={() => { return <BrandShipOrderList url={props?.url} /> }} /> 
+          <Route exact path={props?.url + '/allShipments-list'} render={() => { return <AllShipmentsList url={props?.url} /> }} /> 
+          <Route exact path={props?.url + '/coirierPartners'} render={() => { return <CourierPartners url={props?.url} /> }} /> 
 
           <Route exact path={props?.url + '/brandPayments'} render={() => { return <BrandPayments url={props?.url} /> }} />
           <Route exact path={props?.url + '/bankAccount'} render={() => { return <BankAccount url={props?.url} /> }} />

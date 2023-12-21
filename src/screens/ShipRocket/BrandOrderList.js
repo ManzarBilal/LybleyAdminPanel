@@ -7,10 +7,10 @@ import { Link } from 'react-router-dom';
 import { ReactLoader } from '../../components/common/ReactLoader';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
-function ShipOrderList(props) {
+function BrandShipOrderList(props) {
 
 
-    const param = useParams()
+    const param = useParams();
     const columns = () => {
         return [
             {
@@ -121,18 +121,20 @@ function ShipOrderList(props) {
     }
 
   
-    let userData = localStorage?.getItem("user")
-    let user = JSON.parse(userData)
-    let propsId1 = props?.id === undefined ? "wewewer" : props?.id;
-    const orders = (user?.role === "ADMIN" && propsId1 === param?.id) ? order?.filter((item, i) => item?.items?.find((it => it?.brandId === param?.id))) : (user?.role === "ADMIN") ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-    //console.log("orders", orders);
-    // const orders1 = ((user?.role === "ADMIN") && (props?.id === param?.id)) ? console.log("admin and param id",props?.id === param?.id, props?.id,param?.id) : (user?.role === "ADMIN") ? console.log("only admin") : console.log("only brand");
-    //  console.log("orders1",orders1)
-    // const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
-    // const orders1=orders
-    const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
+    // let userData = localStorage?.getItem("user")
+    // let user = JSON.parse(userData)
+    // let propsId1 = props?.id === undefined ? "wewewer" : props?.id;
+    // const orders = (user?.role === "ADMIN" && propsId1 === param?.id) ? order?.filter((item, i) => item?.items?.find((it => it?.brandId === param?.id))) : (user?.role === "ADMIN") ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
+    // //console.log("orders", orders);
+    // // const orders1 = ((user?.role === "ADMIN") && (props?.id === param?.id)) ? console.log("admin and param id",props?.id === param?.id, props?.id,param?.id) : (user?.role === "ADMIN") ? console.log("only admin") : console.log("only brand");
+    // //  console.log("orders1",orders1)
+    // // const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
+    // // const orders1=orders
+    // const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
  
-    console.log(finalData);
+    // console.log(finalData);
+
+    let order1=order?.filter(f1=>f1?.id===+param?.id);
     
     return (
         <div className="body d-flex py-3">
@@ -148,7 +150,7 @@ function ShipOrderList(props) {
                                             <div className="col-sm-12">
                                                 <DataTable
                                                     columns={columns()}
-                                                    data={finalData}
+                                                    data={order1}
                                                     defaultSortField="title"
                                                     pagination
                                                     selectableRows={false}
@@ -169,4 +171,4 @@ function ShipOrderList(props) {
 
     )
 }
-export default ShipOrderList;
+export default BrandShipOrderList;

@@ -96,6 +96,8 @@ function MyBasicInformation(props) {
                         <div className="col-md-12">
                             <label className="form-label"> Spare Part Name</label>
                             <input type="text" className="form-control" name='partName' value={partName} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.partName ? <div className='text-danger'>{props?.errors?.partName }</div> :"" }
+                        
                         </div>
                         <div className="col-md-6">
                             <label className="form-label"> Spare Part No.</label>
@@ -104,22 +106,32 @@ function MyBasicInformation(props) {
                         <div className="col-md-6">
                             <label className="form-label"> SKU No.</label>
                             <input type="text" className="form-control" name='skuNo' value={skuNo} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.skuNo ? <div className='text-danger'>{props?.errors?.skuNo }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
                             <label className="form-label"> Length</label>
                             <input type="text" className="form-control" name='length' value={length} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.length ? <div className='text-danger'>{props?.errors?.length }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
                             <label className="form-label"> Breadth</label>
                             <input type="text" className="form-control" name='breadth' value={breadth} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.breadth ? <div className='text-danger'>{props?.errors?.breadth }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
                             <label className="form-label"> Height</label>
                             <input type="text" className="form-control" name='height' value={height} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.height? <div className='text-danger'>{props?.errors?.height }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
                             <label className="form-label"> Weight</label>
                             <input type="text" className="form-control" name='weight' value={weight} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.weight ? <div className='text-danger'>{props?.errors?.weight }</div> :"" }
+                        
                         </div>
                         <div className="col-md-12">
                             <label className="form-label">Description</label>
@@ -128,10 +140,14 @@ function MyBasicInformation(props) {
                         <div className="col-md-12">
                             <label className="form-label"> MRP</label>
                             <input type="number" className="form-control" name='MRP' value={MRP} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.MRP ? <div className='text-danger'>{props?.errors?.MRP }</div> :"" }
+                        
                         </div>
                         <div className="col-md-12">
                             <label className="form-label"> Best Price</label>
                             <input type="number" className="form-control" name='bestPrice' value={bestPrice} onChange={(e) => { props.onChange(e) }} />
+                            {props?.errors?.bestPrice ? <div className='text-danger'>{props?.errors?.bestPrice }</div> :"" }
+                       
                         </div>
                         {/* {props?.user?.role==="RESELLER" ?  <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
