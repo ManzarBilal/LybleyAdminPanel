@@ -135,7 +135,7 @@ function SparePartAdd() {
         errors1.length = !length ? "Length is required" : +length<=0.5 ? "Length should be greater than 0.5" : isNaN(length) ? "Length should be number" : "";
         errors1.breadth = !breadth ? "Breadth is required" : +breadth<=0.5 ? "Length should be greater than 0.5" : isNaN(breadth) ? "Breadth should be number" : "";
         errors1.height = !height ? "Height is required" : +height<=0.5 ? "Length should be greater than 0.5" : isNaN(height) ? "Height should be number" : "";
-        errors1.weight = !weight ? "Weight is required" : isNaN(weight) ? "Weight should be number" : "";
+        errors1.weight = !weight ? "Weight is required" : isNaN(weight) ? "Weight should be number" : weight>1000 ? "weight should not be greater than 1000" : "";
         
         let keys = Object.keys(errors1);
         let count = keys.reduce((acc, curr) => (errors1[curr] ? acc + 1 : acc), 0);
