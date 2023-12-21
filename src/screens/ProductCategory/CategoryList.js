@@ -15,13 +15,14 @@ function CategoryList() {
     const [isExistmodal, setExistmodal] = useState(false);
     const [categoryName, setCategoryName] = useState("");
     const [categoryImage, setCategoryImage] = useState("");
+    const [technicianCharges, setTechnicianCharges] = useState("");
     const [id, setCatId] = useState("");
     const [brandId, setBrandId] = useState("");
     const [confirmBoxView, setConfirmBoxView] = useState(false);
     const [loading, setLoading] = useState(false)
     const [loading1, setLoading1] = useState(false)
-    const [brandName,setBrandName]=useState("");
-    const [brands,setBrands]=useState([]);
+    const [brandName, setBrandName] = useState("");
+    const [brands, setBrands] = useState([]);
     const admin = localStorage.getItem("user");
     const Admindata = JSON.parse(admin);
 
@@ -48,11 +49,16 @@ function CategoryList() {
                 sortable: true,
             } : "",
             {
+                name: "TECHNICIAN CHARGES",
+                selector: (row) => row?.technicianCharges,
+                sortable: true, minWidth: "200px"
+            },
+            {
                 name: "STATUS",
                 selector: (row) => row?.status,
                 cell: (row) => <div className="btn-group" role="group" aria-label="Basic outlined example">
-                    {row?.status === "INACTIVE" ? <button disabled={Admindata?.role==="ADMIN" ? false : true} type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "ACTIVE")}>INACTIVE</button>
-                        : <button disabled={Admindata?.role==="ADMIN" ? false : true} type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "INACTIVE")} >ACTIVE</button>}
+                    {row?.status === "INACTIVE" ? <button disabled={Admindata?.role === "ADMIN" ? false : true} type="button" className="btn text-white btn-danger" onClick={() => approval(row?._id, "ACTIVE")}>INACTIVE</button>
+                        : <button disabled={Admindata?.role === "ADMIN" ? false : true} type="button" className="btn text-white btn-success" onClick={() => approval(row?._id, "INACTIVE")} >ACTIVE</button>}
 
                 </div>,
                 sortable: true,
@@ -72,12 +78,12 @@ function CategoryList() {
     useEffect(() => {
         const admin = localStorage.getItem("user");
         const Admindata = JSON.parse(admin);
-        if(Admindata?.role === "ADMIN"){
+        if (Admindata?.role === "ADMIN") {
             GetAllCategory()
             GetAllBrands();
-        }else{
+        } else {
             GetAllCategoryByBrand()
-        } 
+        }
     }, [randomValue]);
 
     const GetAllBrands = async () => {
@@ -162,6 +168,7 @@ function CategoryList() {
         let table_row1 = [...table_row];
         let editData = table_row1.find(c1 => c1._id === id);
         setCategoryName(editData?.categoryName);
+        setTechnicianCharges(editData?.technicianCharges);
         setCatId(id);
     }
 
@@ -180,11 +187,14 @@ function CategoryList() {
             const formData = new FormData();
             formData.append("categoryName", categoryName);
             setLoading1(true);
-            let response = await httpCommon.patch(`/updateProductCategoryBy/${id}`, { categoryName: categoryName });
+            let response = await httpCommon.patch(`/updateProductCategoryBy/${id}`, { categoryName: categoryName, technicianCharges: technicianCharges });
             let { data } = response;
             setIseditmodal(false)
+
             setLoading1(false);
             setRandomValue(data);
+            setCategoryName("")
+            setTechnicianCharges("")
             ToastMessage(data);
         } catch (err) {
             console.log(err);
@@ -195,28 +205,29 @@ function CategoryList() {
         try {
             let user = localStorage.getItem("user");
             let obj = JSON.parse(user);
-            let obj1=obj?.role==="ADMIN" ? brands.find(f1=>f1?.brandName===brandName) : obj;
+            let obj1 = obj?.role === "ADMIN" ? brands.find(f1 => f1?.brandName === brandName) : obj;
             const formData = new FormData();
             formData.append("userId", obj1?._id);
             formData.append("brandName", obj1?.brandName);
             formData.append("categoryName", categoryName);
+            formData.append("technicianCharges", technicianCharges);
             formData.append("categoryImage", categoryImage);
             setLoading1(true)
             let response = await httpCommon.post("/addProductCategory", formData);
             let { data } = response;
-            if(data?.status===false)
-            {
-            setIsmodal(false)
+            if (data?.status === false) {
+                setIsmodal(false)
                 setExistmodal(true);
-            }else{
+            } else {
                 ToastMessage(data);
             }
             setIsmodal(false)
             setLoading1(false);
             setRandomValue(data);
             setCategoryName("")
+            setTechnicianCharges("")
             setBrandName("")
-            
+
         } catch (err) {
             console.log(err);
             setLoading1(false);
@@ -288,6 +299,13 @@ function CategoryList() {
                                     <label htmlhtmlFor="item1" className="form-label">Category Name</label>
                                     <input type="text" className="form-control" id="item1" name="categoryName" value={categoryName} onChange={(e) => setCategoryName(e.currentTarget.value)} />
                                 </div>
+                                {Admindata?.role === "ADMIN" ?
+                                    <div className="col-sm-12">
+                                        <label htmlhtmlFor="item1" className="form-label">Technician Charges</label>
+                                        <input type="number" className="form-control" id="item1" name="technicianCharges" value={technicianCharges} onChange={(e) => setTechnicianCharges(e.currentTarget.value)} />
+                                    </div>
+                                    : ""
+                                }
                                 <div className="col-sm-12">
                                     <label htmlhtmlFor="taxtno1" className="form-label">Category Image</label>
                                     <input type="File" className="form-control" name='file' id="taxtno1" onChange={(e) => { handleFileUpload(e) }} />
@@ -311,19 +329,26 @@ function CategoryList() {
                     <div className="deadline-form">
                         <form>
                             <div className="row g-3 mb-3">
-                             {Admindata?.role==="ADMIN" ?  <div className="col-sm-12">
-                                <label className="form-label">Select Brand</label>
-                               <select className="form-select" name='brandName' value={brandName} onChange={(e)=>setBrandName(e.currentTarget.value)}  >
-                                <option value="" selected>Choose Brand</option>
-                                {brands?.filter(f1=>f1?.approval==="APPROVED")?.map(b1=>
-                                    <option value={b1?.brandName} >{b1.brandName}</option>
-                                    )}
-                               </select>
+                                {Admindata?.role === "ADMIN" ? <div className="col-sm-12">
+                                    <label className="form-label">Select Brand</label>
+                                    <select className="form-select" name='brandName' value={brandName} onChange={(e) => setBrandName(e.currentTarget.value)}  >
+                                        <option value="" selected>Choose Brand</option>
+                                        {brands?.filter(f1 => f1?.approval === "APPROVED")?.map(b1 =>
+                                            <option value={b1?.brandName} >{b1.brandName}</option>
+                                        )}
+                                    </select>
                                 </div> : ""}
                                 <div className="col-sm-12">
                                     <label htmlFor="item" className="form-label">Category Name</label>
                                     <input type="text" className="form-control" id="item" value={categoryName} onChange={(e) => setCategoryName(e.currentTarget.value)} />
                                 </div>
+                                {Admindata?.role === "ADMIN" ?
+                                    <div className="col-sm-12">
+                                        <label htmlFor="item" className="form-label">Technician Charges</label>
+                                        <input type="number" className="form-control" id="item" value={technicianCharges} onChange={(e) => setTechnicianCharges(e.currentTarget.value)} />
+                                    </div>
+                                    : ""
+                                }
                                 <div className="col-sm-12">
                                     <label htmlFor="taxtno" className="form-label">Category Image</label>
                                     <input type="File" className="form-control" id="taxtno" name='file' onChange={(e) => handleFileChange(e)} />
@@ -348,10 +373,10 @@ function CategoryList() {
                 </Modal.Header>
                 <Modal.Body className="modal-body">
                     <div className="deadline-form">
-                      <div className='fw-bold'> Category Already Exists! Please Add Your Product in This Category.</div> 
-                       <p style={{textAlign:"justify",fontFamily:"sans-serif"}} className='mt-2 text-danger'>We're sorry but it seems that the category you are trying to create already exists.
-                        However, you can still add your product to the existing category.
-                        </p> 
+                        <div className='fw-bold'> Category Already Exists! Please Add Your Product in This Category.</div>
+                        <p style={{ textAlign: "justify", fontFamily: "sans-serif" }} className='mt-2 text-danger'>We're sorry but it seems that the category you are trying to create already exists.
+                            However, you can still add your product to the existing category.
+                        </p>
                     </div>
 
                 </Modal.Body>

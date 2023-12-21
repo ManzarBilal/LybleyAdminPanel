@@ -187,10 +187,11 @@ function PickupLocation() {
                                                                     
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
-                                                                    <tr>
+                                                            
                                                             {table_row?.map((item,i)=>
                                                                 <>
+                                                                <tbody>
+                                                                    <tr> 
                                                                         <th scope="row">{item?.name}</th>
                                                                         <td>{item?.pickupLocation}</td>
                                                                         <td>{item?.email}</td>
@@ -204,11 +205,12 @@ function PickupLocation() {
                                                                                 <button onClick={() => { handleBrandEdit(table_row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
                                                                             </div>
                                                                         </td> */}
+                                                                         </tr>
+                                                                </tbody>
                                                                         </>
                                                                     
                                                             )}
-                                                            </tr>
-                                                                </tbody>
+                                                           
                                                         </table>
                                                     </div>
                                                 </div>
