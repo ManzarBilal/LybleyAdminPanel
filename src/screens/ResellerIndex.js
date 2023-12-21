@@ -23,6 +23,10 @@ import ReturnRequest from './Orders/ReturnRequest';
 import CustomerOrderList from './Customers/CustomerOrder';
 import ProductDetail from './Products/ProductDetail';
 import PickupLocation from './PickupLocation/PickupLocation';
+import ShipOrderList from './ShipRocket/OrderList';
+import AllShipmentsList from './ShipRocket/AllShipments';
+import CourierPartners from './ShipRocket/CourierPartners';
+import BrandShipOrderList from './ShipRocket/BrandOrderList';
 const ResellerIndex = (props) => {
   const { activekey } = props;
   return (
@@ -66,6 +70,10 @@ const ResellerIndex = (props) => {
           <Route exact path={props?.url + '/help'} render={() => { return <Help /> }} />
           {props?.url === "/reseller" ? <Redirect from='/' to={props?.url + '/dashboard'} /> : <Redirect from='/' to={'/user/page-404'} />}
 
+
+          <Route exact path={props?.url + '/shipRocketOrder-list/:id'} render={() => { return <BrandShipOrderList url={props?.url} /> }} /> 
+          <Route exact path={props?.url + '/allShipments-list'} render={() => { return <AllShipmentsList url={props?.url} /> }} /> 
+          <Route exact path={props?.url + '/coirierPartners'} render={() => { return <CourierPartners url={props?.url} /> }} />
         </Switch>
       </div>
     </div>

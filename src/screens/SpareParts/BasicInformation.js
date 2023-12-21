@@ -35,6 +35,7 @@ let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category &
                         <div className="col-md-12">
                             <label className="form-label"> Spare Part Name</label>
                             <input type="text" className="form-control" name='partName' value={partName} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.partName ? <div className='text-danger'>{props?.errors?.partName }</div> :"" }
                         </div>
                         <div className="col-md-6">
                             <label className="form-label"> Spare Part No.</label>
@@ -43,22 +44,32 @@ let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category &
                         <div className="col-md-6">
                             <label className="form-label"> SKU No.</label>
                             <input type="text" className="form-control" name='skuNo' value={skuNo} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.skuNo ? <div className='text-danger'>{props?.errors?.skuNo }</div> :"" }
+                       
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label"> Length</label>
+                            <label className="form-label"> Length <span className='text-muted'> (in cm)</span></label>
                             <input type="text" className="form-control" name='length' value={length} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.length ? <div className='text-danger'>{props?.errors?.length }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label"> Breadth</label>
+                            <label className="form-label"> Breadth <span className='text-muted'> (in cm)</span></label>
                             <input type="text" className="form-control" name='breadth' value={breadth} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.breadth ? <div className='text-danger'>{props?.errors?.breadth }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label"> Height</label>
+                            <label className="form-label"> Height <span className='text-muted'> (in cm)</span></label>
                             <input type="text" className="form-control" name='height' value={height} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.height ? <div className='text-danger'>{props?.errors?.height }</div> :"" }
+                        
                         </div>
                         <div className="col-md-3">
-                            <label className="form-label"> Weight</label>
+                            <label className="form-label"> Weight<span className='text-muted'> (in kg)</span></label>
                             <input type="text" className="form-control" name='weight' value={weight} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.weight ? <div className='text-danger'>{props?.errors?.weight }</div> :"" }
+                       
                         </div>
                         <div className="col-md-12">
                             <label className="form-label">Description</label>
@@ -67,10 +78,14 @@ let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category &
                         <div className="col-md-12">
                             <label className="form-label"> MRP</label>
                             <input type="number" className="form-control" name='MRP' value={MRP} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.MRP ? <div className='text-danger'>{props?.errors?.MRP }</div> :"" }
+                       
                         </div>
                         <div className="col-md-12">
                             <label className="form-label"> Best Price</label>
                             <input type="number" className="form-control" name='bestPrice' value={bestPrice} onChange={(e) => {props.onChange(e) }} />
+                            {props?.errors?.bestPrice ? <div className='text-danger'>{props?.errors?.bestPrice }</div> :"" }
+                        
                         </div>
                       {(props?.user?.role==="RESELLER" || props?.user?.role==="ADMIN") ?  <div className="col-xl-12 col-lg-12">
                         <div className="card-body m-0 p-0">
@@ -92,6 +107,7 @@ let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category &
                                     <option value={c1.categoryName} >{c1.categoryName}</option>
                                     )}
                             </select>
+                            {props?.errors?.category ? <div className='text-danger'>{props?.errors?.category }</div> :"" }
                         </div>
                     </div>
                         <div className="col-xl-12 col-lg-12">
@@ -103,6 +119,8 @@ let products1=props?.products?.data?.filter(p1=>p1?.productCategory===category &
                                     <option value={c1.productName} >{c1.productName}</option>
                                     )}
                             </select>
+                            {props?.errors?.productModel ? <div className='text-danger'>{props?.errors?.productModel }</div> :"" }
+
                         </div>
                     </div>
                         <div className="col-xl-12 col-lg-12">

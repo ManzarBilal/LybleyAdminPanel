@@ -16,7 +16,8 @@ function MySparePartAdd() {
     const [loading,setLoading]=useState(false);
     const [faults,setFault]=useState([]);
     const [brands,setBrands]=useState([]);
- 
+    const [errors,setErrors]=useState({});
+
     useEffect(()=>{
         let user=localStorage.getItem("user");
         let obj=JSON.parse(user);
@@ -60,6 +61,12 @@ function MySparePartAdd() {
         const {currentTarget:input}=e;
         let sparePart1={...sparePart};
         sparePart1[input.name]=input.value;
+    
+        const updatedErrors = { ...errors };
+    if (updatedErrors[input.name]) {
+      delete updatedErrors[input.name];
+    }
+        setErrors(updatedErrors);
         setSpareParts(sparePart1);
     }
     const handleImage=(file)=>{
@@ -118,6 +125,44 @@ const deleteCompactible=(val)=>{
             return null;
         }
 }
+
+const handleSubmit = (e) => {
+    e.preventDefault();
+    const errors1 = {};
+    const { partName,
+        description,
+        MRP,
+        bestPrice,
+        category,
+        technician,
+        faultType,
+        brandName,
+        partNo,
+        productModel,
+        image,skuNo,length,breadth,height,weight} = sparePart;
+    errors1.partName = !partName
+      ? "Part name is required"
+      : "";
+    errors1.MRP = !MRP
+      ? "MRP is required"
+      : isNaN(MRP) 
+      ? "MRP should be number"
+      : "";
+    errors1.bestPrice = !bestPrice ? "Best Price is required" : isNaN(bestPrice) ? "Best Price should be number" : "";
+    errors1.skuNo = !skuNo ? "Sku number is required" : "";
+    errors1.length = !length ? "Length is required" : +length<=0.5 ? "Length should be greater than 0.5" : isNaN(length) ? "Length should be number" : "";
+    errors1.breadth = !breadth ? "Breadth is required" : +breadth<=0.5 ? "Length should be greater than 0.5" : isNaN(breadth) ? "Breadth should be number" : "";
+    errors1.height = !height ? "Height is required" : +height<=0.5 ? "Length should be greater than 0.5" : isNaN(height) ? "Height should be number" : "";
+    errors1.weight = !weight ? "Weight is required" : isNaN(weight) ? "Weight should be number" : "";
+    
+    let keys = Object.keys(errors1);
+    let count = keys.reduce((acc, curr) => (errors1[curr] ? acc + 1 : acc), 0);
+    if (count === 0) {
+      addSparePart();
+    } else {
+      setErrors(errors1);
+    }
+  };
     const addSparePart=async ()=>{
         try{
             let user=localStorage.getItem("user");
@@ -173,7 +218,7 @@ const deleteCompactible=(val)=>{
                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <MyBasicInformation deleteCompactible={deleteCompactible} handleCompactible={handleCompactible} user={user} onDelete={handleFaultDelete} onSubmit={handleFault} faultType={faults} sparePart={sparePart} onChange={handleChange} />
+                        <MyBasicInformation errors={errors} deleteCompactible={deleteCompactible} handleCompactible={handleCompactible} user={user} onDelete={handleFaultDelete} onSubmit={handleFault} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                    

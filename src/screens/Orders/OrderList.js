@@ -49,8 +49,21 @@ function OrderList(props) {
                 selector: (row) => row.date,
                 sortable: true,
                 cell: row => <>
-                {<div className='row'> <span>({new Date(row?.createdAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
+                    {<div className='row'> <span>({new Date(row?.createdAt)?.toLocaleDateString()}) {new Date(row?.createdAt)?.toLocaleTimeString()}</span></div>}</>,
 
+            },
+            {
+                name: "ACTION",
+                selector: (row) => { },
+                sortable: true,minWidth: "220px",
+                cell: (row) =>
+                    <div className="btn-group" role="group" aria-label="Basic outlined example">
+                        <Link className='ps-2 pe-2 text-decoration' to={props?.url + `/shipRocketOrder-list/${row?.shipOrderId}`} > 
+                        <button  type="button" className="btn btn-success">Shipment </button>
+                        </Link>
+                       
+                       
+                    </div>
             },
             // {
             //     name: "STATUS",
@@ -67,11 +80,11 @@ function OrderList(props) {
             //     selector: (row) => { },
             //     sortable: true,
             //     cell: (row) => 
-            //     <div className="btn-group" role="group" aria-label="Basic outlined example">
-            //         <button onClick={() => { edit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
-            //         <button onClick={() => { handleBrand(row?._id) }} type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
-            //     </div>
-            // }
+            // <div className="btn-group" role="group" aria-label="Basic outlined example">
+            //     <button onClick={() => { edit(row?._id) }} type="button" className="btn btn-outline-secondary"><i className="icofont-edit text-success"></i></button>
+            //     <button onClick={() => { handleBrand(row?._id) }} type="button" className="btn btn-outline-secondary deleterow"><i className="icofont-ui-delete text-danger"></i></button>
+            // </div>
+
         ]
     }
 
@@ -100,11 +113,11 @@ function OrderList(props) {
 
     let userData = localStorage?.getItem("user")
     let user = JSON.parse(userData)
-    let propsId1=props?.id===undefined ? "wewewer" : props?.id;
+    let propsId1 = props?.id === undefined ? "wewewer" : props?.id;
     const orders = (user?.role === "ADMIN" && propsId1 === param?.id) ? order?.filter((item, i) => item?.items?.find((it => it?.brandId === param?.id))) : (user?.role === "ADMIN") ? order : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     //console.log("orders", orders);
-   // const orders1 = ((user?.role === "ADMIN") && (props?.id === param?.id)) ? console.log("admin and param id",props?.id === param?.id, props?.id,param?.id) : (user?.role === "ADMIN") ? console.log("only admin") : console.log("only brand");
-   //  console.log("orders1",orders1)
+    // const orders1 = ((user?.role === "ADMIN") && (props?.id === param?.id)) ? console.log("admin and param id",props?.id === param?.id, props?.id,param?.id) : (user?.role === "ADMIN") ? console.log("only admin") : console.log("only brand");
+    //  console.log("orders1",orders1)
     // const orders =   user?.role === "ADMIN" ? order  : order?.filter((item, i) => item?.items?.find((it => it?.brandId === user?._id)));
     // const orders1=orders
     const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))

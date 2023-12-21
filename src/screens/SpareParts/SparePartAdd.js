@@ -7,15 +7,18 @@ import Image from './Images';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProduct, getProduct } from '../../Redux/Actions/product';
 import { getAllCategory, getCategory } from '../../Redux/Actions/category';
+import { useHistory } from 'react-router-dom';
+
 
 function SparePartAdd() {
-    
+
     const dispatch=useDispatch();
     const products=useSelector(state=>state?.products);
     const categories=useSelector(state=>state?.category);
     const [loading,setLoading]=useState(false);
     const [faults,setFault]=useState([]);
     const [brands,setBrands]=useState([]);
+    const [errors, setErrors] = useState({});
  
     useEffect(()=>{
         let user=localStorage.getItem("user");
@@ -46,7 +49,6 @@ function SparePartAdd() {
             let response = await httpCommon.get("/getAllBrands")
             let { data } = response
             setBrands(data);
-
         }
         catch (err) {
             console.log(err)
@@ -59,6 +61,11 @@ function SparePartAdd() {
         const {currentTarget:input}=e;
         let sparePart1={...sparePart};
         sparePart1[input.name]=input.value;
+        const updatedErrors = { ...errors };
+    if (updatedErrors[input.name]) {
+      delete updatedErrors[input.name];
+    }
+        setErrors(updatedErrors);
         setSpareParts(sparePart1);
     }
     const handleImage=(file)=>{
@@ -97,6 +104,47 @@ function SparePartAdd() {
          console.log(err);
         }
     }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const errors1 = {};
+        const { partName,
+            description,
+            MRP,
+            bestPrice,
+            category,
+            technician,
+            faultType,
+            brandName,
+            partNo,
+            productModel,
+            image,skuNo,length,breadth,height,weight} = sparePart;
+        errors1.partName = !partName
+          ? "Part name is required"
+          : "";
+        errors1.MRP = !MRP
+          ? "MRP is required"
+          : isNaN(MRP) 
+          ? "MRP should be number"
+          : "";
+        errors1.bestPrice = !bestPrice ? "Best Price is required" : isNaN(bestPrice) ? "Best Price should be number" : "";
+        errors1.category = !category ? "Category is required" : "";
+        errors1.productModel = !productModel
+          ? "Product Model is required" : "";
+        errors1.skuNo = !skuNo ? "Sku number is required" : "";
+        errors1.length = !length ? "Length is required" : +length<=0.5 ? "Length should be greater than 0.5" : isNaN(length) ? "Length should be number" : "";
+        errors1.breadth = !breadth ? "Breadth is required" : +breadth<=0.5 ? "Length should be greater than 0.5" : isNaN(breadth) ? "Breadth should be number" : "";
+        errors1.height = !height ? "Height is required" : +height<=0.5 ? "Length should be greater than 0.5" : isNaN(height) ? "Height should be number" : "";
+        errors1.weight = !weight ? "Weight is required" : isNaN(weight) ? "Weight should be number" : "";
+        
+        let keys = Object.keys(errors1);
+        let count = keys.reduce((acc, curr) => (errors1[curr] ? acc + 1 : acc), 0);
+        if (count === 0) {
+          addSparePart();
+        } else {
+          setErrors(errors1);
+        }
+      };
 
     const addSparePart=async ()=>{
         try{
@@ -153,7 +201,7 @@ function SparePartAdd() {
                 
                 <div className="col-xl-12 col-lg-12">
                     <div className="card mb-3">
-                        <BasicInformation user={user} brands={brands} onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
+                        <BasicInformation errors={errors} user={user} brands={brands} onDelete={handleFaultDelete} onSubmit={handleFault} products={products} categories={categories} faultType={faults} sparePart={sparePart} onChange={handleChange} />
                     </div>
                     
                    
@@ -161,7 +209,7 @@ function SparePartAdd() {
                         <Image product={sparePart} onImage={handleImage} />
                     </div>
                     <div className="card mb-3">
-                        <button type="submit" disabled={loading} className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={addSparePart}>{loading ? "Saving..." : "Save"}</button>
+                        <button type="submit" disabled={loading} className="btn btn-primary btn-set-task  w-sm-100 text-uppercase px-5" onClick={handleSubmit}>{loading ? "Saving..." : "Save"}</button>
                     </div>
                      
                 </div>
