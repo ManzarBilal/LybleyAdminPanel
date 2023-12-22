@@ -79,10 +79,10 @@ function CustomerList(props) {
                 cell: (row) => row.role === "Reseller" && <div>{row?.discountPercentage>0 ?  <div>{row?.discountPercentage} %</div>  : <div>0%</div>} </div>
             },
             {
-                name: "CREATE DISCOUNT ",
+                name: "UPDATE DISCOUNT ",
                 selector: (row) => { },
                 sortable: true, width: "180px",
-                cell: (row) => row.role === "Reseller" && <div>{row.discount === "NOT_VERIFIED" ? <div className='text-danger'> Please Verify Cervice Center</div> :<button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { handleOpenDiscount(row._id) }}>Create Discount</button>}</div> 
+                cell: (row) => row.role === "Reseller" && <div>{row.discount === "NOT_VERIFIED" ? <div className='text-danger'> Please Verify Service Center</div> :<button className={`btn text-white ${row.discount === "NOT_VERIFIED" ? "btn-danger" : "btn-success"}`} onClick={() => { handleOpenDiscount(row._id,row.discountPercentage) }}>Update Discount</button>}</div> 
             },
             {
                 name: "DISCOUNT STATUS",
@@ -103,7 +103,10 @@ function CustomerList(props) {
             }
         ]
     }
-    const handleOpenDiscount = (id) => {
+    const handleOpenDiscount = (id,dis) => {
+         if(dis){
+            setDiscount(+dis);
+         }
         setOpenDiscount(true)
         setUserId(id)
     }
@@ -111,8 +114,9 @@ function CustomerList(props) {
         try {
             let response = await httpCommon.patch(`/verifyReseller/${userId}`, { discountPercentage: +discount });
             let { data } = response;
-            setOpenDiscount(false)
             setRefresh(data);
+            setOpenDiscount(false)
+           
         } catch (err) {
             console.log(err);
         }
@@ -265,7 +269,7 @@ function CustomerList(props) {
                 </div>
 
             </Modal>
-            <Modal className="modal fade show" id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
+            <Modal  id="expadd" show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Customers</h5>
                 </Modal.Header>
@@ -318,7 +322,7 @@ function CustomerList(props) {
                 </Modal.Footer>
 
             </Modal>
-            <Modal className="modal fade show" id="expadd" show={openDiscount} onHide={() => { setOpenDiscount(false) }} style={{ display: 'block' }}>
+            <Modal   id="expadd" show={openDiscount} onHide={() => { setOpenDiscount(false) }} style={{ display: 'block' }}>
                 <Modal.Header className="modal-header" closeButton>
                     <h5 className="modal-title  fw-bold" id="expaddLabel">Add Discount</h5>
                 </Modal.Header>
@@ -331,7 +335,7 @@ function CustomerList(props) {
                                  
                                 <div className="col-12">
                                     <label htmlFor="abc111" className="form-label">Discount %</label>
-                                    <input type="number"onChange={(e)=>setDiscount(e.target.value)}  maxLength={3} className="form-control" id="ab" />
+                                    <input type="number"onChange={(e)=>setDiscount(e.target.value)} value={discount} maxLength={3} className="form-control" id="ab" />
                                 </div>
                             </div>
                             

@@ -156,11 +156,11 @@ function PickupLocation() {
             <div className="body d-flex py-lg-3 py-md-2">
                 <div className="container-xxl">
                     <PageHeader1 pagetitle='Courier Information' modalbutton={() => {
-                        return <>{table_row?.length>0 ?"":
+                        return <> 
                          <div className="col-auto d-flex w-sm-100">
                          <button type="button" onClick={() => { setIsmodal(true) }} className="btn btn-primary btn-set-task w-sm-100" data-bs-toggle="modal" data-bs-target="#expadd"><i className="icofont-plus-circle me-2 fs-6"></i>Add Pickup Location</button>
                      </div>
-                        }
+                       
                         </>
                     }} />
                     <div className="row clearfix g-3">
@@ -225,7 +225,7 @@ function PickupLocation() {
                 </div>
                 <Modal show={iseditmodal} onHide={() => { setIseditmodal(false) }} className="" style={{ display: 'block' }}>
                     <Modal.Header className="modal-header" closeButton>
-                        <h5 className="modal-title  fw-bold" id="expeditLabel">Bank Details</h5>
+                        <h5 className="modal-title  fw-bold" id="expeditLabel">Pickup Address Details</h5>
                     </Modal.Header>
                     <Modal.Body className="modal-body">
                         <div className="deadline-form">
@@ -334,7 +334,7 @@ function PickupLocation() {
 
                 <Modal  show={ismodal} onHide={() => { setIsmodal(false) }} style={{ display: 'block' }}>
                     <Modal.Header className="modal-header" closeButton>
-                        <h5 className="modal-title  fw-bold" id="expaddLabel">Add Bank Account</h5>
+                        <h5 className="modal-title  fw-bold" id="expaddLabel">Add Pickup Address</h5>
                     </Modal.Header>
                     <Modal.Body className="modal-body">
                         <div className="deadline-form row">
