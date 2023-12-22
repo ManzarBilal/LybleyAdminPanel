@@ -170,7 +170,7 @@ function ShipOrderList(props) {
                                     <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleInvoice(row?.id)}> Invoice</button>
                                 </div>
                             </div>
-                            <Link style={{ width: "200px" }} to={props?.url + `/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow ms-4"  > Select Courier</button></Link>
+                           {row?.status !=="NEW" ? "" : <Link style={{ width: "200px" }} to={props?.url + `/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow ms-4"  > Select Courier</button></Link>}
                             <button onClick={() => { cancelOrder(row?.id) }} type="button" className=" ms-4 btn btn-outline-secondary"><i className="icofont-ui-delete text-danger"></i></button>
                         </div>, minWidth: "400px",
             }
