@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import httpCommon from "../../http-common";
 import PageHeader1 from '../../components/common/PageHeader1';
 import { ReactLoader } from '../../components/common/ReactLoader';
-import { useLocation } from 'react-router-dom/cjs/react-router-dom';
+import { useLocation,useHistory } from 'react-router-dom/cjs/react-router-dom';
 
 
 
 const CourierPartners = (props) => {
     const [courier, setCourier] = useState([]);
     const [loading, setLoading] = useState(false)
-
+    const history=useHistory();
     const param = useLocation()
     const queruParams = new URLSearchParams(param.search)
     const cod = queruParams.get("cod")
@@ -39,13 +39,19 @@ const CourierPartners = (props) => {
 
     const selectCourier = async () => {
         try {
+            let userData = localStorage?.getItem("user")
+            let user = JSON.parse(userData)
             setLoading(true)
             let response = await httpCommon.post("/shipProduct", { shipment_id: [+shipmentId] });
             let { data } = response;
             setCourier(data);
             setLoading(false)
-            alert("Your Product Shipped")
-
+            alert("Your Product Shipped");
+           if(user?.role==="ADMIN" ){
+             history.push("/admin/shipRocketOrder-list");
+           }else{
+            history.push(`/brand/shipRocketOrder-list/${shipmentId}`);
+           }
         } catch (err) {
             console.log(err);
             setLoading(false)

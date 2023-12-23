@@ -11,6 +11,8 @@ function OrderList(props) {
 
     const param = useParams()
     const columns = () => {
+        let userData = localStorage?.getItem("user")
+        let user = JSON.parse(userData)
         return [
             {
                 name: "SR NO.",
@@ -58,10 +60,11 @@ function OrderList(props) {
                 sortable: true,minWidth: "220px",
                 cell: (row) =>
                     <div className="btn-group" role="group" aria-label="Basic outlined example">
+                       {user?.role==="ADMIN" ? "":
                         <Link className='ps-2 pe-2 text-decoration' to={props?.url + `/shipRocketOrder-list/${row?.shipOrderId}`} > 
-                        <button  type="button" className="btn btn-success">Shipment </button>
+                        <button  type="button" className="btn btn-success">Go to ship  </button>
                         </Link>
-                       
+            }
                        
                     </div>
             },
