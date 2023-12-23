@@ -63,6 +63,16 @@ function ShipOrderList(props) {
         try {
             let response = await httpCommon.post("/printManifest", body)
             let { data } = response
+            if (data?.menifest_url) {
+                const link = document.createElement('a');
+                link.href = data?.menifest_url;
+                link.setAttribute('download', 'file.pdf');
+                document.body.appendChild(link);
+                setTimeout(() => {
+                    link.click();
+                    document.body.removeChild(link);
+                }, 100);
+        }
         }
         catch (err) {
             console.log(err);
@@ -73,8 +83,17 @@ function ShipOrderList(props) {
         try {
             let response = await httpCommon.post("/generateLabel", body)
             let { data } = response
+            if (data?.label_url) {
+                const link = document.createElement('a');
+                link.href = data?.label_url;
+                link.setAttribute('download', 'file.pdf');
+                document.body.appendChild(link);
+                setTimeout(() => {
+                    link.click();
+                    document.body.removeChild(link);
+                }, 100);
         }
-        catch (err) {
+    }catch (err) {
             console.log(err);
         }
     }
@@ -82,7 +101,17 @@ function ShipOrderList(props) {
         const body = { ids: [orderId] }
         try {
             let response = await httpCommon.post("/generateInvoice", body)
-            let { data } = response
+            let { data } = response;
+            if (data?.invoice_url) {
+                const link = document.createElement('a');
+                link.href = data?.invoice_url;
+                link.setAttribute('download', 'file.pdf');
+                document.body.appendChild(link);
+                setTimeout(() => {
+                    link.click();
+                    document.body.removeChild(link);
+                }, 100);
+        }
         }
         catch (err) {
             console.log(err);
@@ -153,26 +182,29 @@ function ShipOrderList(props) {
                 name: "ACTION",
                 selector: (row) => { },
                 sortable: true,
+                minWidth: "400px",
                 cell: (row) =>
-                    row?.status === 'CANCELED' ? <div> </div>
-                        : <div className="btn-group d-flex justify-content-between align-items-center" role="group" aria-label="Basic outlined example">
-                            <div className='row'>
-                                <div className='col-6'>
-                                    <button type="button" className="btn btn-success text-white deleterow " onClick={() => handleGenManifest(row?.shipments[0].id)} >Gen Manifest</button>
-                                </div>
-                                <div className='col-6'>
-                                    <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.channel_order_id)}> Print Manifest</button>
-                                </div>
-                                <div className='col-6'>
-                                    <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleLabel(row?.shipments[0].id)}> Label</button>
-                                </div>
-                                <div className='col-6'>
-                                    <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleInvoice(row?.id)}> Invoice</button>
-                                </div>
-                            </div>
-                           {row?.status !=="NEW" ? "" : <Link style={{ width: "200px" }} to={props?.url + `/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow ms-4"  > Select Courier</button></Link>}
-                            <button onClick={() => { cancelOrder(row?.id) }} type="button" className=" ms-4 btn btn-outline-secondary"><i className="icofont-ui-delete text-danger"></i></button>
-                        </div>, minWidth: "400px",
+                row?.status === "NEW" ?<> <Link style={{ width: "200px" }} to={props?.url + `/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow ms-4"  > Select Courier</button></Link> : <div></div>
+                <button onClick={() => { cancelOrder(row?.id) }} type="button" className=" ms-4 btn btn-outline-secondary"><i className="icofont-ui-delete text-danger"></i></button>
+                </>
+                  :<div className="btn-group d-flex justify-content-between align-items-center" role="group" aria-label="Basic outlined example">
+                         <div className='row'>
+                             <div className='col-6'>
+                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => handleGenManifest(row?.shipments[0].id)} >Gen Manifest</button>
+                             </div>
+                             <div className='col-6'>
+                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.channel_order_id)}> Print Manifest</button>
+                             </div>
+                             <div className='col-6'>
+                                 <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleLabel(row?.shipments[0].id)}> Label</button>
+                             </div>
+                             <div className='col-6'>
+                                 <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleInvoice(row?.id)}> Invoice</button>
+                             </div>
+                             <div className='col-6'>
+                             </div>
+                         </div>
+                     </div>
             }
         ]
     }
@@ -189,7 +221,7 @@ function ShipOrderList(props) {
     // const orders1=orders
     const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
 
-    console.log(finalData);
+    // let order1=order?.filter(f1=>f1?.id===+param?.id);
 
     return (
         <div className="body d-flex py-3">
