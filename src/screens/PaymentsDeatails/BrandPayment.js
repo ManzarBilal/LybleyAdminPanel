@@ -164,8 +164,7 @@ const updateBankDetail = async (obj) => {
                 let { data } = response
                 setDisable(false)
                 setIsmodal(false)
-                let x = Math.floor((Math.random() * 10) + 1);
-                setRandomValue(x)
+                setRandomValue(data)
                 ToastMessage(data);
             }
 
