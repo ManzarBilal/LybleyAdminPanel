@@ -52,7 +52,17 @@ function ShipOrderList(props) {
         const body = { shipment_id: [shipmentId] }
         try {
             let response = await httpCommon.post("/generateManifest", body)
-            let { data } = response
+            let { data } = response;
+            if (data?.manifest_url) {
+                const link = document.createElement('a');
+                link.href = data?.manifest_url;
+                link.setAttribute('download', 'file.pdf');
+                document.body.appendChild(link);
+                setTimeout(() => {
+                    link.click();
+                    document.body.removeChild(link);
+                }, 100);
+        }
         }
         catch (err) {
             console.log(err);
@@ -63,9 +73,9 @@ function ShipOrderList(props) {
         try {
             let response = await httpCommon.post("/printManifest", body)
             let { data } = response
-            if (data?.menifest_url) {
+            if (data?.manifest_url) {
                 const link = document.createElement('a');
-                link.href = data?.menifest_url;
+                link.href = data?.manifest_url;
                 link.setAttribute('download', 'file.pdf');
                 document.body.appendChild(link);
                 setTimeout(() => {
@@ -195,7 +205,7 @@ function ShipOrderList(props) {
                                  <button type="button" className="btn btn-success text-white deleterow " onClick={() => handleGenManifest(row?.shipments[0].id)} >Gen Manifest</button>
                              </div>
                              <div className='col-6'>
-                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.channel_order_id)}> Print Manifest</button>
+                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.id)}> Print Manifest</button>
                              </div>
                              <div className='col-6'>
                                  <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleLabel(row?.shipments[0].id)}> Label</button>
