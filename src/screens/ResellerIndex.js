@@ -28,6 +28,7 @@ import AllShipmentsList from './ShipRocket/AllShipments';
 import CourierPartners from './ShipRocket/CourierPartners';
 import BrandShipOrderList from './ShipRocket/BrandOrderList';
 import TechnicianCharges from './TechnicianCharges/TechnicianCharges';
+import Wallet from './Wallet/Wallet';
 const ResellerIndex = (props) => {
   const { activekey } = props;
   return (
@@ -41,6 +42,8 @@ const ResellerIndex = (props) => {
           <Route exact path={props?.url + '/dashboard'} render={() => { return <Dashboard url={props?.url}/> }} />
 
           <Route exact path={props?.url + '/pickupLocation'} render={() => { return <PickupLocation url={props?.url}/> }} />
+
+          <Route exact path={props?.url + '/wallet'} render={() => { return <Wallet url={props?.url}/> }} />
 
           {/* <Route exact path={props?.url + '/technicianCharges'} render={() => { return <TechnicianCharges url={props?.url}/> }} /> */}
 

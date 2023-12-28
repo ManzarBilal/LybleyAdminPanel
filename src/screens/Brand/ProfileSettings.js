@@ -34,7 +34,7 @@ function ProfileSettings(props) {
     
 
     const updateProfile = async (userDetail) => {
-        
+         
         try {
             setLoading(true);
             let response = await httpCommon.patch(`/updateBrandBy/${param?.id}`, userDetail);
@@ -50,8 +50,8 @@ function ProfileSettings(props) {
     }
 
     const handleSave=()=>{
-        let {brandName,email,contact,address,aboutUs,gstNo}=props?.user;
-        let obj={brandName:brandName,email:email,contact:contact,address:address,aboutUs:aboutUs,gstNo:gstNo};
+        let {brandName,email,contact,address,aboutUs,gstNo,password}=props?.user;
+        let obj={brandName:brandName,email:email,contact:contact,address:address,aboutUs:aboutUs,gstNo:gstNo,password:password};
         updateProfile(obj);
         
     }
@@ -111,7 +111,8 @@ function ProfileSettings(props) {
        }
     }
 
-    let {brandName,email,contact,address,aboutUs,gstNo}=props?.user;
+    let {brandName,email,contact,address,aboutUs,gstNo,password}=props?.user;
+     
 
     return (
         <div className="card mb-3">
@@ -149,6 +150,17 @@ function ProfileSettings(props) {
                         <div className="input-group">
                             <span className="input-group-text">@</span>
                             <input type="text" className="form-control" name='email' value={email} onChange={props.onChange} />
+                            
+                        </div>
+                        <div className='text-danger'>
+                                 {/* {errors.email?.message} */}
+                             </div>
+                    </div>
+                    <div className="col-md-6 col-sm-12">
+                        <label className="form-label">Password <span className="text-danger">*</span></label>
+                        <div className="input-group">
+                            
+                            <input type="text" className="form-control" name='password' value={password} onChange={props.onChange} />
                             
                         </div>
                         <div className='text-danger'>
