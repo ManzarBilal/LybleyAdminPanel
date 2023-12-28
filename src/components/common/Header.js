@@ -12,6 +12,8 @@ import { Onopenmodalsetting } from '../../Redux/Actions/Action';
 import { Link, useHistory } from 'react-router-dom';
 import ImageLogo from "../../assets/images/spareLogo.png";
 import { Notification } from './Notification';
+import httpCommon from "../../http-common";
+
 
 
 function Header(props) {
@@ -25,11 +27,29 @@ function Header(props) {
         history.push("/user/sign-in");
     }
     const [showDropdown, setShowDropdown] = useState(true);
-    // useEffect(()=>{
+    const [brandData, setBrandDetails] = useState( );
+    useEffect(() => {
+        getBrandDetails()
+    }, [ ])
+    const getBrandDetails = async () => {
 
-    // },[showDropdown]);
-    //  console.log("headerData",headerData);
-    
+        try {
+            let user = localStorage.getItem("user");
+            let brandObj = JSON.parse(user);
+            
+            let response = await httpCommon.get(`/getBrandBy/${brandObj?._id}`)
+
+            let { data } = response
+           
+            setBrandDetails(data)
+            
+        }
+        catch (err) {
+            console.log(err)
+             
+
+        }
+    }
     
     const setDropdown = (bool) => {
         setShowDropdown(bool);   
@@ -41,6 +61,15 @@ function Header(props) {
                 <div className="container-xxl">
                     <div className="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">
                         <div className="d-flex mt-1" >
+                            <div className='d-flex align-items-center ms-2' >
+                                <div style={{ fontSize: "30px", marginTop: "-20px" }}> <i style={{ fontSize: "33px", }} className="fa fa-credit-card fs-51"></i></div>
+                                <div className='d-flex fw-bold ms-3 me-2' style={{ fontSize: "20px",marginTop: "-20px" }}>
+                               
+                                <div>  <i  className="fa fa-inr fs-51 me-2"></i>{brandData?.wallet}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="d-flex mt-1  ms-4" >
                             <Link to="help" className="nav-link text-primary collapsed" title="Get Help" >
                                 <div style={{ fontSize: "30px", marginTop: "-20px" }}> <i style={{ fontSize: "33px", }} className="icofont-info-square fs-51"></i></div>
                             </Link>

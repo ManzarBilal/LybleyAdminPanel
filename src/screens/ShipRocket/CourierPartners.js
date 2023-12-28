@@ -2,14 +2,15 @@ import React, { useEffect, useState } from 'react';
 import httpCommon from "../../http-common";
 import PageHeader1 from '../../components/common/PageHeader1';
 import { ReactLoader } from '../../components/common/ReactLoader';
-import { useLocation,useHistory } from 'react-router-dom/cjs/react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom/cjs/react-router-dom';
 
 
 
 const CourierPartners = (props) => {
     const [courier, setCourier] = useState([]);
     const [loading, setLoading] = useState(false)
-    const history=useHistory();
+    const [brandDetails, setBrandDetails] = useState( );
+    const history = useHistory();
     const param = useLocation()
     const queruParams = new URLSearchParams(param.search)
     const cod = queruParams.get("cod")
@@ -19,8 +20,31 @@ const CourierPartners = (props) => {
     const shipmentId = queruParams.get("shipment_id")
     // console.log(cod, weight, pickupCode, deliveryCode,shipmentId);
     useEffect(() => {
+        getBrandDetails()
         getCourier();
     }, []);
+
+    
+   
+    const getBrandDetails = async () => {
+
+        try {
+            let user = localStorage.getItem("user");
+            let brandObj = JSON.parse(user);
+            
+            let response = await httpCommon.get(`/getBrandBy/${brandObj?._id}`)
+
+            let { data } = response
+           
+            setBrandDetails(data)
+            
+        }
+        catch (err) {
+            console.log(err)
+             
+
+        }
+    }
     const getCourier = async () => {
         try {
             setLoading(true)
@@ -37,21 +61,25 @@ const CourierPartners = (props) => {
         }
     }
 
-    const selectCourier = async () => {
+    const selectCourier = async (amount) => {
         try {
             let userData = localStorage?.getItem("user")
             let user = JSON.parse(userData)
             setLoading(true)
-            let response = await httpCommon.post("/shipProduct", { shipment_id: [+shipmentId] });
+            if(brandDetails?.role !=="ADMIN" && brandDetails?.wallet<amount){
+                alert("Insufficient wallet balance");
+            }else{
+            let response = await httpCommon.post("/shipProduct", { shipment_id: [+shipmentId], brandId: user?._id, amount: amount });
             let { data } = response;
             setCourier(data);
             setLoading(false)
             alert("Your Product Shipped");
-           if(user?.role==="ADMIN" ){
-             history.push("/admin/shipRocketOrder-list");
-           }else{
-            history.push(`/brand/shipRocketOrder-list/${shipmentId}`);
-           }
+            if (user?.role === "ADMIN") {
+                history.push("/admin/shipRocketOrder-list");
+            } else {
+                history.push(`/brand/shipRocketOrder-list/${shipmentId}`);
+            }
+        }
         } catch (err) {
             console.log(err);
             setLoading(false)
@@ -74,20 +102,27 @@ const CourierPartners = (props) => {
                         <div className='col-2 fs-5'  >ESD</div>
                         <div className='col-1 fs-5'  >Action</div>
                     </div>
-                    {courier?.data?.available_courier_companies?.map((item, i) =>
-                        <div key={i} className='row border-bottom d-flex justify-content-between p-3'>
+                    {courier?.data?.available_courier_companies?.map((item, i) => {
+                        let userData = localStorage?.getItem("user")
+                        let user = JSON.parse(userData)
+                        return <div key={i} className='row border-bottom d-flex justify-content-between p-3'>
 
                             <div className='col-3 fw-bold fs-5' >{item?.courier_name}</div>
                             {/* <div className='col-4'  ><img className="avatar rounded lg border" src={item?.image?.email_logo_s3_path} alt="" /> </div> */}
-                            <div className='col-2 text-danger fw-bold'  >{item?.rate}</div>
+                            {user?.role === "ADMIN" ?
+                                <div className='col-2 text-danger fw-bold'  >{item?.rate}</div>
+                                : <div className='col-2 text-danger fw-bold'  >{((+item?.rate) + (+item?.rate * 0.20))}</div>
+                            }
                             <div className='col-2 ps-2'  >{item?.rating}</div>
                             <div className='col-2'  >{item?.city}</div>
                             <div className='col-2'  >{item?.etd}</div>
                             <div className='col-1'  >
-                                <div className='btn text-white btn-success' onClick={() => selectCourier()}>Ship</div>
+
+                                : <div className='btn text-white btn-success' onClick={() => selectCourier((+item?.rate) + (+item?.rate * 0.20))}>Ship</div>
 
                             </div>
                         </div>
+                    }
                     )}
                 </div>
             }

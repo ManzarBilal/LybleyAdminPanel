@@ -73,7 +73,7 @@ function FaultList() {
     }, [randomValue, dispatch])
 
     const products = useSelector(state => state?.products)
-
+console.log(products);
     const GetAllFaultByBrand = async () => {
         try {
             setLoading(true)
