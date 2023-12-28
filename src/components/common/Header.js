@@ -60,15 +60,19 @@ function Header(props) {
             <nav className="navbar py-4">
                 <div className="container-xxl">
                     <div className="h-right d-flex align-items-center mr-5 mr-lg-0 order-1">
-                        <div className="d-flex mt-1" >
-                            <div className='d-flex align-items-center ms-2' >
-                                <div style={{ fontSize: "30px", marginTop: "-20px" }}> <i style={{ fontSize: "33px", }} className="fa fa-credit-card fs-51"></i></div>
-                                <div className='d-flex fw-bold ms-3 me-2' style={{ fontSize: "20px",marginTop: "-20px" }}>
+                       {headerData?.role==="ADMIN" ? "" 
+                       : <div className="d-flex   input-group-text" style={{ marginTop: "-14px", cursor:"pointer"}}>
+                            <Link className="" to="/brand/wallet">
+                            <div className='d-flex align-items-center ms-2 ' >
+                                <div  style={{ fontSize: "30px",  }}> <i   className="fa fa-credit-card fs-51"></i></div>
+                                <div className='d-flex fw-bold ms-3 me-1' style={{ fontSize: "20px",  }}>
                                
-                                <div>  <i  className="fa fa-inr fs-51 me-2"></i>{brandData?.wallet}</div>
+                                <div>  <i  className="fa fa-inr fs-51 me-2"></i>{brandData?.wallet} </div>
                                 </div>
                             </div>
+                            </Link>
                         </div>
+}
                         <div className="d-flex mt-1  ms-4" >
                             <Link to="help" className="nav-link text-primary collapsed" title="Get Help" >
                                 <div style={{ fontSize: "30px", marginTop: "-20px" }}> <i style={{ fontSize: "33px", }} className="icofont-info-square fs-51"></i></div>
