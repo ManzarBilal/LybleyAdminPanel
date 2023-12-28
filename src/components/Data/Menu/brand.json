@@ -2,7 +2,9 @@
     "brand": [
         {
             "name": "Dashboard",
-            "routerLink": ["dashboard"],
+            "routerLink": [
+                "dashboard"
+            ],
             "identifier": "Dashboard",
             "iconClass": "icofont-home fs-5",
             "breadcrumbMessage": "Welcome to Analytics Dashboard.",
@@ -12,28 +14,59 @@
         },
         {
             "name": "Pickup Location",
-            "routerLink": ["pickupLocation"],
+            "routerLink": [
+                "pickupLocation"
+            ],
             "identifier": "Pickup Location",
-            "iconClass": "icofont-truck-loaded fs-5",
+            "iconClass": "fa fa-map-marker fs-5",
             "breadcrumbMessage": "Welcome to Analytics Dashboard.",
             "isCategory": false,
             "isApp": false,
             "children": []
         },
         {
-            "name": "Wallet",
-            "routerLink": ["wallet"],
-            "identifier": "Wallet",
+            "name": "Passbook",
+            "routerLink": [
+                " "
+            ],
+            "identifier": "Passbook",
             "iconClass": "fa fa-credit-card fs-6",
-            "breadcrumbMessage": "Welcome to Analytics Dashboard.",
+            "breadcrumbMessage": "Welcome to Passbook.",
             "isCategory": false,
             "isApp": false,
-            "children": []
+            "children": [
+                {
+                    "name": "Wallet",
+                    "routerLink": [
+                        "wallet"
+                    ],
+                    "identifier": "Wallet",
+                    "iconClass": " ",
+                    "breadcrumbMessage": " ",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                ,  {
+                    "name": "Debit Payments",
+                    "routerLink": [
+                        "debitPayments"
+                    ],
+                    "identifier": "Payments",
+                    "iconClass": " ",
+                    "breadcrumbMessage": " ",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+            ]
         },
         
         {
             "name": "Category",
-            "routerLink": [""],
+            "routerLink": [
+                ""
+            ],
             "identifier": "Category",
             "iconClass": "icofont-chart-flow fs-5",
             "breadcrumbMessage": "",
@@ -42,7 +75,9 @@
             "children": [
                 {
                     "name": "Category List",
-                    "routerLink": ["category-list"],
+                    "routerLink": [
+                        "category-list"
+                    ],
                     "identifier": "Category List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -50,12 +85,13 @@
                     "isApp": false,
                     "children": []
                 }
-                  
             ]
         },
         {
             "name": "Products",
-            "routerLink": [""],
+            "routerLink": [
+                ""
+            ],
             "identifier": "Products",
             "iconClass": "icofont-truck-loaded fs-5",
             "breadcrumbMessage": "",
@@ -64,7 +100,9 @@
             "children": [
                 {
                     "name": "Product Grid",
-                    "routerLink": ["product-grid"],
+                    "routerLink": [
+                        "product-grid"
+                    ],
                     "identifier": "Product Grid",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -74,7 +112,9 @@
                 },
                 {
                     "name": "Product List",
-                    "routerLink": ["product-list"],
+                    "routerLink": [
+                        "product-list"
+                    ],
                     "identifier": "Product List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -82,10 +122,11 @@
                     "isApp": false,
                     "children": []
                 },
-                
                 {
-                    "name": "Product Add",
-                    "routerLink": ["product-Add"],
+                    "name": "Add Product ",
+                    "routerLink": [
+                        "product-Add"
+                    ],
                     "identifier": "Product Add",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -93,13 +134,13 @@
                     "isApp": false,
                     "children": []
                 }
-                 
-
             ]
         },
         {
             "name": "Spare Parts",
-            "routerLink": [""],
+            "routerLink": [
+                ""
+            ],
             "identifier": "Spare Parts",
             "iconClass": "icofont-repair fs-5",
             "breadcrumbMessage": "",
@@ -107,8 +148,10 @@
             "isApp": false,
             "children": [
                 {
-                    "name": "Spare Parts Add",
-                    "routerLink": ["spareParts-Add"],
+                    "name": "Add Spare Parts  ",
+                    "routerLink": [
+                        "spareParts-Add"
+                    ],
                     "identifier": "Spare Parts Add",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -118,7 +161,9 @@
                 },
                 {
                     "name": "Spare Parts Grid",
-                    "routerLink": ["spareParts-grid"],
+                    "routerLink": [
+                        "spareParts-grid"
+                    ],
                     "identifier": "Product Grid",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -128,7 +173,9 @@
                 },
                 {
                     "name": "Spare Parts List",
-                    "routerLink": ["spareParts-list"],
+                    "routerLink": [
+                        "spareParts-list"
+                    ],
                     "identifier": "Spare Parts List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -136,10 +183,11 @@
                     "isApp": false,
                     "children": []
                 },
-                
                 {
                     "name": "Spare Parts Detail",
-                    "routerLink": ["spareParts-detail"],
+                    "routerLink": [
+                        "spareParts-detail"
+                    ],
                     "identifier": "Spare Parts Detail",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -147,10 +195,11 @@
                     "isApp": false,
                     "children": []
                 },
-               
                 {
                     "name": "Spare Parts Faults",
-                    "routerLink": ["spareParts-fault"],
+                    "routerLink": [
+                        "spareParts-fault"
+                    ],
                     "identifier": "Spare Parts Faults",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -160,7 +209,9 @@
                 },
                 {
                     "name": "Spare Parts Videos",
-                    "routerLink": ["spareParts-videos"],
+                    "routerLink": [
+                        "spareParts-videos"
+                    ],
                     "identifier": "Spare Parts Videos",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -168,13 +219,13 @@
                     "isApp": false,
                     "children": []
                 }
-
             ]
         },
-         
         {
             "name": "Orders",
-            "routerLink": [""],
+            "routerLink": [
+                ""
+            ],
             "identifier": "Orders",
             "iconClass": "icofont-notepad fs-5",
             "breadcrumbMessage": "",
@@ -183,7 +234,9 @@
             "children": [
                 {
                     "name": "Orders List",
-                    "routerLink": ["order-list"],
+                    "routerLink": [
+                        "order-list"
+                    ],
                     "identifier": "Orders List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -193,7 +246,9 @@
                 },
                 {
                     "name": "Order Return List",
-                    "routerLink": ["return-list"],
+                    "routerLink": [
+                        "return-list"
+                    ],
                     "identifier": "Return List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -203,7 +258,9 @@
                 },
                 {
                     "name": "Order Return Request List",
-                    "routerLink": ["return-request-list"],
+                    "routerLink": [
+                        "return-request-list"
+                    ],
                     "identifier": "Return Request List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -211,12 +268,13 @@
                     "isApp": false,
                     "children": []
                 }
-                 
             ]
         },
         {
             "name": "Payments",
-            "routerLink": [""],
+            "routerLink": [
+                ""
+            ],
             "identifier": " Payments",
             "iconClass": "icofont-rupee fs-5",
             "breadcrumbMessage": "",
@@ -225,7 +283,9 @@
             "children": [
                 {
                     "name": "Bank Account",
-                    "routerLink": ["bankAccount"],
+                    "routerLink": [
+                        "bankAccount"
+                    ],
                     "identifier": "Bank Account",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -235,7 +295,9 @@
                 },
                 {
                     "name": "Payments",
-                    "routerLink": ["brandPayments"],
+                    "routerLink": [
+                        "brandPayments"
+                    ],
                     "identifier": "Brand Payments",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -243,13 +305,13 @@
                     "isApp": false,
                     "children": []
                 }
-                
-               
             ]
         },
         {
             "name": "Customers",
-            "routerLink": [""],
+            "routerLink": [
+                ""
+            ],
             "identifier": "Customers",
             "iconClass": "icofont-funky-man fs-5",
             "breadcrumbMessage": "",
@@ -258,7 +320,9 @@
             "children": [
                 {
                     "name": "Customers List",
-                    "routerLink": ["customer-list"],
+                    "routerLink": [
+                        "customer-list"
+                    ],
                     "identifier": "Customers List",
                     "iconClass": "",
                     "breadcrumbMessage": "",
@@ -266,11 +330,7 @@
                     "isApp": false,
                     "children": []
                 }
-                 
             ]
         }
-       
     ]
 }
- 
-

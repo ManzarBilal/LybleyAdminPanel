@@ -6,9 +6,30 @@ import { Link } from 'react-router-dom';
 
 import { ReactLoader } from '../../components/common/ReactLoader';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+import QRCode from 'qrcode'
+import jsPDF from 'jspdf'
 
 function ShipOrderList(props) {
 
+    const generateQRCodeAndDownload = async (id) => {
+        try {
+            // Generate QR code as a data URL
+            const qrCodeDataURL = await QRCode.toDataURL(id);
+
+            // Create a PDF document
+            const pdf = new jsPDF();
+            pdf.setFontSize(10);
+            pdf.text(20, 20, ' Scan QR Code to return this product');
+            pdf.addImage(qrCodeDataURL, 'PNG', 20, 25, 50, 50);
+
+            // pdf.text(20, 90, `Text Value: ${text}`);
+
+            // Save the PDF
+            pdf.save('product_qr_code.pdf');
+        } catch (error) {
+            console.error('Error generating QR code:', error);
+        }
+    };
 
     const param = useParams()
 
@@ -62,7 +83,7 @@ function ShipOrderList(props) {
                     link.click();
                     document.body.removeChild(link);
                 }, 100);
-        }
+            }
         }
         catch (err) {
             console.log(err);
@@ -82,7 +103,7 @@ function ShipOrderList(props) {
                     link.click();
                     document.body.removeChild(link);
                 }, 100);
-        }
+            }
         }
         catch (err) {
             console.log(err);
@@ -102,8 +123,8 @@ function ShipOrderList(props) {
                     link.click();
                     document.body.removeChild(link);
                 }, 100);
-        }
-    }catch (err) {
+            }
+        } catch (err) {
             console.log(err);
         }
     }
@@ -121,7 +142,7 @@ function ShipOrderList(props) {
                     link.click();
                     document.body.removeChild(link);
                 }, 100);
-        }
+            }
         }
         catch (err) {
             console.log(err);
@@ -194,32 +215,34 @@ function ShipOrderList(props) {
                 sortable: true,
                 minWidth: "400px",
                 cell: (row) =>
-                row?.status === "CANCELED" ?  <div></div>
-               : <>
-               { row?.status === "NEW" ?<> <Link style={{ width: "200px" }} to={props?.url + `/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow ms-4"  > Select Courier</button></Link> <div></div>
-                <button onClick={() => { cancelOrder(row?.id) }} type="button" className=" ms-4 btn btn-outline-secondary"><i className="icofont-ui-delete text-danger"></i></button>
-                </>
-                  :<div className="btn-group d-flex justify-content-between align-items-center" role="group" aria-label="Basic outlined example">
-                         <div className='row'>
-                             <div className='col-6'>
-                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => handleGenManifest(row?.shipments[0].id)} >Gen Manifest</button>
-                             </div>
-                             <div className='col-6'>
-                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.id)}> Print Manifest</button>
-                             </div>
-                             <div className='col-6'>
-                                 <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleLabel(row?.shipments[0].id)}> Label</button>
-                             </div>
-                             <div className='col-6'>
-                                 <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleInvoice(row?.id)}> Invoice</button>
-                             </div>
-                             <div className='col-6'>
-                             </div>
-                         </div>
-                     </div>
-            }
-                     </>
-                      
+                    row?.status === "CANCELED" ? <div></div>
+                        : <>
+                            {row?.status === "NEW" ? <> <Link style={{ width: "200px" }} to={props?.url + `/coirierPartners?pickupCode=${row?.pickup_address_detail?.pin_code}&deliveryCode=${row?.customer_pincode}&cod=${0}&weight=${row?.shipments[0]?.weight}&shipment_id=${row?.shipments[0]?.id}`} className='text-decoratio-none' ><button type="button" className="btn btn-success text-white deleterow ms-4"  > Select Courier</button></Link> <div></div>
+                                <button onClick={() => { cancelOrder(row?.id) }} type="button" className=" ms-4 btn btn-outline-secondary"><i className="icofont-ui-delete text-danger"></i></button>
+                            </>
+                                : <div className="btn-group d-flex justify-content-between align-items-center" role="group" aria-label="Basic outlined example">
+                                    <div className='row'>
+                                        <div className='col-4'>
+                                            <button type="button" className="btn btn-success text-white deleterow " onClick={() => generateQRCodeAndDownload(row?.channel_order_id
+                                            )} >Get QR Code</button>
+                                        </div>
+                                        <div className='col-4'>
+                                            <button type="button" className="btn btn-success text-white deleterow " onClick={() => handleGenManifest(row?.shipments[0].id)} >Gen Manifest</button>
+                                        </div>
+                                        <div className='col-4'>
+                                            <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.channel_order_id)}> Print Manifest</button>
+                                        </div>
+                                        <div className='col-4'>
+                                            <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleLabel(row?.shipments[0].id)}> Label</button>
+                                        </div>
+                                        <div className='col-4'>
+                                            <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleInvoice(row?.id)}> Invoice</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </>
+
             }
         ]
     }

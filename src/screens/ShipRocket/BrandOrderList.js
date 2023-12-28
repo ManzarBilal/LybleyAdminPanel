@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import DataTable from 'react-data-table-component';
 import PageHeader1 from '../../components/common/PageHeader1';
 import httpCommon from "../../http-common";
@@ -6,10 +6,32 @@ import { Link } from 'react-router-dom';
 
 import { ReactLoader } from '../../components/common/ReactLoader';
 import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
+ import QRCode from 'qrcode'
+ import jsPDF from 'jspdf'
 
 function BrandShipOrderList(props) {
 
+ 
 
+    const generateQRCodeAndDownload = async (id) => {
+      try {
+        // Generate QR code as a data URL
+        const qrCodeDataURL = await QRCode.toDataURL(id);
+  
+        // Create a PDF document
+        const pdf = new jsPDF();
+        pdf.setFontSize(10);
+        pdf.text(20, 20, ' Scan QR Code to return this product');
+        pdf.addImage(qrCodeDataURL, 'PNG', 20, 25, 50, 50);
+       
+        // pdf.text(20, 90, `Text Value: ${text}`);
+  
+        // Save the PDF
+        pdf.save('product_qr_code.pdf');
+      } catch (error) {
+        console.error('Error generating QR code:', error);
+      }
+    };
     const param = useParams()
 
 
@@ -47,6 +69,7 @@ function BrandShipOrderList(props) {
 
         }
     }
+    
 
     const handleGenManifest = async (shipmentId) => {
         const body = { shipment_id: [shipmentId] }
@@ -190,24 +213,28 @@ function BrandShipOrderList(props) {
                  </>
                    :<div className="btn-group d-flex justify-content-between align-items-center" role="group" aria-label="Basic outlined example">
                           <div className='row'>
-                              <div className='col-6'>
+                          <div className='col-4'>
+                                 <button type="button" className="btn btn-success text-white deleterow " onClick={() => generateQRCodeAndDownload(row?.channel_order_id
+)} >Get QR Code</button>
+                             </div>
+                              <div className='col-4'>
                                   <button type="button" className="btn btn-success text-white deleterow " onClick={() => handleGenManifest(row?.shipments[0].id)} >Gen Manifest</button>
                               </div>
-                              <div className='col-6'>
+                              <div className='col-4'>
                                   <button type="button" className="btn btn-success text-white deleterow " onClick={() => handlePrintManifest(row?.channel_order_id)}> Print Manifest</button>
                               </div>
-                              <div className='col-6'>
+                              <div className='col-4'>
                                   <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleLabel(row?.shipments[0].id)}> Label</button>
                               </div>
-                              <div className='col-6'>
+                              <div className='col-4'>
                                   <button type="button" className="btn btn-success text-white deleterow mt-2" onClick={() => handleInvoice(row?.id)}> Invoice</button>
                               </div>
-                              <div className='col-6'>
-                              </div>
+                              
                           </div>
                       </div>
              }
                       </>
+                      ,minWidth: "370px",
             }
         ]
     }
@@ -225,6 +252,9 @@ function BrandShipOrderList(props) {
     // const finalData = orders?.map((item, i) => ({ ...item, i: i + 1 }))
 
     let order1 = order?.filter(f1 => f1?.id === +param?.id);
+
+   
+    
 
     return (
         <div className="body d-flex py-3">

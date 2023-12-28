@@ -14,21 +14,48 @@
             "name": "Pickup Location",
             "routerLink": ["pickupLocation"],
             "identifier": "Pickup Location",
-            "iconClass": "icofont-truck-loaded fs-5",
+            "iconClass": "fa fa-map-marker fs-5",
             "breadcrumbMessage": "Welcome to Analytics Dashboard.",
             "isCategory": false,
             "isApp": false,
             "children": []
         },
         {
-            "name": "Wallet",
-            "routerLink": ["wallet"],
-            "identifier": "Wallet",
+            "name": "Passbook",
+            "routerLink": [
+                " "
+            ],
+            "identifier": "Passbook",
             "iconClass": "fa fa-credit-card fs-6",
-            "breadcrumbMessage": "Welcome to Analytics Dashboard.",
+            "breadcrumbMessage": "Welcome to Passbook.",
             "isCategory": false,
             "isApp": false,
-            "children": []
+            "children": [
+                {
+                    "name": "Wallet",
+                    "routerLink": [
+                        "wallet"
+                    ],
+                    "identifier": "Wallet",
+                    "iconClass": " ",
+                    "breadcrumbMessage": " ",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+                ,  {
+                    "name": "Debit Payments",
+                    "routerLink": [
+                        "debitPayments"
+                    ],
+                    "identifier": "Payments",
+                    "iconClass": " ",
+                    "breadcrumbMessage": " ",
+                    "isCategory": false,
+                    "isApp": false,
+                    "children": []
+                }
+            ]
         },
         {
             "name": "Spare Parts",
@@ -40,7 +67,7 @@
             "isApp": false,
             "children": [
                 {
-                    "name": "Spare Parts Add",
+                    "name": "Add Spare Parts ",
                     "routerLink": ["spareParts-Add"],
                     "identifier": "Spare Parts Add",
                     "iconClass": "",

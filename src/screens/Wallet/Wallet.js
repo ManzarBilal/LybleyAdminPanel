@@ -180,7 +180,7 @@ function Wallet() {
                         </>
                     }} />
 
-                    {/* <div className="row clearfix g-3">
+                    <div className="row clearfix g-3">
                         {loading ? <div className='d-flex justify-content-center align-items-center' > <ReactLoader /> </div>
                             : <div className="col-sm-12">
                                 <div className="card mb-3">
@@ -205,7 +205,7 @@ function Wallet() {
 
                             </div>
                         }
-                    </div> */}
+                    </div>
                 </div>
 
 

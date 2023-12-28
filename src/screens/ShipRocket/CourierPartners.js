@@ -61,7 +61,7 @@ const CourierPartners = (props) => {
         }
     }
 
-    const selectCourier = async (amount) => {
+    const selectCourier = async (amount,courier) => {
         try {
             let userData = localStorage?.getItem("user")
             let user = JSON.parse(userData)
@@ -69,7 +69,7 @@ const CourierPartners = (props) => {
             if(brandDetails?.role !=="ADMIN" && brandDetails?.wallet<amount){
                 alert("Insufficient wallet balance");
             }else{
-            let response = await httpCommon.post("/shipProduct", { shipment_id: [+shipmentId], brandId: user?._id, amount: amount });
+            let response = await httpCommon.post("/shipProduct", { shipment_id: [+shipmentId], brandId: user?._id, amount: amount,courier: courier});
             let { data } = response;
             setCourier(data);
             setLoading(false)
@@ -118,7 +118,7 @@ const CourierPartners = (props) => {
                             <div className='col-2'  >{item?.etd}</div>
                             <div className='col-1'  >
 
-                                : <div className='btn text-white btn-success' onClick={() => selectCourier((+item?.rate) + (+item?.rate * 0.20))}>Ship</div>
+                                : <div className='btn text-white btn-success' onClick={() => selectCourier((+item?.rate) + (+item?.rate * 0.20),item?.courier_name)}>Ship</div>
 
                             </div>
                         </div>
