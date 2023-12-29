@@ -22,6 +22,7 @@ function Dashboard(props) {
     const [brandByIdData, setBrandBYIdData] = useState([])
     const [loading, setLoading] = useState(false)
     const [transaction, setTransaction] = useState([]);
+    const [visitors,setVisitors]=useState(0);
 
     useEffect(() => {
         getDashBoardData()
@@ -50,6 +51,7 @@ function Dashboard(props) {
             setAdminOrder(data?.orders);
             setAdminBrands(data?.totalBrands);
             setAdminSpareParts(data?.sparParts);
+            setVisitors(data?.visitors);
             setLoading(false)
         } catch (err) {
             console.log(err);
@@ -402,7 +404,7 @@ function Dashboard(props) {
                                                 <div className="card-body py-xl-4 py-3 d-flex flex-wrap align-items-center justify-content-between">
                                                     <div className="left-info">
                                                         <span className="text-muted">Visitors</span>
-                                                        <div><span className="fs-6 fw-bold me-2">14,208</span></div>
+                                                        <div><span className="fs-6 fw-bold me-2">{visitors}</span></div>
                                                     </div>
                                                     <div className="right-icon">
                                                         <i className={`icofont-users-social fs-3 color-light-success`}></i>
